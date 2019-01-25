@@ -29,6 +29,15 @@ const Airport = database.define('Airport', {
             notEmpty: true
         }
     },
+    pista: {
+        type: sequelize.FLOAT,
+        allowNull: false,
+
+        validate: {
+            isNumeric: true,
+            notEmpty: true
+        }
+    },
     activo: {
         type: sequelize.TINYINT,
         allowNull: false,

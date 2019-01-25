@@ -1,24 +1,26 @@
 extends base
 block content
   .container.pt-4
-    h2 Operaciones CRUD Airport
+    h2 Aeropuertos de Guacamaya Airline
     .row.mt-5
       .col-12
         table.table.bg-white
           thead
             tr
-              th(scope='col') ID
+              //th(scope='col') ID
               th(scope='col') CodioIATA
               th(scope='col') Ciudad
               th(scope='col') Pais
+              th(scope='col') Pista (Km)
               th(scope='col')
           tbody
           - for (var i = 0; i < airports.length; i++)
             tr
-              th(scope='row') #{airports[i].idAirport}
+              //th(scope='row') #{airports[i].idAirport}
               td #{airports[i].codigoIATA}
               td #{airports[i].ciudad}
               td #{airports[i].pais}
+              td #{airports[i].pista}
               td
                 form(action=`show/${airports[i].idAirport}`,method="POST")
                   button.btn.btn-outline-dark(type='submit') Detalle
