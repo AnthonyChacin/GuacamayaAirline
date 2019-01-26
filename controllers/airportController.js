@@ -19,4 +19,34 @@ controller.getAirports = async function (callback){
     }
 }
 
+controller.deleteAirport = async function (id, callback) {
+    try {
+        let response = await Airport.update({
+            activo: 0
+        }, {
+            where: {
+                id
+            }
+        });
+        callback(null);
+    } catch (error) {
+        callback(error);
+    }
+}
+
+controller.createAirport = async function (data, callback) {
+    try {
+        let response = await Airport.create({
+            codigoIATA: data.codigoIATA,
+            ciudad: data.ciudad,
+            pais: data.pais,
+            pista: data.pista
+        });
+        // code goes here
+        callback(null);
+    } catch (error) {
+        callback(error);
+    }
+}
+
 module.exports = controller;

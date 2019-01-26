@@ -9,7 +9,6 @@ const Airport = database.define('Airport', {
         allowNull: false,
 
         validate: {
-            isAlpha: true,
             notEmpty: true
         }
     },

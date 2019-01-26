@@ -16,6 +16,36 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:idAirport');
+router.post("/delete/:id", (req, res) => {
+    if (!!req.params.id) {
+      airportController.deleteAirport(req.params.id, (err) => {
+        if (err)
+          res.json({
+            success: false,
+            msg: 'Failed to delete airport'
+          });
+        else
+          res.redirect('/');
+      });
+    }
+});
+
+router.post("/create", (req, res) => {
+    console.log('Hello from routes!');
+    console.log(req.body);
+    if (!!req.body) {
+      airportController.createAirport(req.body, (err) => {
+        if (err)
+          res.json({
+            success: false,
+            msg: 'Failed to create airport'
+          });
+        else
+          res.redirect('/');
+      });
+    }
+});
+
+router.get('/:id');
 
 module.exports = router;
