@@ -1,0 +1,44 @@
+extends base
+block content
+  .container.pt-4
+    h2 Aeropuertos de Guacamaya Airline
+    .row.mt-5
+      .col-12
+        table.table.bg-white
+          thead
+            tr
+              //th(scope='col') ID
+              th(scope='col') CodioIATA
+              th(scope='col') Ciudad
+              th(scope='col') Pais
+              th(scope='col') Pista (Km)
+              th(scope='col')
+          tbody
+          - for (var i = 0; i < airports.length; i++)
+            tr
+              //th(scope='row') #{airports[i].idAirport}
+              td #{airports[i].codigoIATA}
+              td #{airports[i].ciudad}
+              td #{airports[i].pais}
+              td #{airports[i].pista}
+              td
+                form(action=`airport/show/${airports[i].id}`,method="POST")
+                  button.btn.btn-outline-dark(type='submit') Detalle
+              td
+                form(action=`airport/delete/${airports[i].id}`,method="POST")
+                  button.btn.btn-outline-danger(type='submit') Eliminar
+        h4.mt-5 Crear Aeropuertos
+        form(action='airport/create/' method="POST")
+          .form-group
+            label(for='codigoIATA') CodigoIATA
+            input#codigoIATA.form-control(type='text' aria-describedby='codigoIATA' placeholder='CodigoIATA' name='codigoIATA')
+          .form-group
+            label(for='ciudad') Ciudad
+            input#ciudad.form-control(type='text' placeholder='Ciudad' name='ciudad')
+          .form-group
+            label(for='pais') Pais
+            input#pais.form-control(type='text' placeholder='Pais' name='pais') 
+          .form-group
+            label(for='pista') Pista (Km)
+            input#pista.form-control(type='number' step='any' placeholder='Distancia pista' name='pista')   
+          button.btn.btn-danger(type='submit') Crear
