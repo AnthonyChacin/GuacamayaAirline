@@ -39,8 +39,7 @@ controller.createAirport = async function (data, callback) {
         let response = await Airport.create({
             codigoIATA: data.codigoIATA,
             ciudad: data.ciudad,
-            pais: data.pais,
-            pista: data.pista
+            pais: data.pais
         });
         // code goes here
         callback(null);

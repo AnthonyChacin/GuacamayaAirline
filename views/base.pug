@@ -17,18 +17,39 @@ html(lang="en")
       // Navbar
       nav.navbar.navbar-expand-md.bg-danger.text-light
         a(href="/").navbar-brand.pr-5.text-light Guacamaya Airlines
-        button#collapsibleNavbar.navbar-toggler.button
-          span.navbar-togglericon
-        #collapsibleNavbar.collapse.navbar-collapse
+        button(type="button" data-toggle="collapse" data-target="#collapsibleNavbar").navbar-toggler
+          span.navbar-toggler-icon
+            div.card
+              div.card.bg-white
+              div.card.bg-white
+              div.card.bg-white
+              div.card.bg-white
+            div.card.bg-danger
+              div.card.bg-danger
+            div.card
+              div.card.bg-white
+              div.card.bg-white
+              div.card.bg-white
+              div.card.bg-white
+            div.card.bg-danger
+              div.card.bg-danger
+            div.card
+              div.card.bg-white
+              div.card.bg-white
+              div.card.bg-white
+              div.card.bg-white
+        div(id="collapsibleNavbar").collapse.navbar-collapse
           ul.navbar-nav
             li.nav-item
-              a(href="/airport").nav-link.pr-5.text-light Aeropuertos
+              a(href="/airport/").nav-link.pr-5.text-light Aeropuertos
             li.nav-item
-              a(href="#").nav-link.pr-5.text-light Vuelos
+              a(href="/flight/").nav-link.pr-5.text-light Vuelos
             li.nav-item
-              a(href="#").nav-link.pr-5.text-light Reservas
+              a(href="/reservation/").nav-link.pr-5.text-light Reservaciones
             li.nav-item
-              a(href="#").nav-link.pr-5.text-light Pasajeros
+              a(href="/").nav-link.pr-5.text-light Aviones
+            li.nav-item
+              a(href="/customer/").nav-link.pr-5.text-light Clientes
 
     block content
       // Content

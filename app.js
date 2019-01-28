@@ -2,8 +2,11 @@ require('dotenv').config({ path: 'variables.env'});
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
-const route1 = require("./routes/index");
-const route2 = require("./routes/airport");
+const routeIndex = require("./routes/index");
+const routeAirport = require("./routes/airport");
+const routeFlight = require("./routes/flight");
+const routeCustomer = require("./routes/customer");
+const routeReservation = require("./routes/Reservation");
 const sequelize = require("./config/database");
 const app = express();
 
@@ -12,8 +15,11 @@ app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use( '/', route1);
-app.use( '/', route2);
+app.use( '/', routeIndex);
+app.use( '/airport', routeAirport);
+app.use('/flight', routeFlight);
+app.use('/customer', routeCustomer);
+app.use('/reservation', routeReservation);
 
 sequelize.authenticate().then(value => value).catch(err => {
     console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);

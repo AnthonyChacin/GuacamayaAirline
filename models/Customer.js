@@ -1,10 +1,20 @@
 const sequelize = require('sequelize');
 const database = require('../config/database');
 
-//Airport model
+//Customer model
 
-const Airport = database.define('Airport', {
-    codigoIATA: {
+const Customer = database.define('Customer', {
+    cedula: {
+        type: sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+
+        validate: {
+            isNumeric: true,
+            notEmpty: true
+        }
+    },
+    nombre: {
         type: sequelize.STRING,
         allowNull: false,
 
@@ -12,7 +22,7 @@ const Airport = database.define('Airport', {
             notEmpty: true
         }
     },
-    ciudad: {
+    apellido: {
         type: sequelize.STRING,
         allowNull: false,
 
@@ -20,7 +30,16 @@ const Airport = database.define('Airport', {
             notEmpty: true
         }
     },
-    pais: {
+    fechaNac: {
+        type: sequelize.DATEONLY,
+        allowNull: false,
+
+        validate: {
+            isDate: true,
+            notEmpty: true
+        }
+    },
+    paisNac: {
         type: sequelize.STRING,
         allowNull: false,
 
@@ -42,4 +61,4 @@ const Airport = database.define('Airport', {
     freezeTableName: true
 });
 
-module.exports = Airport;
+module.exports = Customer;

@@ -1,0 +1,51 @@
+extends base
+block content
+  .container.pt-4
+    h2.text-center Clientes
+    .row.mt-5
+      .col-12
+        table.table.bg-white
+          thead
+            tr.tr.bg-dark.text-white
+              //th(scope='col') ID
+              th(scope='col') Cédula
+              th(scope='col') Nombre
+              th(scope='col') Apellido
+              th(scope='col') Fecha de Nacimiento
+              th(scope='col') Pais de Nacimiento 
+              th(scope='col')
+              th(scope='col')
+          tbody
+          - for (var i = 0; i < customers.length; i++)
+            tr
+              th(scope='row') #{customers[i].cedula}
+              td #{customers[i].nombre}
+              td #{customers[i].apellido}
+              td #{customers[i].fechaNac}
+              td #{customers[i].paisNac}
+              td
+                form(action=`show/${customers[i].cedula}`,method="POST")
+                  button.btn.btn-outline-dark(type='submit') Detalle
+              td
+                form(action=`delete/${customers[i].cedula}`,method="POST")
+                  button.btn.btn-outline-danger(type='submit') Eliminar
+        h4.mt-5 Registrar Cliente
+        div.card.bg-dark
+          div.card-body.text-white
+            form(action='create/' method="POST")
+              .form-group
+                label(for='cedula') Cédula
+                input#cedula.form-control(type='number' min="0" aria-describedby='cedula' placeholder='Cédula' name='cedula')
+              .form-group
+                label(for='nombre') Nombre
+                input#nombre.form-control(type='text' placeholder='Nombre' name='nombre')
+              .form-group
+                label(for='apellido') Apellido
+                input#apellido.form-control(type='text' placeholder='Apellido' name='apellido')
+              .form-group
+                label(for='fechaNac') Fecha de Nacimiento
+                input#fechaNac.form-control(type='date' placeholder='DD/MM/AAAA' name='fechaNac')
+              .form-group
+                label(for='paisNac') Pais de Nacimiento
+                input#paisNac.form-control(type='text' placeholder='Pais de Nacimiento' name='paisNac')
+              button.btn.btn-danger(type='submit') Registrar

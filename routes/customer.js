@@ -1,31 +1,31 @@
 const express = require('express');
 const router = express.Router();
-const airportController = require('../controllers/airportController');
+const customerController = require('../controllers/customerController');
 
 
 router.get('/', (req, res) => {
-    airportController.getAirports((airports, err) => {
+    customerController.getCustomers((customers, err) => {
         if (err){
             res.json({
                 success: false,
-                msg: 'Failed to show airports'
+                msg: 'Failed to show customers'
             });
         }else{
-            res.render('airport', {airports});
+            res.render('customer', {customers});
         }    
     });
 });
 
 router.post("/delete/:id", (req, res) => {
     if (!!req.params.id) {
-      airportController.deleteAirport(req.params.id, (err) => {
+        customerController.deleteCustomer(req.params.id, (err) => {
         if (err)
           res.json({
             success: false,
-            msg: 'Failed to delete airport'
+            msg: 'Failed to delete customer'
           });
         else
-          res.redirect('/airport/');
+          res.redirect('/customer/');
       });
     }
 });
@@ -34,18 +34,18 @@ router.post("/create", (req, res) => {
     console.log('Hello from routes!');
     console.log(req.body);
     if (!!req.body) {
-      airportController.createAirport(req.body, (err) => {
+        customerController.createCustomer(req.body, (err) => {
         if (err)
           res.json({
             success: false,
-            msg: 'Failed to create airport'
+            msg: 'Failed to create customer'
           });
         else
-          res.redirect('/airport/');
+          res.redirect('/customer/');
       });
     }
 });
 
-router.get('/airport/:id');
+router.get('/customer/:id');
 
 module.exports = router;
