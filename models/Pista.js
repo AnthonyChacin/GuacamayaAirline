@@ -39,6 +39,15 @@ const Pista = database.define('Pista', {
             isNumeric: true,
             notEmpty: true
         }
+    },
+    activo: {
+        type: sequelize.TINYINT,
+        allowNull: false,
+        defaultValue: 1,
+
+        validate: {
+            notEmpty: true
+        }
     }
 }, {
     timestamps: false,

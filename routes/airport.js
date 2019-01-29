@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const airportController = require('../controllers/airportController');
+const pistaController = require('../controllers/pistaController');
 
 
 router.get('/', (req, res) => {
@@ -11,10 +12,21 @@ router.get('/', (req, res) => {
                 msg: 'Failed to show airports'
             });
         }else{
-            res.render('airport', {airports});
+          pistaController.getPistas((pistas, err) => {
+            if(err){
+              res.json({
+                success: false,
+                msg: 'Failed to get pistas'
+              });
+            }else{
+              res.render('airport', {pistas, airports});
+            }
+          });
         }    
     });
 });
+
+
 
 router.post("/delete/:id", (req, res) => {
     if (!!req.params.id) {
@@ -28,6 +40,20 @@ router.post("/delete/:id", (req, res) => {
           res.redirect('/airport/');
       });
     }
+});
+
+router.post("/delete/pista", (req, res) => {
+  if (!!req.body) {
+    pistaController.deletePista(req.body, (err) => {
+      if (err)
+        res.json({
+          success: false,
+          msg: 'Failed to delete pista'
+        });
+      else
+        res.redirect('/airport/');
+    });
+  }
 });
 
 router.post("/create", (req, res) => {
@@ -44,6 +70,22 @@ router.post("/create", (req, res) => {
           res.redirect('/airport/');
       });
     }
+});
+
+router.post("/agregarPista", (req, res) => {
+  console.log('Hello from routes!');
+  console.log(req.body);
+  if (!!req.body) {
+    pistaController.createPista(req.body, (err) => {
+      if (err)
+        res.json({
+          success: false,
+          msg: 'Failed to add pista'
+        });
+      else
+        res.redirect('/airport/');
+    });
+  }
 });
 
 router.get('/airport/:id');
