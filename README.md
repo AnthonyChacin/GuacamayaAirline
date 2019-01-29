@@ -3,7 +3,7 @@ CRUD de la aplicación usando un ORM <br>
 Hola chicos, lo que deberán hacer es lo siguiente: <br>
 <br>
 $ git clone <br>
-$ cd express-sql-template <br>
+$ cd ORM_DB <br>
 $ npm install <br>
 $ mv varibales.env.example variables.env <br>
 $ npm start <br>
