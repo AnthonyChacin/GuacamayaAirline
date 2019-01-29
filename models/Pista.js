@@ -8,7 +8,6 @@ const Pista = database.define('Pista', {
     idAirport: {
         type: sequelize.INTEGER,
         allowNull: false,
-        primaryKey: true,
 
         validate: {
             isNumeric: true,
@@ -22,16 +21,6 @@ const Pista = database.define('Pista', {
         }
     },
     distancia: {
-        type: sequelize.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-
-        validate: {
-            isNumeric: true,
-            notEmpty: true
-        }
-    },
-    cantPistas: {
         type: sequelize.INTEGER,
         allowNull: false,
 

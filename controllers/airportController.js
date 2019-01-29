@@ -19,6 +19,22 @@ controller.getAirports = async function (callback){
     }
 }
 
+controller.getAirportsUpdate = async function (id, callback){
+    try {
+        let response = await Airport.findAll({
+            where: {
+                activo: 1,
+                id
+            }
+        });
+        let airportsUpdate = response.map(result => result.dataValues);
+        console.log(airportsUpdate);
+        callback(airportsUpdate, null);
+    }catch (error) {
+        callback(null, error);
+    }
+}
+
 controller.deleteAirport = async function (id, callback) {
     try {
         let response = await Airport.update({
@@ -40,6 +56,24 @@ controller.createAirport = async function (data, callback) {
             codigoIATA: data.codigoIATA,
             ciudad: data.ciudad,
             pais: data.pais
+        });
+        // code goes here
+        callback(null);
+    } catch (error) {
+        callback(error);
+    }
+}
+
+controller.updateAirport = async function (data, id, callback) {
+    try {
+        let response = await Airport.update({
+            codigoIATA: data.codigoIATA,
+            ciudad: data.ciudad,
+            pais: data.pais
+        },{
+            where:{
+                id
+            } 
         });
         // code goes here
         callback(null);

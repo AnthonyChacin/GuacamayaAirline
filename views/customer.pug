@@ -25,7 +25,7 @@ block content
               td #{customers[i].paisNac}
               td
                 form(action=`show/${customers[i].cedula}`,method="POST")
-                  button.btn.btn-outline-dark(type='submit') Detalle
+                  button.btn.btn-outline-dark(type='submit') Modificar
               td
                 form(action=`delete/${customers[i].cedula}`,method="POST")
                   button.btn.btn-outline-danger(type='submit') Eliminar

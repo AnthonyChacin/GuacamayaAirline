@@ -5,7 +5,7 @@ block content
     .row.mt-5
       .col-12
         table.table.bg-white
-          thead
+          thead.text-center
             tr.tr.bg-dark.text-white
               //th(scope='col') ID
               th(scope='col') Código de vuelo
@@ -19,17 +19,17 @@ block content
               th(scope='col')
           tbody
           - for (var i = 0; i < flights.length; i++)
-            tr
+            tr.text-center
               th(scope='row') #{flights[i].id}
               td $#{flights[i].precioBase}
               td #{flights[i].porcentajeAus} %
               td #{flights[i].estatus}
-              td #{airports[flights[i].origen - 1].codigoIATA}
-              td #{airports[flights[i].destino - 1].codigoIATA}
+              td #{airports[flights[i].origen - 1].ciudad}, #{airports[flights[i].origen - 1].pais}
+              td #{airports[flights[i].destino - 1].ciudad}, #{airports[flights[i].destino - 1].pais}
               td #{flights[i].idAirplane}
               td
                 form(action=`show/${flights[i].id}`,method="POST")
-                  button.btn.btn-outline-dark(type='submit') Detalle
+                  button.btn.btn-outline-dark(type='submit') Modificar
               td
                 form(action=`delete/${flights[i].id}`,method="POST")
                   button.btn.btn-outline-danger(type='submit') Eliminar
@@ -46,10 +46,11 @@ block content
               .form-group
                 label(for='estatus') Seleccione Estatus
                 select#estatus.form-control(type='select' placeholder='Estatus' name='estatus').custom-select
-                    option(value="En espera" selected) En espera
-                    option(value="cancelado") Cancelado
-                    option(value="volando") Volando
-                    option(value="completado") Completado
+                    option(value="Programado" selected) Programado
+                    option(value="Cancelado") Cancelado
+                    option(value="Volando") Volando
+                    option(value="Retrasado") Retrasado
+                    option(value="Aterrizo") Aterrizó
               .form-group
                 label(for='origen') Origen
                 select#origen.form-control(type='select' placeholder='Origen' name='origen').custom-select
