@@ -37,7 +37,7 @@ controller.deletePista = async function (id, callback) {
 controller.createPista = async function (data, callback) {
     try {
         let response = await Pista.create({
-            idAirport: data.idAirport,
+            codigoIATA: data.codigoIATA,
             distancia: data.distancia
         });
         // code goes here

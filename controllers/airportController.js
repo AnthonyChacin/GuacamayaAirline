@@ -1,5 +1,5 @@
-const sequelize = require('sequelize');
-const database = require('../config/database');
+/* const sequelize = require('sequelize');
+const database = require('../config/database'); */
 const Airport = require('../models/Airport');
 
 const controller = {};
@@ -24,7 +24,7 @@ controller.getAirportsUpdate = async function (id, callback){
         let response = await Airport.findAll({
             where: {
                 activo: 1,
-                id
+                codigoIATA: id
             }
         });
         let airportsUpdate = response.map(result => result.dataValues);
@@ -35,13 +35,13 @@ controller.getAirportsUpdate = async function (id, callback){
     }
 }
 
-controller.deleteAirport = async function (id, callback) {
+controller.deleteAirport = async function (codigoIATA, callback) {
     try {
         let response = await Airport.update({
             activo: 0
         }, {
             where: {
-                id
+                codigoIATA
             }
         });
         callback(null);
@@ -64,7 +64,7 @@ controller.createAirport = async function (data, callback) {
     }
 }
 
-controller.updateAirport = async function (data, id, callback) {
+controller.updateAirport = async function (data, codigoIATA, callback) {
     try {
         let response = await Airport.update({
             codigoIATA: data.codigoIATA,
@@ -72,7 +72,7 @@ controller.updateAirport = async function (data, id, callback) {
             pais: data.pais
         },{
             where:{
-                id
+                codigoIATA
             } 
         });
         // code goes here

@@ -34,32 +34,30 @@ const Flight = database.define('Flight', {
         }
     },
     origen: {
-        type: sequelize.INTEGER,
+        type: sequelize.STRING,
         allowNull: false,
 
         validate: {
-            isNumeric: true,
             notEmpty: true
         },
 
         references: {
             model: Airport,
-            key: 'id',
+            key: 'codigoIATA',
             deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
         }
     },
     destino: {
-        type: sequelize.INTEGER,
+        type: sequelize.STRING,
         allowNull: false,
 
         validate: {
-            isNumeric: true,
             notEmpty: true
         },
 
         references: {
             model: Airport,
-            key: 'id',
+            key: 'codigoIATA',
             deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
         }
     },

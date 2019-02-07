@@ -18,20 +18,20 @@ block content
             - for (var i = 0; i < airports.length; i++)
               tr
                 //th(scope='row') #{airports[i].idAirport}
-                td #{airports[i].codigoIATA}
+                th(scope='row') #{airports[i].codigoIATA}
                 td #{airports[i].ciudad}
                 td #{airports[i].pais}
                 td
-                  form(action=`show/${airports[i].id}`,method="GET")
+                  form(action=`show/${airports[i].codigoIATA}`,method="GET")
                     button.btn.btn-outline-dark(type='submit') Modificar
                 td
-                  form(action=`delete/${airports[i].id}`,method="POST")
+                  form(action=`delete/${airports[i].codigoIATA}`,method="POST")
                     button.btn.btn-outline-danger(type='submit') Eliminar
     - if(airportsUpdate)
       h4.mt-5 Modificar Aeropuerto
       div.card.bg-dark
         div.card-body.text-white
-          form(action= `update/${airportsUpdate[0].id}` method="POST")
+          form(action= `update/${airportsUpdate[0].codigoIATA}` method="POST")
             .form-group
               label(for='codigoIATA') CodigoIATA
               input#codigoIATA.form-control(type='text' value=`${airportsUpdate[0].codigoIATA}` aria-describedby='codigoIATA' placeholder='CodigoIATA' name='codigoIATA')
@@ -59,7 +59,7 @@ block content
               tr
                 th(scope='row') #{pistas[i].id}
                 - for (var j = 0; j < airports.length; j++)
-                  - if (airports[j].id == pistas[i].idAirport && airports[j].activo == 1)
+                  - if (airports[j].codigoIATA == pistas[i].codigoIATA && airports[j].activo == 1)
                     td #{airports[j].codigoIATA}
                     td #{pistas[i].distancia}
                     td
@@ -91,12 +91,12 @@ block content
               div.card-body.text-white
                 form(action='agregarPista/' method="POST")
                   .form-group
-                    label(for='idAirport') Aeropuerto
-                    select#idAirport.form-control(type='select' placeholder='Aeropuerto' name='idAirport').custom-select
+                    label(for='codigoIATA') Aeropuerto
+                    select#idAirport.form-control(type='select' placeholder='Aeropuerto' name='codigoIATA').custom-select
                       option(value="") ...
                       - for (var i = 0; i < airports.length; i++)
                         - if (airports[i].activo == 1)
-                          option(value=`${airports[i].id}`) #{airports[i].codigoIATA}, #{airports[i].ciudad}, #{airports[i].pais}
+                          option(value=`${airports[i].codigoIATA}`) #{airports[i].codigoIATA}, #{airports[i].ciudad}, #{airports[i].pais}
                   .form-group
                     label(for='distancia') Distancia
                     input#distancia.form-control(type='number' min="0" placeholder='0' name='distancia')

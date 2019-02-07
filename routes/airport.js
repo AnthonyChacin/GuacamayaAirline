@@ -32,7 +32,7 @@ router.get('/show/:id', (req, res) => {
       if (err){
           res.json({
               success: false,
-              msg: 'Failed to show airports'
+              msg: 'Failed to show airportsUpdate'
           });
       }else{
         airportController.getAirports((airports, err) => {

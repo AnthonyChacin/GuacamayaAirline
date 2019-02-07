@@ -5,18 +5,17 @@ const Airport = require('../models/Airport');
 //Modelo Pista
 
 const Pista = database.define('Pista', {
-    idAirport: {
-        type: sequelize.INTEGER,
+    codigoIATA: {
+        type: sequelize.STRING,
         allowNull: false,
 
         validate: {
-            isNumeric: true,
             notEmpty: true
         },
 
         references: {
             model: Airport,
-            key: 'id',
+            key: 'codigoIATA',
             deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
         }
     },
