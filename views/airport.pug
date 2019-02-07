@@ -1,74 +1,74 @@
 extends base
 block content
   .container.pt-4
-    h2.text-center Aeropuertos
-    .row.mt-5
-      .col-12
-        table.table.bg-white
-          thead
-            tr.tr.bg-dark.text-white
-              //th(scope='col') ID
-              th(scope='col') CodioIATA
-              th(scope='col') Ciudad
-              th(scope='col') Pais
-              th(scope='col')
-              th(scope='col')
-          tbody
-          - for (var i = 0; i < airports.length; i++)
-            tr
-              //th(scope='row') #{airports[i].idAirport}
-              td #{airports[i].codigoIATA}
-              td #{airports[i].ciudad}
-              td #{airports[i].pais}
-              td
-                form(action=`show/${airports[i].id}`,method="GET")
-                  button.btn.btn-outline-dark(type='submit') Modificar
-              td
-                form(action=`delete/${airports[i].id}`,method="POST")
-                  button.btn.btn-outline-danger(type='submit') Eliminar
-        - if(airportsUpdate)
-          h4.mt-5 Modificar Aeropuerto
-          div.card.bg-dark
-            div.card-body.text-white
-              form(action= `update/${airportsUpdate[0].id}` method="POST")
-                .form-group
-                  label(for='codigoIATA') CodigoIATA
-                  input#codigoIATA.form-control(type='text' value=`${airportsUpdate[0].codigoIATA}` aria-describedby='codigoIATA' placeholder='CodigoIATA' name='codigoIATA')
-                .form-group
-                  label(for='ciudad') Ciudad
-                  input#ciudad.form-control(type='text' value=`${airportsUpdate[0].ciudad}` placeholder='Ciudad' name='ciudad')
-                .form-group
-                  label(for='pais') Pais
-                  input#pais.form-control(type='text' value=`${airportsUpdate[0].pais}` placeholder='Pais' name='pais')
-                button.btn.btn-danger(type='submit') Modificar    
-                  
-    h2.text-center Pistas
-    .row.mt-5
-      .col-12
-        table.table.bg-white
-          thead
-            tr.tr.bg-dark.text-white
-              th(scope='col') ID
-              th(scope='col') Aeropuerto
-              th(scope='col') distancia
-              th(scope='col')
-              th(scope='col')
-          tbody
-          - for (var i = 0; i < pistas.length; i++)
-            tr
-              //th(scope='row') #{airports[i].idAirport}
-              th(scope='row') #{pistas[i].id}
-              - for (var j = 0; j < airports.length; j++)
-                - if (airports[j].id == pistas[i].idAirport && airports[j].activo == 1)
-                  td #{airports[j].codigoIATA}
-                  td #{pistas[i].distancia}
-                  td
-                    form(action=`show/pista`,method="POST")
-                      button.btn.btn-outline-dark(type='submit') Modificar
-                  td
-                    form(action=`delete/pista`,method="POST")
-                      button.btn.btn-outline-danger(type='submit') Eliminar
-        
+    - if (!airportsUpdate)
+      h2.text-center Aeropuertos
+      .row.mt-5
+        .col-12
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                //th(scope='col') ID
+                th(scope='col') CodioIATA
+                th(scope='col') Ciudad
+                th(scope='col') Pais
+                th(scope='col')
+                th(scope='col')
+            tbody
+            - for (var i = 0; i < airports.length; i++)
+              tr
+                //th(scope='row') #{airports[i].idAirport}
+                td #{airports[i].codigoIATA}
+                td #{airports[i].ciudad}
+                td #{airports[i].pais}
+                td
+                  form(action=`show/${airports[i].id}`,method="GET")
+                    button.btn.btn-outline-dark(type='submit') Modificar
+                td
+                  form(action=`delete/${airports[i].id}`,method="POST")
+                    button.btn.btn-outline-danger(type='submit') Eliminar
+    - if(airportsUpdate)
+      h4.mt-5 Modificar Aeropuerto
+      div.card.bg-dark
+        div.card-body.text-white
+          form(action= `update/${airportsUpdate[0].id}` method="POST")
+            .form-group
+              label(for='codigoIATA') CodigoIATA
+              input#codigoIATA.form-control(type='text' value=`${airportsUpdate[0].codigoIATA}` aria-describedby='codigoIATA' placeholder='CodigoIATA' name='codigoIATA')
+            .form-group
+              label(for='ciudad') Ciudad
+              input#ciudad.form-control(type='text' value=`${airportsUpdate[0].ciudad}` placeholder='Ciudad' name='ciudad')
+            .form-group
+              label(for='pais') Pais
+              input#pais.form-control(type='text' value=`${airportsUpdate[0].pais}` placeholder='Pais' name='pais')
+            button.btn.btn-danger(type='submit') Modificar    
+    - if (!airportsUpdate)              
+      h2.text-center Pistas
+      .row.mt-5
+        .col-12
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                th(scope='col') ID
+                th(scope='col') Aeropuerto
+                th(scope='col') distancia
+                th(scope='col')
+                th(scope='col')
+            tbody
+            - for (var i = 0; i < pistas.length; i++)
+              tr
+                th(scope='row') #{pistas[i].id}
+                - for (var j = 0; j < airports.length; j++)
+                  - if (airports[j].id == pistas[i].idAirport && airports[j].activo == 1)
+                    td #{airports[j].codigoIATA}
+                    td #{pistas[i].distancia}
+                    td
+                      form(action=`show/pista/:${pistas[i].id}`,method="POST")
+                        button.btn.btn-outline-dark(type='submit') Modificar
+                    td
+                      form(action=`delete/pista/:${pistas[i].id}`,method="POST")
+                        button.btn.btn-outline-danger(type='submit') Eliminar
+      - if (!airportsUpdate)
         div.row
           div.col-6
             h4.mt-5 Registrar Aeropuerto

@@ -41,7 +41,6 @@ router.post("/delete/:id", (req, res) => {
 });
 
 router.post("/create", (req, res) => {
-    console.log('Hello from routes!');
     console.log(req.body);
     if (!!req.body) {
       flightController.createFlight(req.body, (err) => {

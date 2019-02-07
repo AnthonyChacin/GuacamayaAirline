@@ -9,14 +9,14 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     meta(http-equiv="X-UA-Compatible", content="ie=edge")
-    title ORM_DB
+    title Guacamaya Airlines
     link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css", defer, async)
 
   body.bg-light
     block navbar
       // Navbar
       nav.navbar.navbar-expand-md.bg-danger.text-light
-        a(href="/").navbar-brand.pr-5.text-light Guacamaya Airlines
+        a(href="/").navbar-brand.pr-5.text-light Guacamaya Airlines  
         button(type="button" data-toggle="collapse" data-target="#collapsibleNavbar").navbar-toggler
           span.navbar-toggler-icon
             div.card
@@ -50,7 +50,6 @@ html(lang="en")
               a(href="/").nav-link.pr-5.text-light Aviones
             li.nav-item
               a(href="/customer/").nav-link.pr-5.text-light Clientes
-
     block content
       // Content
   div.card-body.bg-light

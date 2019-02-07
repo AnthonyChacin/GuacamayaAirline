@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const airportController = require('../controllers/airportController');
 const pistaController = require('../controllers/pistaController');
-const Airport = require('../models/Airport');
 
 
 router.get('/', (req, res) => {
@@ -89,7 +88,6 @@ router.post("/delete/pista/:id", (req, res) => {
 });
 
 router.post("/create", (req, res) => {
-    console.log('Hello from routes!');
     console.log(req.body);
     if (!!req.body) {
       airportController.createAirport(req.body, (err) => {
@@ -119,7 +117,6 @@ router.post("/show/update/:id", (req, res) => {
 });
 
 router.post("/agregarPista", (req, res) => {
-  console.log('Hello from routes!');
   console.log(req.body);
   if (!!req.body) {
     pistaController.createPista(req.body, (err) => {
@@ -135,5 +132,6 @@ router.post("/agregarPista", (req, res) => {
 });
 
 router.get('/airport/:id');
+router.get('/airport/pista/:id');
 
 module.exports = router;
