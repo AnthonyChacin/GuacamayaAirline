@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
         if (err){
             res.json({
                 success: false,
-                msg: 'Failed to show airports'
+                msg: 'Failed to show index.js'
             });
         }else{
             res.render('index', {airports});
