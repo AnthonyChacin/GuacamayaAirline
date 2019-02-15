@@ -1,9 +1,7 @@
 const Sequelize = require("sequelize");
 const { DB_NAME, DB_USER, DB_PASSWORD } = process.env;
 
-const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
-  host: "localhost",
-  dialect: "mysql",
+const sequelize = new Sequelize('mysql://uozmhg1r06aeugqmljcs:2oXvBJg2epxmdNX0GoIa@b2iacgn3r4tgjzrkdsej-mysql.services.clever-cloud.com:3306/b2iacgn3r4tgjzrkdsej', {
   pool: {
     max: 5,
     min: 0,
