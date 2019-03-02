@@ -8,7 +8,7 @@ controller.getPistas = async function (callback){
     try {
         let response = await Pista.findAll({
             where: {
-                activo: 1
+                Activo: 1
             }
         });
         let pistas = response.map(result => result.dataValues);
@@ -19,13 +19,14 @@ controller.getPistas = async function (callback){
     }
 }
 
-controller.deletePista = async function (id, callback) {
+controller.deletePista = async function (param, callback) {
     try {
         let response = await Pista.update({
-            activo: 0
+            Activo: 0
         }, {
             where: {
-                id
+                CodigoIATA: param.CodigoIATA,
+                Distancia: param.Distancia
             }
         });
         callback(null);
@@ -37,8 +38,8 @@ controller.deletePista = async function (id, callback) {
 controller.createPista = async function (data, callback) {
     try {
         let response = await Pista.create({
-            codigoIATA: data.codigoIATA,
-            distancia: data.distancia
+            CodigoIATA: data.CodigoIATA,
+            Distancia: data.Distancia
         });
         // code goes here
         callback(null);

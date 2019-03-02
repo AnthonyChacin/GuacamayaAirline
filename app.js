@@ -3,10 +3,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const routeIndex = require("./routes/index");
-const routeAirport = require("./routes/airport");
-const routeFlight = require("./routes/flight");
-const routeCustomer = require("./routes/customer");
-const routeReservation = require("./routes/Reservation");
+const routeAeropuerto = require("./routes/aeropuerto");
 const sequelize = require("./config/database");
 const app = express();
 
@@ -16,10 +13,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use( '/', routeIndex);
-app.use( '/airport', routeAirport);
-app.use('/flight', routeFlight);
-app.use('/customer', routeCustomer);
-app.use('/reservation', routeReservation);
+app.use( '/aeropuerto', routeAeropuerto);
 
 sequelize.authenticate().then(value => value).catch(err => {
     console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);

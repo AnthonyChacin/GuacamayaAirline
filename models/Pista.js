@@ -1,34 +1,36 @@
 const sequelize = require('sequelize');
 const database = require('../config/database');
-const Airport = require('../models/Airport');
+const Aeropuerto = require('../models/Aeropuerto');
 
 //Modelo Pista
 
 const Pista = database.define('Pista', {
-    codigoIATA: {
+    CodigoIATA: {
         type: sequelize.STRING,
         allowNull: false,
+        primaryKey: true,
 
         validate: {
             notEmpty: true
         },
 
         references: {
-            model: Airport,
-            key: 'codigoIATA',
+            model: Aeropuerto,
+            key: 'CodigoIATA',
             deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
         }
     },
-    distancia: {
+    Distancia: {
         type: sequelize.INTEGER,
         allowNull: false,
+        primaryKey: true,
 
         validate: {
             isNumeric: true,
             notEmpty: true
         }
     },
-    activo: {
+    Activo: {
         type: sequelize.TINYINT,
         allowNull: false,
         defaultValue: 1,
