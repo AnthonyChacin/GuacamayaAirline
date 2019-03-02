@@ -4,7 +4,7 @@ const database = require('../config/database');
 //Airport model
 const Aeropuerto = database.define('Aeropuerto', {
     CodigoIATA: {
-        type: sequelize.STRING,
+        type: sequelize.CHAR(3),
         allowNull: false,
         primaryKey: true,
 
@@ -29,7 +29,7 @@ const Aeropuerto = database.define('Aeropuerto', {
         }
     },
     ZonaHoraria: {
-        type: sequelize.TIME,
+        type: sequelize.FLOAT,
         allowNull: false,
 
         validate: {

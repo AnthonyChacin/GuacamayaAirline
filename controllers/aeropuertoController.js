@@ -37,7 +37,7 @@ controller.getAeropuertosUpdate = async function (id, callback){
 controller.deleteAeropuerto = async function (CodigoIATA, callback) {
     try {
         let response = await Aeropuerto.update({
-            activo: 0
+            Activo: 0
         }, {
             where: {
                 CodigoIATA
@@ -54,7 +54,8 @@ controller.createAeropuerto = async function (data, callback) {
         let response = await Aeropuerto.create({
             CodigoIATA: data.CodigoIATA,
             Ciudad: data.Ciudad,
-            Pais: data.Pais
+            Pais: data.Pais,
+            ZonaHoraria: data.ZonaHoraria
         });
         // code goes here
         callback(null);
@@ -68,7 +69,8 @@ controller.updateAeropuerto = async function (data, CodigoIATA, callback) {
         let response = await Aeropuerto.update({
             CodigoIATA: data.CodigoIATA,
             Ciudad: data.Ciudad,
-            Pais: data.Pais
+            Pais: data.Pais,
+            ZonaHoraria: data.ZonaHoraria
         },{
             where:{
                 CodigoIATA
