@@ -1,38 +1,30 @@
 const sequelize = require('sequelize');
 const database = require('../config/database');
-const Aeropuerto = require('../models/Aeropuerto');
+const Persona = require('../models/Persona');
 
-//Modelo Pista
+//Modelo Telefono_Persona
 
-const Pista = database.define('Pista', {
-    CodigoIATA: {
-        type: sequelize.CHAR(3),
+const Telefono_Persona = database.define('Telefono_Persona', {
+    IdPersona: {
+        type: sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
 
         validate: {
-            notEmpty: true
+            notEmpty: false,
+            isNumeric: true
         },
 
         references: {
-            model: Aeropuerto,
-            key: 'CodigoIATA',
+            model: Persona,
+            key: 'IdPersona',
             deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
         }
     },
-    Nombre: {
-        type: sequelize.STRING,
-        allowNull: false,
-        primaryKey: true,
-
-        validate: {
-            notEmpty: true
-        }
-
-    },
-    Distancia: {
+    Telefono: {
         type: sequelize.INTEGER,
         allowNull: false,
+        primaryKey: true,
 
         validate: {
             isNumeric: true,
@@ -53,4 +45,4 @@ const Pista = database.define('Pista', {
     freezeTableName: true
 });
 
-module.exports = Pista;
+module.exports = Telefono_Persona;

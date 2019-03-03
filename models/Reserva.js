@@ -1,41 +1,50 @@
 const sequelize = require('sequelize');
 const database = require('../config/database');
-const Aeropuerto = require('../models/Aeropuerto');
+const Cliente = require('../models/Cliente');
 
-//Modelo Pista
+//Modelo Reserva
 
-const Pista = database.define('Pista', {
-    CodigoIATA: {
-        type: sequelize.CHAR(3),
+const Reserva = database.define('Reserva', {
+    IdReserva: {
+        type: sequelize.INTEGER,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
 
         validate: {
-            notEmpty: true
-        },
-
-        references: {
-            model: Aeropuerto,
-            key: 'CodigoIATA',
-            deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
-        }
-    },
-    Nombre: {
-        type: sequelize.STRING,
-        allowNull: false,
-        primaryKey: true,
-
-        validate: {
+            isNumeric: true,
             notEmpty: true
         }
-
     },
-    Distancia: {
+    IdComprador: {
         type: sequelize.INTEGER,
         allowNull: false,
 
         validate: {
-            isNumeric: true,
+            notEmpty: false,
+            isNumeric: true
+        },
+
+        references: {
+            model: Cliente,
+            key: 'IdPersona',
+            deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
+        }
+    },
+    FechaReserva: {
+        type: sequelize.DATEONLY,
+        allowNull: false,
+
+        validate: {
+            notEmpty: true,
+            isDate: true
+        }
+    },
+    MetodoPago: {
+        type: sequelize.STRING,
+        allowNull: false,
+
+        validate: {
             notEmpty: true
         }
     },
@@ -53,4 +62,4 @@ const Pista = database.define('Pista', {
     freezeTableName: true
 });
 
-module.exports = Pista;
+module.exports = Reserva;

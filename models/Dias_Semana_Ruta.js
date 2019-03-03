@@ -1,41 +1,32 @@
 const sequelize = require('sequelize');
 const database = require('../config/database');
-const Aeropuerto = require('../models/Aeropuerto');
+const Ruta = require('../models/Ruta');
 
-//Modelo Pista
+//Modelo Dias_Semana_Ruta
 
-const Pista = database.define('Pista', {
-    CodigoIATA: {
-        type: sequelize.CHAR(3),
+const Dias_Semana_Ruta = database.define('Dias_Semana_Ruta', {
+    IdRuta: {
+        type: sequelize.INTEGER,
         allowNull: false,
-        primaryKey: true,
+        primaryKey:  true,
 
         validate: {
-            notEmpty: true
+            notEmpty: false,
+            isNumeric: true
         },
 
         references: {
-            model: Aeropuerto,
-            key: 'CodigoIATA',
+            model: Ruta,
+            key: 'IdRuta',
             deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
         }
     },
-    Nombre: {
+    DiasSemana: {
         type: sequelize.STRING,
         allowNull: false,
         primaryKey: true,
 
         validate: {
-            notEmpty: true
-        }
-
-    },
-    Distancia: {
-        type: sequelize.INTEGER,
-        allowNull: false,
-
-        validate: {
-            isNumeric: true,
             notEmpty: true
         }
     },
@@ -53,4 +44,4 @@ const Pista = database.define('Pista', {
     freezeTableName: true
 });
 
-module.exports = Pista;
+module.exports = Dias_Semana_Ruta;

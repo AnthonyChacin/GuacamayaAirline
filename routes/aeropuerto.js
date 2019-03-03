@@ -59,6 +59,42 @@ router.get('/show/:id', (req, res) => {
   }
 });
 
+router.get('/show/pista/::id1::id2', (req, res) => {
+  console.log(req.params.id1);
+  console.log(req.params.id2);
+  if(!!req.params.id1 && !!req.params.id2){
+    pistaController.getpistasUpdate( req.params, (pistasUpdate, err) => {
+      if (err){
+          res.json({
+              success: false,
+              msg: 'Fallo al mostrar la pista a modificar'
+          });
+      }else{
+        aeropuertoController.getAeropuertos((aeropuertos, err) => {
+          if (err){
+              res.json({
+                  success: false,
+                  msg: 'Fallo al mostrar aeropuetos'
+              });
+          }else{
+            pistaController.getPistas((pistas, err) => {
+              if(err){
+                res.json({
+                  success: false,
+                  msg: 'Fallo al mostrar pistas'
+                });
+              }else{
+                res.render('aeropuerto', {pistas, aeropuertos, pistasUpdate});
+              }
+            });
+          }    
+        });
+      }    
+  });
+  }
+});
+
+
 router.post("/delete/:id", (req, res) => {
     if (!!req.params.id) {
       aeropuertoController.deleteAeropuerto(req.params.id, (err) => {
@@ -73,9 +109,9 @@ router.post("/delete/:id", (req, res) => {
     }
 });
 
-router.post("/delete/pista/:id", (req, res) => {
-  if (!!req.params.id) {
-    pistaController.deletePista(req.params.id, (err) => {
+router.post("/delete/pista/::id1::id2", (req, res) => {
+  if (!!req.params.id1 && !!req.params.id2) {
+    pistaController.deletePista(req.params, (err) => {
       if (err)
         res.json({
           success: false,
@@ -109,6 +145,20 @@ router.post("/show/update/:id", (req, res) => {
           res.json({
             success: false,
             msg: 'Fallo al modificar aeropuerto ... '
+          });
+        else
+          res.redirect('/aeropuerto/');
+    });
+  }
+});
+
+router.post("/show/pista/update/::id1::id2", (req, res) => {
+  if (!!req.body) {
+    pistaController.updatePista(req.body, req.params, (err) => {
+      if (err)
+          res.json({
+            success: false,
+            msg: 'Fallo al modificar pista ... '
           });
         else
           res.redirect('/aeropuerto/');

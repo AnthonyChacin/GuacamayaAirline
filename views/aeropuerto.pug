@@ -1,7 +1,7 @@
 extends base
 block content
   .container.pt-4
-    - if (!aeropuertosUpdate)
+    - if (!aeropuertosUpdate && !pistasUpdate)
       h2.text-center Aeropuertos
       .row.mt-5
         .col-12
@@ -44,34 +44,57 @@ block content
             .form-group
               label(for='ZonaHoraria') Zona Horaria
               input#ZonaHoraria.form-control(type='number' value=`${aeropuertosUpdate[0].ZonaHoraria}` placeholder='ZonaHoraria' name='ZonaHoraria')  
-            button.btn.btn-danger(type='submit') Modificar    
-    - if (!aeropuertosUpdate)              
+            button.btn.btn-danger(type='submit') Modificar     
+    - if(pistasUpdate)
+      h4.mt-5 Modificar Pista
+      div.card.bg-dark
+        div.card-body.text-white
+          form(action= `update/:${pistasUpdate[0].CodigoIATA}:${pistasUpdate[0].Nombre}` method="POST")
+            .form-group
+              label(for='CodigoIATA') Aeropuerto
+              select#CodigoIATA.form-control(type='select' placeholder='Aeropuerto' name='CodigoIATA' required).custom-select
+                - for (var i = 0; i < aeropuertos.length; i++)
+                  - if (aeropuertos[i].Activo == 1 && aeropuertos[i].CodigoIATA == pistasUpdate[0].CodigoIATA)
+                    option(value=`${aeropuertos[i].CodigoIATA}`) #{aeropuertos[i].CodigoIATA}, #{aeropuertos[i].Ciudad}, #{aeropuertos[i].Pais}
+                - for (var i = 0; i < aeropuertos.length; i++)
+                  - if (aeropuertos[i].Activo == 1 && aeropuertos[i].CodigoIATA != pistasUpdate[0].CodigoIATA)
+                    option(value=`${aeropuertos[i].CodigoIATA}`) #{aeropuertos[i].CodigoIATA}, #{aeropuertos[i].Ciudad}, #{aeropuertos[i].Pais}
+            .form-group
+              label(for='Nombre') Nombre
+              input#Nombre.form-control(type='text' value=`${pistasUpdate[0].Nombre}` placeholder='Nombre de pista' name='Nombre' required)
+            .form-group
+              label(for='Distancia') Distancia
+              input#Distancia.form-control(type='number' value=`${pistasUpdate[0].Distancia}` min="0" placeholder='0' name='Distancia' required) 
+            button.btn.btn-danger(type='submit') Modificar                 
+    - if (!aeropuertosUpdate && !pistasUpdate)              
       h2.text-center Pistas
       .row.mt-5
         .col-12
           table.table.bg-white
             thead
               tr.tr.bg-dark.text-white
-                th(scope='col') ID
                 th(scope='col') Aeropuerto
+                th(scope='col') Nombre
                 th(scope='col') Distancia
                 th(scope='col')
                 th(scope='col')
             tbody
             - for (var i = 0; i < pistas.length; i++)
               tr
-                th(scope='row')
                 - for (var j = 0; j < aeropuertos.length; j++)
                   - if (aeropuertos[j].CodigoIATA == pistas[i].CodigoIATA && aeropuertos[j].Activo == 1)
-                    td #{aeropuertos[j].CodigoIATA}
+                    
+                    th(scope='row') #{aeropuertos[j].CodigoIATA}
+                    th(scope='row') #{pistas[i].Nombre}
                     td #{pistas[i].Distancia}
                     td
-                      form(action=`show/pista/:${pistas[i]}`,method="POST")
+                      form(action=`show/pista/:${pistas[i].CodigoIATA}:${pistas[i].Nombre}`,method="GET")
                         button.btn.btn-outline-dark(type='submit') Modificar
                     td
-                      form(action=`delete/pista/:${pistas[i]}`,method="POST")
+                      form(action=`delete/pista/:${pistas[i].CodigoIATA}:${pistas[i].Nombre}`,method="POST")
                         button.btn.btn-outline-danger(type='submit') Eliminar
-      - if (!aeropuertosUpdate)
+                 
+      - if (!aeropuertosUpdate && !pistasUpdate)
         div.row
           div.col-6
             h4.mt-5 Registrar Aeropuerto
@@ -80,16 +103,16 @@ block content
                 form(action='create/' method="POST")
                   .form-group
                     label(for='CodigoIATA') CodigoIATA
-                    input#CodigoIATA.form-control(type='text' minlength="3" maxlength="3" aria-describedby='CodigoIATA' placeholder='CodigoIATA' name='CodigoIATA')
+                    input#CodigoIATA.form-control(type='text' minlength="3" maxlength="3" aria-describedby='CodigoIATA' placeholder="CodigoIATA" name='CodigoIATA' required onkeyup="javascript:this.value=this.value.toUpperCase();")
                   .form-group
                     label(for='Ciudad') Ciudad
-                    input#Ciudad.form-control(type='text' placeholder='Ciudad' name='Ciudad')
+                    input#Ciudad.form-control(type='text' placeholder='Ciudad' name='Ciudad' required)
                   .form-group
                     label(for='Pais') Pais
-                    input#Pais.form-control(type='text' placeholder='Pais' name='Pais')
+                    input#Pais.form-control(type='text' placeholder='Pais' name='Pais' required)
                   .form-group
                     label(for='ZonaHoraria') Zona Horaria
-                    input#ZonaHoraria.form-control(type='number' name='ZonaHoraria')
+                    input#ZonaHoraria.form-control(type='number' name='ZonaHoraria' required)
                   button.btn.btn-danger(type='submit') Registrar
           div.col-6
             h4.mt-5 Agregar pista
@@ -98,12 +121,15 @@ block content
                 form(action='agregarPista/' method="POST")
                   .form-group
                     label(for='CodigoIATA') Aeropuerto
-                    select#CodigoIATA.form-control(type='select' placeholder='Aeropuerto' name='CodigoIATA').custom-select
+                    select#CodigoIATA.form-control(type='select' placeholder='Aeropuerto' name='CodigoIATA' required).custom-select
                       option(value="") ...
                       - for (var i = 0; i < aeropuertos.length; i++)
                         - if (aeropuertos[i].Activo == 1)
                           option(value=`${aeropuertos[i].CodigoIATA}`) #{aeropuertos[i].CodigoIATA}, #{aeropuertos[i].Ciudad}, #{aeropuertos[i].Pais}
                   .form-group
+                    label(for='Nombre') Nombre
+                    input#Nombre.form-control(type='text' placeholder='Nombre de pista' name='Nombre' required)
+                  .form-group
                     label(for='Distancia') Distancia
-                    input#Distancia.form-control(type='number' min="0" placeholder='0' name='Distancia')
+                    input#Distancia.form-control(type='number' min="0" placeholder='0' name='Distancia' required)
                   button.btn.btn-warning(type='submit') Agregar

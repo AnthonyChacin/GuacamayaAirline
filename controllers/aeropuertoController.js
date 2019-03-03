@@ -7,7 +7,7 @@ controller.getAeropuertos = async function (callback){
     try {
         let response = await Aeropuerto.findAll({
             where: {
-                activo: 1
+                Activo: 1
             }
         });
         let aeropuertos = response.map(result => result.dataValues);
