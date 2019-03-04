@@ -45,6 +45,7 @@ const Pasaje = database.define('Pasaje', {
     IdPasajero: {
         type: sequelize.INTEGER,
         allowNull: false,
+        unique: 'compositeIndex',
 
         validate: {
             notEmpty: false,
@@ -60,6 +61,7 @@ const Pasaje = database.define('Pasaje', {
     IdVueloReservado: {
         type: sequelize.INTEGER,
         allowNull: false,
+        unique: 'compositeIndex',
 
         validate: {
             notEmpty: false,

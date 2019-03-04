@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const routeIndex = require("./routes/index");
 const routeAeropuerto = require("./routes/aeropuerto");
+const routePasaje = require("./routes/pasaje");
 const sequelize = require("./config/database");
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use( '/', routeIndex);
 app.use( '/aeropuerto', routeAeropuerto);
+app.use( '/pasaje', routePasaje);
 
 sequelize.authenticate().then(value => value).catch(err => {
     console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);

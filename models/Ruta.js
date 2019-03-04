@@ -36,6 +36,7 @@ const Ruta = database.define('Ruta', {
     Origen: {
         type: sequelize.CHAR(3),
         allowNull: false,
+        unique: 'compositeIndex',
 
         validate: {
             notEmpty: true
@@ -50,6 +51,7 @@ const Ruta = database.define('Ruta', {
     Destino: {
         type: sequelize.CHAR(3),
         allowNull: false,
+        unique: 'compositeIndex',
 
         validate: {
             notEmpty: true
