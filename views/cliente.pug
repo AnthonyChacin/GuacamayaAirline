@@ -1,0 +1,102 @@
+extends base
+block content
+  .container.pt-4
+    - if (true)
+      h2.text-center Clientes
+      .row.mt-5
+        .col-12
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                th(scope='col') Pasaporte
+                th(scope='col') Nombre
+                th(scope='col') Apellido
+                th(scope='col') Sexo
+                th(scope='col') Fecha de Nacimiento
+                th(scope='col') Pais de Nacimiento
+                th(scope='col')
+                th(scope='col')
+            tbody
+            - for (var i = 0; i < clientes.length; i++)
+              tr
+                th(scope='row') #{clientes[i].Pasaporte}
+                td #{clientes[i].Nombre}
+                td #{clientes[i].Apellido}
+                td #{clientes[i].Sexo}
+                td #{clientes[i].FechaNac}
+                td #{clientes[i].PaisNac}
+                td
+                  form(action=`show/${clientes[i].Pasaporte}`,method="GET")
+                    button.btn.btn-outline-dark(type='submit') Modificar
+                td
+                  form(action=`delete/${clientes[i].Pasaporte}`,method="POST")
+                    button.btn.btn-outline-danger(type='submit') Eliminar
+    
+      - if (true)
+        div.row
+          div.col-6
+            h4.mt-5 Registrar Cliente
+            div.card.bg-dark
+              div.card-body.text-white
+                - if (!noExiste)
+                  form(action='existe/' method="POST")
+                    .form-group
+                        label(for='Pasaporte') Pasaporte
+                        input#Pasaporte.form-control(type='text' aria-describedby='Pasaporte' placeholder="Pasaporte" name='Pasaporte' required)  
+                    button.btn.btn-success(type="submit") Verificar
+                - if (noExiste)
+                  div.alert.alert-warning El cliente no existe en la base de datos, debe registrarlo  
+                  form(action='create/' method="POST")
+                    .form-group
+                        label(for='Pasaporte') Pasaporte
+                        input#Pasaporte.form-control(type='text' value=p aria-describedby='Pasaporte' placeholder="Pasaporte" name='Pasaporte' required)
+                    .form-group
+                        label(for='Nombre') Nombre
+                        input#Nombre.form-control(type='text' placeholder='Nombre' name='Nombre' required)
+                    .form-group
+                        label(for='Apellido') Apellido
+                        input#Apellido.form-control(type='text' placeholder='Nombre' name='Apellido' required)
+                    .form-group
+                        label(for='Sexo') Sexo
+                        select#Sexo.form-control(type='select' placeholder='Sexo' name='Sexo' required).custom-select
+                            option(value="" selected) ...
+                            option(value="Masculino") Masculino
+                            option(value="Femenino") Femenino
+                            option(value="Otros") Otros
+                    .form-group
+                        label(for='FechaNac') Fecha de nacimiento
+                        input#FechaNac.form-control(type='date' name='FechaNac' required)
+                    .form-group
+                        label(for='PaisNac') Pais de nacimiento
+                        input#PaisNac.form-control(type='text' placeholder='País de nacimiento' name='PaisNac' required)
+                    button.btn.btn-danger(type='submit') Registrar
+          - if (clienteUpdate)  
+            div.col-6
+              h4.mt-5 Modificar Cliente
+              div.card.bg-dark
+                div.card-body.text-white
+                  - if (true) 
+                    form(action=`update/${clienteUpdate.IdPersona}` method="POST")
+                      .form-group
+                        label(for='Pasaporte') Pasaporte
+                        input#Pasaporte.form-control(type='text' value=`${clienteUpdate.Pasaporte}` aria-describedby='Pasaporte' placeholder="Pasaporte" name='Pasaporte' required)
+                      .form-group
+                        label(for='Nombre') Nombre
+                        input#Nombre.form-control(type='text' value=`${clienteUpdate.Nombre}` placeholder='Nombre' name='Nombre' required)
+                      .form-group
+                        label(for='Apellido') Apellido
+                        input#Apellido.form-control(type='text' value=`${clienteUpdate.Apellido}` placeholder='Nombre' name='Apellido' required)
+                      .form-group
+                        label(for='Sexo') Sexo
+                        select#Sexo.form-control(type='select' placeholder='Sexo' name='Sexo' required).custom-select
+                            option(value="Masculino" selected=(clienteUpdate.Sexo == "Masculino")) Masculino
+                            option(value="Femenino" selected=(clienteUpdate.Sexo == "Femenino")) Femenino
+                            option(value="Otros" selected=(clienteUpdate.Sexo == "Otros")) Otros
+                      .form-group
+                        label(for='FechaNac') Fecha de nacimiento
+                        input#FechaNac.form-control(type='date' value=`${clienteUpdate.FechaNac}` name='FechaNac' required)
+                      .form-group
+                        label(for='PaisNac') Pais de nacimiento
+                        input#PaisNac.form-control(type='text' value=`${clienteUpdate.PaisNac}` placeholder='País de nacimiento' name='PaisNac' required)
+                      button.btn.btn-danger(type='submit') Modificar
+        

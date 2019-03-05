@@ -27,6 +27,8 @@ block content
                 td
                   form(action=`delete/${aeropuertos[i].CodigoIATA}`,method="POST")
                     button.btn.btn-outline-danger(type='submit') Eliminar
+
+
     - if(aeropuertosUpdate)
       h4.mt-5 Modificar Aeropuerto
       div.card.bg-dark
@@ -44,7 +46,9 @@ block content
             .form-group
               label(for='ZonaHoraria') Zona Horaria
               input#ZonaHoraria.form-control(type='number' value=`${aeropuertosUpdate[0].ZonaHoraria}` placeholder='ZonaHoraria' name='ZonaHoraria')  
-            button.btn.btn-danger(type='submit') Modificar     
+            button.btn.btn-danger(type='submit') Modificar  
+
+
     - if(pistasUpdate)
       h4.mt-5 Modificar Pista
       div.card.bg-dark
@@ -54,11 +58,8 @@ block content
               label(for='CodigoIATA') Aeropuerto
               select#CodigoIATA.form-control(type='select' placeholder='Aeropuerto' name='CodigoIATA' required).custom-select
                 - for (var i = 0; i < aeropuertos.length; i++)
-                  - if (aeropuertos[i].Activo == 1 && aeropuertos[i].CodigoIATA == pistasUpdate[0].CodigoIATA)
-                    option(value=`${aeropuertos[i].CodigoIATA}`) #{aeropuertos[i].CodigoIATA}, #{aeropuertos[i].Ciudad}, #{aeropuertos[i].Pais}
-                - for (var i = 0; i < aeropuertos.length; i++)
-                  - if (aeropuertos[i].Activo == 1 && aeropuertos[i].CodigoIATA != pistasUpdate[0].CodigoIATA)
-                    option(value=`${aeropuertos[i].CodigoIATA}`) #{aeropuertos[i].CodigoIATA}, #{aeropuertos[i].Ciudad}, #{aeropuertos[i].Pais}
+                  - if (aeropuertos[i].Activo == 1)
+                    option(value=`${aeropuertos[i].CodigoIATA}` selected=(aeropuertos[i].CodigoIATA == pistasUpdate[0].CodigoIATA)) #{aeropuertos[i].CodigoIATA}, #{aeropuertos[i].Ciudad}, #{aeropuertos[i].Pais} 
             .form-group
               label(for='Nombre') Nombre
               input#Nombre.form-control(type='text' value=`${pistasUpdate[0].Nombre}` placeholder='Nombre de pista' name='Nombre' required)

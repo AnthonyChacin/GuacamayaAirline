@@ -27,7 +27,9 @@ router.get('/', (req, res) => {
 });
 
 router.get('/show/:id', (req, res) => {
-  if(!!req.params.id){
+  if(!!req.params.id){ //Parámetro que estoy recibiendo por el url,
+                      //en este caso el CodigoIATA del aeropuerto a modificar
+                      
     aeropuertoController.getAeropuertosUpdate( req.params.id, (aeropuertosUpdate, err) => {
       if (err){
           res.json({
