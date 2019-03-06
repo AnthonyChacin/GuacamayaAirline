@@ -1,0 +1,157 @@
+extends base
+block content
+  .container.pt-4
+    - if (true)
+        div.row
+          div.col-6
+            h4.mt-5 Registrar Modelo
+            div.card.bg-dark
+              div.card-body.text-white 
+                form(action='/modelo/create/' method="POST")
+                    .form-group
+                        label(for='Nombre') Nombre
+                        input#Nombre.form-control(type='text' placeholder="Nombre" name='Nombre' required)
+                    .form-group
+                        label(for='VelMax') Velocidad máxima
+                        input#VelMax.form-control(type='number' min="0" name='VelMax' required)
+                    .form-group
+                        label(for='VelCrucero') Velocidad crucero
+                        input#VelCrucero.form-control(type='number' min="0" name='VelCrucero' required)
+                    .form-group
+                        label(for='NumAsienPrim') Asientos primera clase
+                        input#NumAsienPrim.form-control(type='number' min="0" name='NumAsienPrim' required)   
+                    .form-group
+                        label(for='NumAsienEco') Asientos clase económica
+                        input#NumAsienEco.form-control(type='number' min="0" name='NumAsienEco' required)   
+                    .form-group
+                        label(for='PesoVacio') Peso del avión vacío
+                        input#PesoVacio.form-control(type='number' min="0" name='PesoVacio' required)        
+                    .form-group
+                        label(for='PesoMax') Peso máximo del avión
+                        input#PesoMax.form-control(type='number' min="0" name='PesoMax' required)   
+                    .form-group
+                        label(for='CargaMaxEq') Cantidad máxima de piezas de equipaje
+                        input#CargaMaxEq.form-control(type='number' min="0" name='CargaMaxEq' required)   
+                    .form-group
+                        label(for='TripulacionNec') Tripulación necesaria
+                        input#TripulacionNec.form-control(type='number' min="0" name='TripulacionNec' required)    
+                    .form-group
+                        label(for='TipoCombustible') Tipo de combustible
+                        select#TipoCombustible.form-control(type='select' placeholder='Tipo de combustible' name='TipoCombustible' required).custom-select
+                            option(value="" selected) ...
+                            option(value="jetA-1") Jet A-1
+                            option(value="jetA") Jet A
+                            option(value="jetB") Jet B
+                    .form-group
+                        label(for='CantCombustible') Cantidad de combustible
+                        input#CantCombustible.form-control(type='number' min="0" name='CantCombustible' required)
+                    .form-group
+                        label(for='CantBanios') Cantidad de baños
+                        input#CantBanios.form-control(type='number' min="0" name='CantBanios' required)
+                    .form-group
+                        label(for='CantSalEmerg') Cantidad de salidas de emergencia
+                        input#CantSalEmerg.form-control(type='number' min="0" name='CantSalEmerg' required)
+                    .form-group
+                        label(for='DistDespCargaMax') Distancia mínima de despegue con carga máxima
+                        input#DistDespCargaMax.form-control(type='number' min="0" name='DistDespCargaMax' required)    
+                    button.btn.btn-danger(type='submit') Registrar
+          - if (modeloUpdate)
+            div.col-6
+              h4.mt-5 Modificar Modelo #{modeloUpdate.Nombre}
+              div.card.bg-dark
+                div.card-body.text-white 
+                  form(action=`/modelo/update/${modeloUpdate.IdModelo}` method="POST")
+                    .form-group
+                        label(for='Nombre') Nombre
+                        input#Nombre.form-control(type='text' value=`${modeloUpdate.Nombre}` placeholder="Nombre" name='Nombre' required)
+                    .form-group
+                        label(for='VelMax') Velocidad máxima
+                        input#VelMax.form-control(type='number' value=`${modeloUpdate.VelMax}` min="0" name='VelMax' required)
+                    .form-group
+                        label(for='VelCrucero') Velocidad crucero
+                        input#VelCrucero.form-control(type='number' value=`${modeloUpdate.VelCrucero}` min="0" name='VelCrucero' required)
+                    .form-group
+                        label(for='NumAsienPrim') Asientos primera clase
+                        input#NumAsienPrim.form-control(type='number' value=`${modeloUpdate.NumAsienPrim}` min="0" name='NumAsienPrim' required)   
+                    .form-group
+                        label(for='NumAsienEco') Asientos clase económica
+                        input#NumAsienEco.form-control(type='number' value=`${modeloUpdate.NumAsienEco}` min="0" name='NumAsienEco' required)   
+                    .form-group
+                        label(for='PesoVacio') Peso del avión vacío
+                        input#PesoVacio.form-control(type='number' value=`${modeloUpdate.PesoVacio}` min="0" name='PesoVacio' required)        
+                    .form-group
+                        label(for='PesoMax') Peso máximo del avión
+                        input#PesoMax.form-control(type='number' value=`${modeloUpdate.PesoMax}` min="0" name='PesoMax' required)   
+                    .form-group
+                        label(for='CargaMaxEq') Cantidad máxima de piezas de equipaje
+                        input#CargaMaxEq.form-control(type='number' value=`${modeloUpdate.CargaMaxEq}` min="0" name='CargaMaxEq' required)   
+                    .form-group
+                        label(for='TripulacionNec') Tripulación necesaria
+                        input#TripulacionNec.form-control(type='number' value=`${modeloUpdate.TripulacionNec}` min="0" name='TripulacionNec' required)    
+                    .form-group
+                        label(for='TipoCombustible') Tipo de combustible
+                        select#Sexo.form-control(type='select' placeholder='Tipo de combustible' name='TipoCombustible' required).custom-select
+                            option(value="jetA-1" selected=(modeloUpdate.TipoCombustible == "jetA-1")) Jet A-1
+                            option(value="jetA" selected=(modeloUpdate.TipoCombustible == "jetA")) Jet A
+                            option(value="jetB" selected=(modeloUpdate.TipoCombustible == "jetB")) Jet B
+                    .form-group
+                        label(for='CantCombustible') Cantidad de combustible
+                        input#CantCombustible.form-control(type='number' value=`${modeloUpdate.CantCombustible}` min="0" name='CantCombustible' required)
+                    .form-group
+                        label(for='CantBanios') Cantidad de baños
+                        input#CantBanios.form-control(type='number' value=`${modeloUpdate.CantBanios}` min="0" name='CantBanios' required)
+                    .form-group
+                        label(for='CantSalEmerg') Cantidad de salidas de emergencia
+                        input#CantSalEmerg.form-control(type='number' value=`${modeloUpdate.CantSalEmerg}` min="0" name='CantSalEmerg' required)
+                    .form-group
+                        label(for='DistDespCargaMax') Distancia mínima de despegue con carga máxima
+                        input#DistDespCargaMax.form-control(type='number' value=`${modeloUpdate.DistDespCargaMax}` min="0" name='DistDespCargaMax' required)    
+                    button.btn.btn-danger(type='submit') Registrar
+    - if (true)
+      .row.mt-5
+      h2.text-center Modelos
+      .row.mt-5
+        .col-12
+          div.overflow-auto.width-auto  
+            table.table.bg-white
+              thead
+                tr.tr.bg-dark.text-white
+                    th(scope='col') Nombre
+                    th(scope='col') Velocidad máxima
+                    th(scope='col') Velocidad crucero
+                    th(scope='col') Asientos primera clase
+                    th(scope='col') Asientos clase económica
+                    th(scope='col') Peso del avión vacío
+                    th(scope='col') Peso máximo del avión
+                    th(scope='col') Cantidad máxima de piezas de equipaje
+                    th(scope='col') Tripulación necesaria
+                    th(scope='col') Tipo de combustible
+                    th(scope='col') Cantidad de combustible
+                    th(scope='col') Cantidad de baños
+                    th(scope='col') Cantidad de salidas de emergencia
+                    th(scope='col') Distancia mínima de despegue con carga máxima
+                    th(scope='col')
+                tbody
+                - for (var i = 0; i < modelos.length; i++)
+                  tr
+                    th(scope='row') #{modelos[i].Nombre}
+                    td #{modelos[i].VelMax}
+                    td #{modelos[i].VelCrucero}
+                    td #{modelos[i].NumAsienPrim}
+                    td #{modelos[i].NumAsienEco}
+                    td #{modelos[i].PesoVacio}
+                    td #{modelos[i].PesoMax}
+                    td #{modelos[i].CargaMaxEq}
+                    td #{modelos[i].TripulacionNec}
+                    td #{modelos[i].TipoCombustible}
+                    td #{modelos[i].CantCombustible}
+                    td #{modelos[i].CantBanios}
+                    td #{modelos[i].CantSalEmerg}
+                    td #{modelos[i].DistDespCargaMax}
+                    td
+                      form(action=`/modelo/${modelos[i].IdModelo}`,method="GET")
+                        button.btn.btn-outline-dark(type='submit') Modificar
+                    //td
+                      form(action=`/cliente/delete/${clientes[i].IdPersona}`,method="POST")
+                        button.btn.btn-outline-danger(type='submit') Eliminar
+   

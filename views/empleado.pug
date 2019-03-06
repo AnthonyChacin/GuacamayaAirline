@@ -1,0 +1,155 @@
+extends base
+block content
+  .container.pt-4
+    - if (true)
+      .row.mt-5
+        .col-12
+          h2.text-center Empleados
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                th(scope='col') Pasaporte
+                th(scope='col') Nombre
+                th(scope='col') Apellido
+                th(scope='col') Sexo
+                th(scope='col') Fecha de Nacimiento
+                th(scope='col') Pais de Nacimiento
+                th(scope='col') Cargo
+                th(scope='col')
+            tbody
+            - for (var i = 0; i < empleados.length; i++)
+              tr
+                th(scope='row') #{empleados[i].Pasaporte}
+                td #{empleados[i].Nombre}
+                td #{empleados[i].Apellido}
+                td #{empleados[i].Sexo}
+                td #{empleados[i].FechaNac}
+                td #{empleados[i].PaisNac}
+                td #{empleados[i].Cargo}
+                td
+                  form(action=`/empleado/${empleados[i].IdPersona}`,method="GET")
+                    button.btn.btn-outline-dark(type='submit') Modificar
+                //td
+                  form(action=`/empleado/delete/${empleados[i].IdPersona}`,method="POST")
+                    button.btn.btn-outline-danger(type='submit') Eliminar
+
+    - if (true)
+        .row.mt-5
+          .col-6
+            h4.text-center Cargos  
+            table.table.bg-white
+                thead
+                    tr.tr.bg-dark.text-white
+                      th(scope='col') Nombre
+                      th(scope='col')
+                      //th(scope='col')
+                tbody
+                - for (var i = 0; i < cargos.length; i++)
+                  tr
+                    th(scope='row') #{cargos[i].Nombre}
+                    td
+                      form(action=`/empleado/cargos/${cargos[i].IdCargo}`,method="GET")
+                        button.btn.btn-outline-dark(type='submit') Modificar
+                    //td
+                      form(action=`/empleado/cargos/delete/${cargos[i].IdCargo}`,method="POST")
+                        button.btn.btn-outline-danger(type='submit') Eliminar
+
+          - if (true)
+            div.col-6
+                h4.text-center Crear nuevos cargos  
+                div.card.bg-dark
+                    div.card-body.text-white
+                      form(action='/empleado/cargos/create/' method="POST")
+                        .form-group
+                          label(for='Nombre') Nombre
+                          input#Nombre.form-control(type='text' placeholder='Nombre' name='Nombre' required)
+                        button.btn.btn-danger(type='submit') Registrar                
+
+
+    - if (true)
+        div.row
+          div.col-6
+            h4.mt-5.text-center Registrar Empleado
+            div.card.bg-dark
+              div.card-body.text-white
+                - if (!noExiste)
+                  form(action='/empleado/existe/' method="POST")
+                    .form-group
+                        label(for='Pasaporte') Pasaporte
+                        input#Pasaporte.form-control(type='text' aria-describedby='Pasaporte' placeholder="Pasaporte" name='Pasaporte' required)  
+                    .form-group
+                        label(for='IdCargo') Cargo
+                        select#IdCargo.form-control(type='select' placeholder='Cargo' name='IdCargo' required).custom-select
+                            option(value="") ...
+                            - for (var i = 0; i < cargos.length; i++)
+                                - if (cargos[i].Activo == 1)
+                                  option(value=`${cargos[i].IdCargo}`) #{cargos[i].Nombre}
+                    button.btn.btn-success(type="submit") Siguiente
+                - if (noExiste)
+                  div.alert.alert-warning El empleado no existe en la base de datos, debe registrarlo  
+                  form(action='/empleado/create/' method="POST")
+                    .form-group
+                        label(for='Pasaporte') Pasaporte
+                        input#Pasaporte.form-control(type='text' value=p.Pasaporte aria-describedby='Pasaporte' placeholder="Pasaporte" name='Pasaporte' required)
+                    .form-group
+                        label(for='IdCargo') Cargo
+                        select#IdCargo.form-control(type='select' placeholder='Cargo' name='IdCargo' required).custom-select
+                            - for (var i = 0; i < cargos.length; i++)
+                                - if (cargos[i].Activo == 1)
+                                  option(value=`${cargos[i].IdCargo}` selected=(cargos[i].IdCargo==p.Cargo)) #{cargos[i].Nombre}
+                    .form-group
+                        label(for='Nombre') Nombre
+                        input#Nombre.form-control(type='text' placeholder='Nombre' name='Nombre' required)
+                    .form-group
+                        label(for='Apellido') Apellido
+                        input#Apellido.form-control(type='text' placeholder='Nombre' name='Apellido' required)
+                    .form-group
+                        label(for='Sexo') Sexo
+                        select#Sexo.form-control(type='select' placeholder='Sexo' name='Sexo' required).custom-select
+                            option(value="" selected) ...
+                            option(value="Masculino") Masculino
+                            option(value="Femenino") Femenino
+                            option(value="Otros") Otros
+                    .form-group
+                        label(for='FechaNac') Fecha de nacimiento
+                        input#FechaNac.form-control(type='date' name='FechaNac' required)
+                    .form-group
+                        label(for='PaisNac') Pais de nacimiento
+                        input#PaisNac.form-control(type='text' placeholder='País de nacimiento' name='PaisNac' required)
+                    button.btn.btn-danger(type='submit') Registrar
+
+          - if (empleadoUpdate)  
+            div.col-6
+              h4.mt-5 Modificar Empleado
+              div.card.bg-dark
+                div.card-body.text-white
+                  - if (true) 
+                    form(action=`/empleado/update/${empleadoUpdate.IdPersona}` method="POST")
+                      .form-group
+                        label(for='Pasaporte') Pasaporte
+                        input#Pasaporte.form-control(type='text' value=`${empleadoUpdate.Pasaporte}` aria-describedby='Pasaporte' placeholder="Pasaporte" name='Pasaporte' required)
+                      .form-group
+                        label(for='IdCargo') Cargo
+                        select#IdCargo.form-control(type='select' placeholder='Cargo' name='IdCargo' required).custom-select
+                            - for (var i = 0; i < cargos.length; i++)
+                                - if (cargos[i].Activo == 1)
+                                  option(value=`${cargos[i].IdCargo}` selected=(cargos[i].IdCargo == empleadoUpdate.IdCargo)) #{cargos[i].Nombre}
+                      .form-group
+                        label(for='Nombre') Nombre
+                        input#Nombre.form-control(type='text' value=`${empleadoUpdate.Nombre}` placeholder='Nombre' name='Nombre' required)
+                      .form-group
+                        label(for='Apellido') Apellido
+                        input#Apellido.form-control(type='text' value=`${empleadoUpdate.Apellido}` placeholder='Nombre' name='Apellido' required)
+                      .form-group
+                        label(for='Sexo') Sexo
+                        select#Sexo.form-control(type='select' placeholder='Sexo' name='Sexo' required).custom-select
+                            option(value="Masculino" selected=(empleadoUpdate.Sexo == "Masculino")) Masculino
+                            option(value="Femenino" selected=(empleadoUpdate.Sexo == "Femenino")) Femenino
+                            option(value="Otros" selected=(empleadoUpdate.Sexo == "Otros")) Otros
+                      .form-group
+                        label(for='FechaNac') Fecha de nacimiento
+                        input#FechaNac.form-control(type='date' value=`${empleadoUpdate.FechaNac}` name='FechaNac' required)
+                      .form-group
+                        label(for='PaisNac') Pais de nacimiento
+                        input#PaisNac.form-control(type='text' value=`${empleadoUpdate.PaisNac}` placeholder='País de nacimiento' name='PaisNac' required)
+                      button.btn.btn-danger(type='submit') Modificar

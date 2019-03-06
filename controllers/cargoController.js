@@ -24,8 +24,7 @@ controller.getCargosUpdate = async function (id, callback){
         let cargosUpdate = await Cargo.findAll({
             where: {
                 Activo: 1,
-                IdCargo: id.id1,
-                Nombre: id.id2
+                IdCargo: id
             }
         });
         cargosUpdate = cargosUpdate.map(result => result.dataValues);
@@ -42,11 +41,10 @@ controller.updateCargo = async function (data, id, callback) {
             Nombre: data.Nombre
         },{
             where:{
-                IdCargo: id.id1,
-                Nombre: id.id2
+                IdCargo: id
             } 
         });
-        // code goes here
+        
         callback(null);
     } catch (error) {
         callback(error);
@@ -59,8 +57,7 @@ controller.deleteCargo = async function (id, callback) {
             Activo: 0
         }, {
             where: {
-                IdCargo: id.id1,
-                Nombre: id.id2
+                IdCargo: id
             }
         });
         callback(null);
@@ -74,7 +71,7 @@ controller.createCargo = async function (data, callback) {
         let response = await Cargo.create({
             Nombre: data.Nombre
         });
-        // code goes here
+        
         callback(null);
     } catch (error) {
         callback(error);

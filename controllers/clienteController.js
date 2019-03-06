@@ -9,13 +9,12 @@ controller.getClientes = async function (callback) {
     try {
 
         let clientes = await database.query(
-            "SELECT `Pasaporte`, `Nombre`, `Apellido`, `Sexo`, `FechaNac`, `PaisNac`  FROM `Persona`" + 
+            "SELECT *  FROM `Persona`" + 
             " INNER JOIN `Cliente` ON `Cliente`.`IdPersona` = `Persona`.`IdPersona`" +
-            " WHERE `Persona`.`Activo` = 1;",
+            " WHERE `Cliente`.`Activo` = 1;",
             { type: sequelize.QueryTypes.SELECT}
         )
 
-        console.log(clientes);
         callback(clientes, null);
     }catch (error) {
         callback(null, error);
@@ -56,20 +55,36 @@ controller.getCliente = async function (data, callback) {
     }
 }
 
-controller.getClienteUpdate = async function (data, callback) {
+controller.getClienteUpdate = async function (IdPersona, callback) {
     
     try {
-        let clienteUpdate = await database.query(
-            "SELECT * FROM `Persona`" + 
-            " WHERE `Persona`.`Pasaporte` = " + data +" LIMIT 1;",
-            { type: sequelize.QueryTypes.SELECT}
-        )
-        console.log(clienteUpdate[0]);
-          
-        callback(clienteUpdate[0], null)
+        let clienteUpdate = await Persona.findOne({
+            where: {
+                IdPersona
+            }
+        })
+
+        console.log(clienteUpdate);
+
+        callback(clienteUpdate, null)
 
     } catch (error) {
         callback(null, error)
+    }
+}
+
+controller.deleteCliente = async function (id, callback) {
+    try {
+        let response = await Cliente.update({
+            Activo: 0
+        }, {
+            where: {
+                IdPersona: id
+            }
+        });
+        callback(null);
+    } catch (error) {
+        callback(error);
     }
 }
 

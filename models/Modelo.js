@@ -79,7 +79,7 @@ const Modelo = database.define('Modelo', {
         }
     },
     CargaMaxEq: {
-        type: sequelize.FLOAT,
+        type: sequelize.INTEGER,
         allowNull: false,
 
         validate: {
@@ -87,7 +87,7 @@ const Modelo = database.define('Modelo', {
             isNumeric: true
         }
     },
-    CargaMaxCab: {
+    /* CargaMaxCab: {
         type: sequelize.FLOAT,
         allowNull: false,
 
@@ -95,7 +95,7 @@ const Modelo = database.define('Modelo', {
             notEmpty: true,
             isNumeric: true
         }
-    },
+    }, */
     TripulacionNec: {
         type: sequelize.INTEGER,
         allowNull: false,

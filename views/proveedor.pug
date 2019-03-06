@@ -1,0 +1,62 @@
+extends base
+block content
+  .container.pt-4
+    - if (true)
+      h2.text-center Proveedores
+      .row.mt-5
+        .col-12
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                th(scope='col') Nombre
+                th(scope='col') Ciudad
+                th(scope='col') Pais
+                th(scope='col')
+            tbody
+            - for (var i = 0; i < proveedores.length; i++)
+              tr
+                th #{proveedores[i].Nombre}
+                td #{proveedores[i].Ciudad}
+                td #{proveedores[i].Pais}
+                td
+                  form(action=`/proveedor/${proveedores[i].IdProveedor}`,method="GET")
+                    button.btn.btn-outline-dark(type='submit') Modificar
+                //td
+                  form(action=`/proveedor/delete/${proveedores[i].IdProveedor}`,method="POST")
+                    button.btn.btn-outline-danger(type='submit') Eliminar
+    
+      - if (true)
+        div.row
+          div.col-6
+            h4.mt-5 Agregar Proveedor
+            div.card.bg-dark
+              div.card-body.text-white 
+                  form(action='/proveedor/create/' method="POST")
+                    .form-group
+                        label(for='Nombre') Nombre
+                        input#Nombre.form-control(type='text' aria-describedby='Nombre' placeholder="Nombre" name='Nombre' required)
+                    .form-group
+                        label(for='Ciudad') Ciudad 
+                        input#Ciudad.form-control(type='text' placeholder='Ciudad' name='Ciudad' required)
+                    .form-group
+                        label(for='Pais') Pais
+                        input#Pais.form-control(type='text' placeholder='Pais'  name='Pais' required)
+                    button.btn.btn-danger(type='submit') Agregar
+          - if (proveedorUpdate)  
+            div.col-6
+              h4.mt-5 Modificar Proveedor
+              div.card.bg-dark
+                div.card-body.text-white 
+                  form(action=`/proveedor/update/${proveedorUpdate.IdProveedor}` method="POST")
+                    .form-group
+                        label(for='Nombre') Nombre
+                        input#Nombre.form-control(type='text' value=`${proveedorUpdate.Nombre}` aria-describedby='Nombre' placeholder="Nombre" name='Nombre' required)
+                    .form-group
+                        label(for='Ciudad') Ciudad 
+                        input#Ciudad.form-control(type='text' value=`${proveedorUpdate.Ciudad}` placeholder='Ciudad' name='Ciudad' required)
+                    .form-group
+                        label(for='Pais') Pais
+                        input#Pais.form-control(type='text' value=`${proveedorUpdate.Pais}` placeholder='Pais'  name='Pais' required)
+                    button.btn.btn-danger(type='submit') Modificar
+
+        

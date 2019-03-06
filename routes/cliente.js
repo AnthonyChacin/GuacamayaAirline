@@ -5,7 +5,6 @@ const personaController = require('../controllers/personaController');
 
 router.get('/', (req, res) => {
     clienteController.getClientes( (clientes, err) => {
-        console.log('2');
         if(err){
             res.json({
                 success: false,
@@ -18,7 +17,7 @@ router.get('/', (req, res) => {
 });
 
 
-router.get('/show/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     if(!!req.params.id){ 
       clienteController.getClienteUpdate( req.params.id, (clienteUpdate, err) => {
         console.log(clienteUpdate);
@@ -43,7 +42,7 @@ router.get('/show/:id', (req, res) => {
     }
 });
 
-router.post("/show/update/:id", (req, res) => {
+router.post("/update/:id", (req, res) => {
     if (!!req.body) {
       personaController.updatePersona(req.body, req.params.id, (err) => {
         if (err)
@@ -97,7 +96,7 @@ router.post("/existe", (req, res) => {
     }
 });
 
-router.post("/existe/create", (req, res) => {
+router.post("/create", (req, res) => {
     console.log(req.body);
     if (!!req.body) {
       personaController.createPersona(req.body, (IdPersona, err) => {
@@ -124,7 +123,7 @@ router.post("/existe/create", (req, res) => {
 
 router.post("/delete/:id", (req, res) => {
     if (!!req.params.id) {
-      personaController.deletePersona(req.params.id, (err) => {
+      clienteController.deleteCliente(req.params.id, (err) => {
         if (err)
           res.json({
             success: false,

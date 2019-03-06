@@ -15,7 +15,6 @@ block content
                 th(scope='col') Fecha de Nacimiento
                 th(scope='col') Pais de Nacimiento
                 th(scope='col')
-                th(scope='col')
             tbody
             - for (var i = 0; i < clientes.length; i++)
               tr
@@ -26,10 +25,10 @@ block content
                 td #{clientes[i].FechaNac}
                 td #{clientes[i].PaisNac}
                 td
-                  form(action=`show/${clientes[i].Pasaporte}`,method="GET")
+                  form(action=`/cliente/${clientes[i].IdPersona}`,method="GET")
                     button.btn.btn-outline-dark(type='submit') Modificar
-                td
-                  form(action=`delete/${clientes[i].Pasaporte}`,method="POST")
+                //td
+                  form(action=`/cliente/delete/${clientes[i].IdPersona}`,method="POST")
                     button.btn.btn-outline-danger(type='submit') Eliminar
     
       - if (true)
@@ -39,14 +38,14 @@ block content
             div.card.bg-dark
               div.card-body.text-white
                 - if (!noExiste)
-                  form(action='existe/' method="POST")
+                  form(action='/cliente/existe/' method="POST")
                     .form-group
                         label(for='Pasaporte') Pasaporte
                         input#Pasaporte.form-control(type='text' aria-describedby='Pasaporte' placeholder="Pasaporte" name='Pasaporte' required)  
-                    button.btn.btn-success(type="submit") Verificar
+                    button.btn.btn-success(type="submit") Siguiente
                 - if (noExiste)
                   div.alert.alert-warning El cliente no existe en la base de datos, debe registrarlo  
-                  form(action='create/' method="POST")
+                  form(action='/cliente/create/' method="POST")
                     .form-group
                         label(for='Pasaporte') Pasaporte
                         input#Pasaporte.form-control(type='text' value=p aria-describedby='Pasaporte' placeholder="Pasaporte" name='Pasaporte' required)
@@ -76,7 +75,7 @@ block content
               div.card.bg-dark
                 div.card-body.text-white
                   - if (true) 
-                    form(action=`update/${clienteUpdate.IdPersona}` method="POST")
+                    form(action=`/cliente/update/${clienteUpdate.IdPersona}` method="POST")
                       .form-group
                         label(for='Pasaporte') Pasaporte
                         input#Pasaporte.form-control(type='text' value=`${clienteUpdate.Pasaporte}` aria-describedby='Pasaporte' placeholder="Pasaporte" name='Pasaporte' required)

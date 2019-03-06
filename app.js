@@ -6,6 +6,10 @@ const routeIndex = require("./routes/index");
 const routeAeropuerto = require("./routes/aeropuerto");
 const routePasaje = require("./routes/pasaje");
 const routeCliente = require('./routes/cliente');
+const routeEmpleado = require('./routes/empleado');
+const routeModelo = require('./routes/modelo');
+const routeTarifa = require('./routes/tarifa');
+const routeProveedor = require('./routes/proveedor');
 const sequelize = require("./config/database");
 const app = express();
 
@@ -18,6 +22,10 @@ app.use( '/', routeIndex);
 app.use( '/aeropuerto', routeAeropuerto);
 app.use( '/pasaje', routePasaje);
 app.use('/cliente', routeCliente);
+app.use('/empleado', routeEmpleado);
+app.use('/modelo', routeModelo);
+app.use('/tarifa', routeTarifa);
+app.use('/proveedor', routeProveedor);
 
 sequelize.authenticate().then(value => value).catch(err => {
     console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
