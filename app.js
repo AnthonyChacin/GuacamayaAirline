@@ -10,6 +10,7 @@ const routeEmpleado = require('./routes/empleado');
 const routeModelo = require('./routes/modelo');
 const routeTarifa = require('./routes/tarifa');
 const routeProveedor = require('./routes/proveedor');
+const routeAvion = require('./routes/avion');
 const sequelize = require("./config/database");
 const app = express();
 
@@ -26,6 +27,7 @@ app.use('/empleado', routeEmpleado);
 app.use('/modelo', routeModelo);
 app.use('/tarifa', routeTarifa);
 app.use('/proveedor', routeProveedor);
+app.use('/avion', routeAvion);
 
 sequelize.authenticate().then(value => value).catch(err => {
     console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);

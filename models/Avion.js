@@ -33,7 +33,7 @@ const Avion = database.define('Avion', {
         }
     },
     DispInternet: {
-        type: sequelize.BOOLEAN,
+        type: sequelize.TINYINT,
         allowNull: false,
 
         validate: {
@@ -41,7 +41,7 @@ const Avion = database.define('Avion', {
         }
     },
     DispTelevision: {
-        type: sequelize.BOOLEAN,
+        type: sequelize.TINYINT,
         allowNull: false,
 
         validate: {
