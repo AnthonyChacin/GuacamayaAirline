@@ -1,0 +1,103 @@
+extends base
+block content
+  .container.pt-4
+    h2.text-center Alquiler de aviones
+    - if (true)
+      .row.mt-5
+        .col-12
+          h4.text-center Historial de alquiler de aviones
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                th(scope='col') Avión
+                th(scope='col') Proveedor
+                th(scope='col') Fecha de Solicitud
+                th(scope='col') Fecha de Entrega
+                th(scope='col') Fecha de Devolución
+                th(scope='col') Monto Pagado
+                th(scope='col')
+                th(scope='col')
+            tbody
+            - for (var i = 0; i < avionesAlquilados.length; i++)
+              tr
+                th #{avionesAlquilados[i].IdAvion}
+                - for(let j = 0; j < proveedores.length; j++)
+                  - if(avionesAlquilados[i].IdProveedor == proveedores[j].IdProveedor)
+                    td #{proveedores[j].Nombre}
+                td #{avionesAlquilados[i].FechaSolicitud}
+                td #{avionesAlquilados[i].FechaEntrega}
+                td #{avionesAlquilados[i].FechaDevolucion}
+                td #{avionesAlquilados[i].MontoPagado}
+                td
+                  form(action=`/alquilerAviones/${avionesAlquilados[i].IdAvion}-${avionesAlquilados[i].IdProveedor}-${avionesAlquilados[i].FechaSolicitud}`,method="GET")
+                    button.btn.btn-outline-dark(type='submit') Modificar
+                td
+                  form(action=`/alquilerAviones/delete/${avionesAlquilados[i].IdAvion}-${avionesAlquilados[i].IdProveedor}-${avionesAlquilados[i].FechaSolicitud}`,method="POST")
+                    button.btn.btn-outline-danger(type='submit') Eliminar
+    
+      - if (true)
+        div.row
+          div.col-6
+            h4.mt-5 Reistrar alquiler de avión
+            div.card.bg-dark
+              div.card-body.text-white 
+                  form(action='/alquilerAviones/create/' method="POST")
+                    .form-group
+                        label(for='IdAvion') Avión
+                        select#IdAvion.form-control(type='select' name='IdAvion' required).custom-select
+                            option(value="" selected) ...
+                            - for(let i = 0; i < aviones.length; i++)
+                              option(value=`${aviones[i].IdAvion}`) #{aviones[i].IdAvion}
+                    .form-group
+                        label(for='IdProveedor') Proveedor
+                        select#IdProveedor.form-control(type='select' name='IdProveedor' required).custom-select
+                            option(value="" selected) ...
+                            - for(let i = 0; i < proveedores.length; i++)
+                              option(value=`${proveedores[i].IdProveedor}`) #{proveedores[i].Nombre}
+                    .form-group
+                        label(for='FechaSolicitud') Fecha de Solicitud
+                        input#FechaSolicitud.form-control(type='date' name='FechaSolicitud' required)
+                    .form-group
+                        label(for='FechaEntrega') Fecha de Entrega
+                        input#FechaEntrega.form-control(type='date' name='FechaEntrega')
+                    .form-group
+                        label(for='FechaDevolucion') Fecha de Devolución
+                        input#FechaDevolucion.form-control(type='date' min='#FechaEntrega'  name='FechaEntrega')
+                    .form-group
+                        label(for='MontoPagado') Monto Pagado $
+                        input#MontoPagado.form-control(type='number' value="0" min="0" name='MontoPagado')
+                    button.btn.btn-danger(type='submit') Agregar
+          - if (avionAlquiladoUpdate)  
+            div.col-6
+              h4.mt-5 Modificar Avion #{avionUpdate.IdAvion}
+              div.card.bg-dark
+                div.card-body.text-white 
+                  form(action=`/avion/update/${avionUpdate.IdAvion}` method="POST")
+                    .form-group
+                        label(for='EstatusAvion') Estatus del avión 
+                        select#EstatusAvion.form-control(type='select' name='EstatusAvion' required).custom-select
+                            option(value="EnReparacion" selected=(avionUpdate.EstatusAvion == "EnReparacion")) En reparación
+                            option(value="EnVuelo" selected=(avionUpdate.EstatusAvion == "EnVuelo")) En vuelo
+                            option(value="Daniado" selected=(avionUpdate.EstatusAvion == "Daniado")) Dañado
+                            option(value="EnEspera" selected=(avionUpdate.EstatusAvion == "EnEspera")) En espera
+                    .form-group
+                        label(for='Fabricante') Fabricante
+                        input#Fabricante.form-control(type='text' value=`${avionUpdate.Fabricante}` placeholder='Fabricante'  name='Fabricante' required)
+                    .form-group
+                        label(for='DispInternet') Internet
+                        select#DispInternet.form-control(type='select' name='DispInternet' required).custom-select
+                            option(value=1 selected=(avionUpdate.DispInternet == 1)) Sí
+                            option(value=0 selected=(avionUpdate.DispInternet == 0)) No
+                    .form-group
+                        label(for='DispTelevision') TV
+                        select#DispTelevision.form-control(type='select' name='DispTelevision' required).custom-select
+                            option(value=1 selected=(avionUpdate.DispTelevision == 1)) Sí
+                            option(value=0 selected=(avionUpdate.DispTelevision == 0)) No
+                    .form-group
+                        label(for='IdModelo') Modelo
+                        select#IdModelo.form-control(type='select' name='IdModelo' required).custom-select
+                            - for (let i = 0; i < modelos.length; i++)
+                              option(value=`${modelos[i].IdModelo}` selected=(avionUpdate.IdModelo == modelos[i].IdModelo)) #{modelos[i].Nombre}
+                    button.btn.btn-danger(type='submit') Modificar
+
+        

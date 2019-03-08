@@ -1,7 +1,7 @@
 extends base
 block content
   .container.pt-4
-    - if (true)
+    - if (!a)
       .row.mt-5
         .col-12
           h2.text-center Empleados
@@ -33,7 +33,7 @@ block content
                   form(action=`/empleado/delete/${empleados[i].IdPersona}`,method="POST")
                     button.btn.btn-outline-danger(type='submit') Eliminar
 
-    - if (true)
+    - if (!a)
         .row.mt-5
           .col-6
             h4.text-center Cargos  
@@ -54,7 +54,7 @@ block content
                       form(action=`/empleado/cargos/delete/${cargos[i].IdCargo}`,method="POST")
                         button.btn.btn-outline-danger(type='submit') Eliminar
 
-          - if (true)
+          - if (!a)
             div.col-6
                 h4.text-center Crear nuevos cargos  
                 div.card.bg-dark
@@ -65,8 +65,11 @@ block content
                           input#Nombre.form-control(type='text' placeholder='Nombre' name='Nombre' required)
                         button.btn.btn-danger(type='submit') Registrar                
 
-
-    - if (true)
+    - if (a)
+      script.
+        alert("El empleado ya existe en la base de datos, no es posible crearlo de nuevo");
+        window.location.href='/empleado/';
+    - if (!a)
         div.row
           div.col-6
             h4.mt-5.text-center Registrar Empleado
@@ -86,8 +89,9 @@ block content
                                   option(value=`${cargos[i].IdCargo}`) #{cargos[i].Nombre}
                     button.btn.btn-success(type="submit") Siguiente
                 - if (noExiste)
-                  div.alert.alert-warning El empleado no existe en la base de datos, debe registrarlo  
                   form(action='/empleado/create/' method="POST")
+                    script.
+                        alert("El empleado no existe en la base de datos, debe registrarlo")
                     .form-group
                         label(for='Pasaporte') Pasaporte
                         input#Pasaporte.form-control(type='text' value=p.Pasaporte aria-describedby='Pasaporte' placeholder="Pasaporte" name='Pasaporte' required)
@@ -102,7 +106,7 @@ block content
                         input#Nombre.form-control(type='text' placeholder='Nombre' name='Nombre' required)
                     .form-group
                         label(for='Apellido') Apellido
-                        input#Apellido.form-control(type='text' placeholder='Nombre' name='Apellido' required)
+                        input#Apellido.form-control(type='text' placeholder='Apellido' name='Apellido' required)
                     .form-group
                         label(for='Sexo') Sexo
                         select#Sexo.form-control(type='select' placeholder='Sexo' name='Sexo' required).custom-select

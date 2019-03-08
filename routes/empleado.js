@@ -96,7 +96,8 @@ router.post("/existe", (req, res) => {
                     msg: 'Fallo al buscar empleado'
                 });
             }else if(respuesta == 1){
-                res.redirect('/empleado/');
+                var a = 1;
+                res.render('empleado', {a});
             }else if(respuesta == 0){
                 var noExiste = true;
                 empleadoController.getEmpleados( (empleados, err) => {

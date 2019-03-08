@@ -68,7 +68,7 @@ controller.getEmpleadoUpdate = async function (IdPersona, callback) {
             " INNER JOIN `Persona` ON `Persona`.`IdPersona` = `Empleado`.`IdPersona`" +
             " INNER JOIN `Cargo` ON `Cargo`.`IdCargo` = `Empleado`.`IdCargo`" +
             " WHERE `Empleado`.`IdPersona` = " + IdPersona + ";",
-            { type: sequelize.QueryTypes.SELECT}
+            { type: sequelize.QueryTypes.SELECT}    
         )
 
         console.log(empleadoUpdate[0]);

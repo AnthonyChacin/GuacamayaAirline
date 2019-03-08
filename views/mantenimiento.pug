@@ -1,0 +1,95 @@
+extends base
+block content
+  .container.pt-4
+    - if (true)
+      h2.text-center Historial de mantenimiento de aviones
+      .row.mt-5
+        .col-12
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                th(scope='col') Avión
+                th(scope='col') Fecha de entrada
+                th(scope='col') Descripción
+                th(scope='col') Fecha de salida
+                th(scope='col') Tipo
+                th(scope='col')
+                th(scope='col')
+            tbody
+            - for (var i = 0; i < mantenimientos.length; i++)
+              tr
+                th #{mantenimientos[i].IdAvion}
+                th #{mantenimientos[i].FechaEntroM}
+                td #{mantenimientos[i].Descripcion}
+                - if (mantenimientos[i].FechaSalida == '0001-01-01')
+                  td Todavía en mantenimiento
+                - else
+                  td #{mantenimientos[i].FechaSalida}
+                td #{mantenimientos[i].Tipo}
+                td
+                  form(action=`/mantenimiento/${mantenimientos[i].IdAvion}-${mantenimientos[i].FechaEntroM}`,method="GET")
+                    button.btn.btn-outline-dark(type='submit') Modificar
+                td
+                  form(action=`/mantenimiento/delete/${mantenimientos[i].IdAvion}-${mantenimientos[i].FechaEntroM}`,method="POST")
+                    button.btn.btn-outline-danger(type='submit') Eliminar
+    
+      - if (true)
+        div.row
+          div.col-6
+            h4.mt-5 Registrar mantenimiento
+            div.card.bg-dark
+              div.card-body.text-white 
+                  form(action='/mantenimiento/create/' method="POST")
+                    .form-group
+                        label(for='IdAvion') Avion 
+                        select#IdAvion.form-control(type='select' name='IdAvion' required).custom-select
+                            option(value="") ...
+                            - for (let i = 0; i < aviones.length; i++)
+                              option(value=`${aviones[i].IdAvion}`) #{aviones[i].IdAvion}
+                    .form-group
+                        label(for='FechaEntroM') Fecha de entrada
+                        input#FechaEntroM.form-control(type='date' placeholder='AAAA/MM/DD'  name='FechaEntroM' required)
+                    .form-group
+                        label(for='Descripcion') Descripción
+                        input#Descripcion.form-control(type='text' placeholder='Descripción' name='Descripcion' required).custom-select
+                    .form-group
+                        label(for='FechaSalida') Fecha de salida
+                        input#FechaSalida.form-control(type='date' placeholder='AAAA/MM/DD'  name='FechaSalida')
+                    .form-group
+                        label(for='Tipo') Tipo
+                        select#Tipo.form-control(type='select' name='Tipo' required).custom-select
+                            option(value="" selected) ...
+                            option(value="Periodico") Periódico
+                            option(value="PorFallas") PorFallas
+                    button.btn.btn-danger(type='submit') Registrar
+          - if (mantenimientoUpdate)  
+            div.col-6
+              h4.mt-5 Modificar historial de mantenimiento del avión #{mantenimientoUpdate.IdAvion}
+              div.card.bg-dark
+                div.card-body.text-white 
+                  form(action=`/mantenimiento/update/${mantenimientoUpdate.IdAvion}-${mantenimientoUpdate.FechaEntroM}` method="POST")
+                    .form-group
+                        label(for='IdAvion') Avion 
+                        select#IdAvion.form-control(type='select' name='IdAvion' required).custom-select
+                            - for (let i = 0; i < aviones.length; i++)
+                              option(value=`${aviones[i].IdAvion}` selected=(aviones[i].IdAvion == mantenimientoUpdate.IdAvion)) #{aviones[i].IdAvion}
+                    .form-group
+                        label(for='FechaEntroM') Fecha de entrada
+                        input#FechaEntroM.form-control(type='date' value=`${mantenimientoUpdate.FechaEntroM}` placeholder='AAAA/MM/DD'  name='FechaEntroM' required)
+                    .form-group
+                        label(for='Descripcion') Descripción
+                        input#Descripcion.form-control(type='text' value=`${mantenimientoUpdate.Descripcion}` placeholder='Descripción' name='Descripcion' required).custom-select
+                    .form-group
+                        label(for='FechaSalida') Fecha de salida
+                        - if (mantenimientoUpdate.FechaSalida != '0001-01-01')
+                          input#FechaSalida.form-control(type='date' value=`${mantenimientoUpdate.FechaSalida}` placeholder='AAAA/MM/DD'  name='FechaSalida' required)
+                        - else
+                          input#FechaSalida.form-control(type='date' placeholder='AAAA/MM/DD'  name='FechaSalida')
+                    .form-group
+                        label(for='Tipo') Tipo
+                        select#Tipo.form-control(type='select' name='Tipo' required).custom-select
+                            option(value="Periodico" selected=(mantenimientoUpdate.Tipo == "Periodico")) Periódico
+                            option(value="PorFallas"  selected=(mantenimientoUpdate.Tipo == "PorFallas")) PorFallas
+                    button.btn.btn-danger(type='submit') Modificar
+
+        

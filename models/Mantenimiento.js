@@ -24,6 +24,7 @@ const Mantenimiento = database.define('Mantenimiento', {
     FechaEntroM: {
         type: sequelize.DATEONLY,
         allowNull: false,
+        primaryKey: true,
 
         validate: {
             notEmpty: true,

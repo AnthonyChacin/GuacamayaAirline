@@ -62,8 +62,7 @@ router.get('/show/:id', (req, res) => {
 });
 
 router.get('/show/pista/::id1::id2', (req, res) => {
-  console.log(req.params.id1);
-  console.log(req.params.id2);
+  console.log(req.params);
   if(!!req.params.id1 && !!req.params.id2){
     pistaController.getpistasUpdate( req.params, (pistasUpdate, err) => {
       if (err){
