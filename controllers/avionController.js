@@ -1,4 +1,5 @@
-
+const sequelize = require('sequelize');
+const database = require('../config/database');
 const Avion = require('../models/Avion');
 
 const controller = {};
@@ -25,11 +26,27 @@ controller.getAvionUpdate = async function (IdAvion, callback){
                 IdAvion
             }
         });
-        //avionUpdate = avionUpdate.map(result => result.dataValues);
         
         console.log(avionUpdate);
 
         callback(avionUpdate, null);
+    }catch (error) {
+        callback(null, error);
+    }
+}
+
+controller.getAvionesPropios = async function (callback){
+    try {
+        console.log('1')
+        let avionesPropios = await database.query(
+            "SELECT `Avion`.`IdAvion` FROM `Avion`" + 
+            " LEFT JOIN `Alquiler_Avion` ON `Avion`.`IdAvion` = `Alquiler_Avion`.`IdAvion`" +
+            " WHERE `Alquiler_Avion`.`IdAvion` IS NULL AND `Avion`.`Activo` = 1;",
+            { type: sequelize.QueryTypes.SELECT}
+        );
+        
+        console.log(avionesPropios);
+        callback(avionesPropios, null);
     }catch (error) {
         callback(null, error);
     }

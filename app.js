@@ -11,6 +11,8 @@ const routeModelo = require('./routes/modelo');
 const routeTarifa = require('./routes/tarifa');
 const routeProveedor = require('./routes/proveedor');
 const routeAvion = require('./routes/avion');
+const routeRuta = require('./routes/ruta');
+const routeVuelo = require('./routes/vuelo');
 const routeAlquilerAviones = require('./routes/alquilerAviones');
 const routeMantenimiento = require('./routes/mantenimiento');
 const sequelize = require("./config/database");
@@ -30,6 +32,8 @@ app.use('/modelo', routeModelo);
 app.use('/tarifa', routeTarifa);
 app.use('/proveedor', routeProveedor);
 app.use('/avion', routeAvion);
+app.use('/ruta', routeRuta);
+app.use('/vuelo', routeVuelo);
 app.use('/alquilerAviones', routeAlquilerAviones);
 app.use('/mantenimiento', routeMantenimiento);
 

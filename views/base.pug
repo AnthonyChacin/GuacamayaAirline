@@ -61,6 +61,11 @@ html(lang="en")
                   a(href="/proveedor/").nav-link.pr-5.text-light Proveedores
                   a(href="/alquilerAviones/").nav-link.pr-5.text-light Alquiler de Aviones
                   a(href="/mantenimiento/").nav-link.pr-5.text-light Mantenimiento de Aviones
+            li.dropdown.nav-item
+              a.dropdown-toggle(href='#', data-toggle='dropdown', aria-expanded='false').nav-link.pr-5.text-light Vuelos +
+                ul(class="menu").dropdown-menu
+                  a(href="/vuelo/").nav-link.pr-5.text-light Vuelos
+                  a(href="/ruta/").nav-link.pr-5.text-light Rutas
             li.nav-item.dropdown
               a(href="/tarifa/").nav-link.pr-5.text-light Tarifas 
     block content

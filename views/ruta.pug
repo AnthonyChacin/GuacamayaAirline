@@ -1,0 +1,134 @@
+extends base
+block content
+  .container.pt-4
+    - if (dsrFailed)
+      script.
+        alert('Debe seleccionar al menos un día de la semana');
+        window.location.href='/ruta/';
+    - if (!dsrFailed)
+      h2.text-center Rutas
+      .row.mt-5
+        .col-12
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                th(scope='col') ID
+                th(scope='col') Hora de Salida
+                th(scope='col') Hora de Llegada
+                th(scope='col') Origen
+                th(scope='col') Destino
+                th(scope='col') Avion
+                th(scope='col')
+                th(scope='col')
+            tbody
+            - for (var i = 0; i < rutas.length; i++)
+              tr
+                th #{rutas[i].IdRuta}
+                td #{rutas[i].HoraSalida}
+                td #{rutas[i].HoraLlegada}
+                - for(let j = 0; j < aeropuertos.length; j++)
+                  - if(rutas[i].Origen == aeropuertos[j].CodigoIATA) 
+                    td #{aeropuertos[j].CodigoIATA}, #{aeropuertos[j].Ciudad} - #{aeropuertos[j].Pais}
+                - for(let k = 0; k < aeropuertos.length; k++)
+                  - if(rutas[i].Destino == aeropuertos[k].CodigoIATA) 
+                    td #{aeropuertos[k].CodigoIATA}, #{aeropuertos[k].Ciudad} - #{aeropuertos[k].Pais}
+                - for(let l = 0; l < aviones.length; l++)
+                  - if(rutas[i].IdAvion == aviones[l].IdAvion) 
+                    td #{aviones[l].IdAvion}
+                td
+                  form(action=`/ruta/${rutas[i].IdRuta}`,method="GET")
+                    button.btn.btn-outline-dark(type='submit') Modificar
+                td
+                  form(action=`/ruta/delete/${rutas[i].IdRuta}`,method="POST")
+                    button.btn.btn-outline-danger(type='submit') Eliminar
+    
+      - if (!dsrFailed)
+        div.row
+          div.col-6
+            h4.mt-5 Agregar Ruta
+            div.card.bg-dark
+                div.card-body.text-white 
+                  form(action='/ruta/create/' method="POST")
+                    .form-group
+                        label(for='HoraSalida') Hora de salida (Hora local Origen)
+                        input#HoraSalida.form-control(type='time' placeholder='Hora de salida' name='HoraSalida' required)
+                    .form-group
+                        label(for='HoraLlegada') Hora de llegada (Hora local Destino)
+                        input#HoraLlegada.form-control(type='time' placeholder='Hora de llegada' name='HoraLlegada' required)
+                    .form-group
+                        label(for='Origen') Origen
+                        select#Origen.form-control(type='select' name='Origen' required).custom-select
+                            option(value="" selected) ...
+                            - for (let i = 0; i < aeropuertos.length; i++)
+                              option(value=`${aeropuertos[i].CodigoIATA}`) #{aeropuertos[i].CodigoIATA}, #{aeropuertos[i].Ciudad} - #{aeropuertos[i].Pais}
+                    .form-group
+                        label(for='Destino') Destino
+                        select#Destino.form-control(type='select' name='Destino' required).custom-select
+                            option(value='' selected) ...
+                            - for (let i = 0; i < aeropuertos.length; i++)
+                              option(value=`${aeropuertos[i].CodigoIATA}`) #{aeropuertos[i].CodigoIATA}, #{aeropuertos[i].Ciudad} - #{aeropuertos[i].Pais}
+                    .form-group
+                        label(for='IdAvion') Avion
+                        select#IdAvion.form-control(type='select' name='IdAvion' required).custom-select
+                          option(value='' selected) ...
+                            - for (let i = 0; i < aviones.length; i++)
+                              option(value=`${aviones[i].IdAvion}`) #{aviones[i].IdAvion}
+                    .form-group
+                        label(for='DiasSemana') Días de la semana programados
+                        .checkbox-inline
+                            input#DiasSemana.checkbox-input(type='checkbox' name='DiasSemana' value='Lunes')
+                            label(for='DiasSemana').text-dark|  ...
+                            label(for='DiasSemana')|  Lunes
+                        .checkbox-inline
+                            input#DiasSemana.checkbox-input(type='checkbox' name='DiasSemana' value='Martes')
+                            label(for='DiasSemana').text-dark|  ...
+                            label(for='DiasSemana')|  Martes
+                        .checkbox-inline
+                            input#DiasSemana.checkbox-input(type='checkbox' name='DiasSemana' value='Miercoles')
+                            label(for='DiasSemana').text-dark|  ...
+                            label(for='DiasSemana')|  Miercoles
+                        .checkbox-inline
+                            input#DiasSemana.checkbox-input(type='checkbox' name='DiasSemana' value='Jueves')
+                            label(for='DiasSemana').text-dark|  ...
+                            label(for='DiasSemana')|  Jueves
+                        .checkbox-inline
+                            input#DiasSemana.checkbox-input(type='checkbox' name='DiasSemana' value='Viernes')
+                            label(for='DiasSemana').text-dark|  ...
+                            label(for='DiasSemana')|  Viernes
+                        .checkbox-inline
+                            input#DiasSemana.checkbox-input(type='checkbox' name='DiasSemana' value='Sabado')
+                            label(for='DiasSemana').text-dark|  ...
+                            label(for='DiasSemana')|  Sabado
+                        .checkbox-inline
+                            input#DiasSemana.checkbox-input(type='checkbox' name='DiasSemana' value='Domingo')
+                            label(for='DiasSemana').text-dark|  ...
+                            label(for='DiasSemana')|  Domingo 
+                    button.btn.btn-danger(type='submit') Agregar
+          - if (rutaUpdate)  
+            div.col-6
+              h4.mt-5 Modificar Ruta #{rutaUpdate.IdRuta}
+              div.card.bg-dark
+                div.card-body.text-white 
+                  form(action= `/ruta/update/${rutaUpdate.IdRuta}` method="POST")
+                    .form-group
+                        label(for='HoraSalida') Hora de salida
+                        input#HoraSalida.form-control(type='time' value=`${rutaUpdate.HoraSalida}` placeholder='Hora de salida' name='HoraSalida' required)
+                    .form-group
+                        label(for='HoraLlegada') Hora de llegada
+                        input#HoraLlegada.form-control(type='time' value=`${rutaUpdate.HoraLlegada}` placeholder='Hora de llegada' name='HoraLlegada' required)
+                    .form-group
+                        label(for='Origen') Origen
+                        select#Origen.form-control(type='select' name='Origen' required).custom-select
+                            - for (let i = 0; i < aeropuertos.length; i++)
+                              option(value=`${aeropuertos[i].CodigoIATA}` selected=(rutaUpdate.Origen == aeropuertos[i].CodigoIATA)) #{aeropuertos[i].CodigoIATA}, #{aeropuertos[i].Ciudad} - #{aeropuertos[i].Pais}
+                    .form-group
+                        label(for='Destino') Destino
+                        select#Destino.form-control(type='select' name='Destino' required).custom-select
+                            - for (let i = 0; i < aeropuertos.length; i++)
+                              option(value=`${aeropuertos[i].CodigoIATA}` selected=(rutaUpdate.Destino == aeropuertos[i].CodigoIATA)) #{aeropuertos[i].CodigoIATA}, #{aeropuertos[i].Ciudad} - #{aeropuertos[i].Pais}
+                    .form-group
+                        label(for='IdAvion') Avion
+                        select#IdAvion.form-control(type='select' name='IdAvion' required).custom-select
+                            - for (let i = 0; i < aviones.length; i++)
+                              option(value=`${aviones[i].IdAvion}` selected=(rutaUpdate.IdAvion == aviones[i].IdAvion)) #{aviones[i].IdAvion}
+                    button.btn.btn-danger(type='submit') Modificar

@@ -32,7 +32,7 @@ block content
                   td No
                 - for(let j = 0; j < modelos.length; j++)
                   - if(aviones[i].IdModelo == modelos[j].IdModelo) 
-                    td #{modelos[i].Nombre}
+                    td #{modelos[j].Nombre}
                 td
                   form(action=`/avion/${aviones[i].IdAvion}`,method="GET")
                     button.btn.btn-outline-dark(type='submit') Modificar
