@@ -43,7 +43,13 @@ sequelize.authenticate().then(value => value).catch(err => {
 
 sequelize.sync({logging: false});
 
+
+//Instrucción a utilizar cuando haga deploy de la aplicación
 app.set('port', process.env.PORT || 8081);
+
+//Instrucción a utilizar mientras esté trabajando de manera local
+//app.set('port', process.env.DB_PORT_APP || 8081);
+
 const server = app.listen(app.get('port'), () => {
     console.log(`Express running → PORT ${server.address().port} 🔥`);
 })
