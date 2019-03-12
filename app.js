@@ -45,7 +45,7 @@ sequelize.sync({logging: false});
 
 
 //Instrucción a utilizar cuando haga deploy de la aplicación
-app.set('port', process.env.PORT || 8081);
+app.set('port', process.env.PORT || 8080);
 
 //Instrucción a utilizar mientras esté trabajando de manera local
 //app.set('port', process.env.DB_PORT_APP || 8081);
