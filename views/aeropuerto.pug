@@ -20,7 +20,82 @@ block content
                 th(scope='row') #{aeropuertos[i].CodigoIATA}
                 td #{aeropuertos[i].Ciudad}
                 td #{aeropuertos[i].Pais}
-                td #{aeropuertos[i].ZonaHoraria}
+                - if(aeropuertos[i].ZonaHoraria == -11)
+                  td UTC -11
+                - if(aeropuertos[i].ZonaHoraria == -10)
+                  td UTC -10
+                - if(aeropuertos[i].ZonaHoraria == -9.30)
+                  td UTC -9:30
+                - if(aeropuertos[i].ZonaHoraria == -9)
+                  td UTC -9
+                - if(aeropuertos[i].ZonaHoraria == -8)
+                  td UTC -8
+                - if(aeropuertos[i].ZonaHoraria == -7)
+                  td UTC -7
+                - if(aeropuertos[i].ZonaHoraria == -6)
+                  td UTC -6
+                - if(aeropuertos[i].ZonaHoraria == -5)
+                  td UTC -5
+                - if(aeropuertos[i].ZonaHoraria == -4.30)
+                  td UTC -4:30
+                - if(aeropuertos[i].ZonaHoraria == -4)
+                  td UTC -4
+                - if(aeropuertos[i].ZonaHoraria == -3.30)
+                  td UTC -3:30
+                - if(aeropuertos[i].ZonaHoraria == -3)
+                  td UTC -3
+                - if(aeropuertos[i].ZonaHoraria == -2)
+                  td UTC -2
+                - if(aeropuertos[i].ZonaHoraria == -1)
+                  td UTC -1
+                - if(aeropuertos[i].ZonaHoraria == 0)
+                  td UTC
+                - if(aeropuertos[i].ZonaHoraria == 1)
+                  td UTC +1
+                - if(aeropuertos[i].ZonaHoraria == 2)
+                  td UTC +2
+                - if(aeropuertos[i].ZonaHoraria == 3)
+                  td UTC +3
+                - if(aeropuertos[i].ZonaHoraria == 3.30)
+                  td UTC +3:30
+                - if(aeropuertos[i].ZonaHoraria == 4)
+                  td UTC +4
+                - if(aeropuertos[i].ZonaHoraria == 4.30)
+                  td UTC +4:30
+                - if(aeropuertos[i].ZonaHoraria == 5)
+                  td UTC +5
+                - if(aeropuertos[i].ZonaHoraria == 5.30)
+                  td UTC +5:30
+                - if(aeropuertos[i].ZonaHoraria == 5.45)
+                  td UTC +5:45
+                - if(aeropuertos[i].ZonaHoraria == 6)
+                  td UTC +6
+                - if(aeropuertos[i].ZonaHoraria == 6.30)
+                  td UTC +6:30
+                - if(aeropuertos[i].ZonaHoraria == 7)
+                  td UTC +7
+                - if(aeropuertos[i].ZonaHoraria == 8)
+                  td UTC +8
+                - if(aeropuertos[i].ZonaHoraria == 9)
+                  td UTC +9
+                - if(aeropuertos[i].ZonaHoraria == 9.30)
+                  td UTC +9:30
+                - if(aeropuertos[i].ZonaHoraria == 10)
+                  td UTC +10
+                - if(aeropuertos[i].ZonaHoraria == 10.30)
+                  td UTC +10:30
+                - if(aeropuertos[i].ZonaHoraria == 11)
+                  td UTC +11
+                - if(aeropuertos[i].ZonaHoraria == 11.30)
+                  td UTC +11:30
+                - if(aeropuertos[i].ZonaHoraria == 12)
+                  td UTC +12
+                - if(aeropuertos[i].ZonaHoraria == 12.45)
+                  td UTC +12:45
+                - if(aeropuertos[i].ZonaHoraria == 13)
+                  td UTC +13
+                - if(aeropuertos[i].ZonaHoraria == 14)
+                  td UTC +14
                 td
                   form(action=`show/${aeropuertos[i].CodigoIATA}`,method="GET")
                     button.btn.btn-outline-dark(type='submit') Modificar
@@ -45,7 +120,44 @@ block content
               input#Pais.form-control(type='text' value=`${aeropuertosUpdate[0].Pais}` placeholder='Pais' name='Pais')
             .form-group
               label(for='ZonaHoraria') Zona Horaria
-              input#ZonaHoraria.form-control(type='number' value=`${aeropuertosUpdate[0].ZonaHoraria}` placeholder='ZonaHoraria' name='ZonaHoraria')  
+              select#ZonaHoraria.form-control(type='select' name='ZonaHoraria' required).custom-select
+                option(value="-11" selected=(aeropuertosUpdate[0].ZonaHoraria == -11)) UTC -11
+                option(value="-10" selected=(aeropuertosUpdate[0].ZonaHoraria == -10)) UTC -10
+                option(value="-9.30" selected=(aeropuertosUpdate[0].ZonaHoraria == -9.30)) UTC -9:30
+                option(value="-9" selected=(aeropuertosUpdate[0].ZonaHoraria == -9)) UTC -9
+                option(value="-8" selected=(aeropuertosUpdate[0].ZonaHoraria == -8)) UTC -8
+                option(value="-7" selected=(aeropuertosUpdate[0].ZonaHoraria == -7)) UTC -7
+                option(value="-6" selected=(aeropuertosUpdate[0].ZonaHoraria == -6)) UTC -6
+                option(value="-5" selected=(aeropuertosUpdate[0].ZonaHoraria == -5)) UTC -5
+                option(value="-4.30" selected=(aeropuertosUpdate[0].ZonaHoraria == -4.30)) UTC -4:30
+                option(value="-4" selected=(aeropuertosUpdate[0].ZonaHoraria == -4)) UTC -4
+                option(value="-3.30" selected=(aeropuertosUpdate[0].ZonaHoraria == -3.30)) UTC -3:30
+                option(value="-3" selected=(aeropuertosUpdate[0].ZonaHoraria == -3)) UTC -3
+                option(value="-2" selected=(aeropuertosUpdate[0].ZonaHoraria == -2)) UTC -2
+                option(value="-1" selected=(aeropuertosUpdate[0].ZonaHoraria == -1)) UTC -1
+                option(value="0" selected=(aeropuertosUpdate[0].ZonaHoraria == 0)) UTC
+                option(value="1" selected=(aeropuertosUpdate[0].ZonaHoraria == 1)) UTC +1
+                option(value="2" selected=(aeropuertosUpdate[0].ZonaHoraria == 2)) UTC +2
+                option(value="3" selected=(aeropuertosUpdate[0].ZonaHoraria == 3)) UTC +3
+                option(value="3.30" selected=(aeropuertosUpdate[0].ZonaHoraria == 3.30)) UTC +3:30
+                option(value="4" selected=(aeropuertosUpdate[0].ZonaHoraria == 4)) UTC +4
+                option(value="4.30" selected=(aeropuertosUpdate[0].ZonaHoraria == 4.30)) UTC +4:30
+                option(value="5" selected=(aeropuertosUpdate[0].ZonaHoraria == 5)) UTC +5
+                option(value="5.30" selected=(aeropuertosUpdate[0].ZonaHoraria == 5.30)) UTC +5:30
+                option(value="5.45" selected=(aeropuertosUpdate[0].ZonaHoraria == 5.45)) UTC +5:45
+                option(value="6" selected=(aeropuertosUpdate[0].ZonaHoraria == 6)) UTC +6
+                option(value="7" selected=(aeropuertosUpdate[0].ZonaHoraria == 7)) UTC +7
+                option(value="8" selected=(aeropuertosUpdate[0].ZonaHoraria == 8)) UTC +8
+                option(value="9" selected=(aeropuertosUpdate[0].ZonaHoraria == 9)) UTC +9
+                option(value="9.30" selected=(aeropuertosUpdate[0].ZonaHoraria == 9.30)) UTC +9:30
+                option(value="10" selected=(aeropuertosUpdate[0].ZonaHoraria == 10)) UTC +10
+                option(value="10.30" selected=(aeropuertosUpdate[0].ZonaHoraria == 10.30)) UTC +10:30
+                option(value="11" selected=(aeropuertosUpdate[0].ZonaHoraria == 11)) UTC +11
+                option(value="11.30" selected=(aeropuertosUpdate[0].ZonaHoraria == 11.30)) UTC +11:30
+                option(value="12" selected=(aeropuertosUpdate[0].ZonaHoraria == 12)) UTC +12
+                option(value="12.45" selected=(aeropuertosUpdate[0].ZonaHoraria == 12.45)) UTC +12:45
+                option(value="13" selected=(aeropuertosUpdate[0].ZonaHoraria == 13)) UTC +13
+                option(value="14" selected=(aeropuertosUpdate[0].ZonaHoraria == 14)) UTC +14  
             button.btn.btn-danger(type='submit') Modificar  
 
 
@@ -113,7 +225,44 @@ block content
                     input#Pais.form-control(type='text' placeholder='Pais' name='Pais' required)
                   .form-group
                     label(for='ZonaHoraria') Zona Horaria
-                    input#ZonaHoraria.form-control(type='number' name='ZonaHoraria' required)
+                    select#ZonaHoraria.form-control(type='select' name='ZonaHoraria' required).custom-select
+                      option(value="-11") UTC -11
+                      option(value="-10") UTC -10
+                      option(value="-9.30") UTC -9:30
+                      option(value="-9") UTC -9
+                      option(value="-8") UTC -8
+                      option(value="-7") UTC -7
+                      option(value="-6") UTC -6
+                      option(value="-5") UTC -5
+                      option(value="-4.30") UTC -4:30
+                      option(value="-4") UTC -4
+                      option(value="-3.30") UTC -3:30
+                      option(value="-3") UTC -3
+                      option(value="-2") UTC -2
+                      option(value="-1") UTC -1
+                      option(value="0" selected) UTC
+                      option(value="1") UTC +1
+                      option(value="2") UTC +2
+                      option(value="3") UTC +3
+                      option(value="3.30") UTC +3:30
+                      option(value="4") UTC +4
+                      option(value="4.30") UTC +4:30
+                      option(value="5") UTC +5
+                      option(value="5.30") UTC +5:30
+                      option(value="5.45") UTC +5:45
+                      option(value="6") UTC +6
+                      option(value="7") UTC +7
+                      option(value="8") UTC +8
+                      option(value="9") UTC +9
+                      option(value="9.30") UTC +9:30
+                      option(value="10") UTC +10
+                      option(value="10.30") UTC +10:30
+                      option(value="11") UTC +11
+                      option(value="11.30") UTC +11:30
+                      option(value="12") UTC +12
+                      option(value="12.45") UTC +12:45
+                      option(value="13") UTC +13
+                      option(value="14") UTC +14
                   button.btn.btn-danger(type='submit') Registrar
           div.col-6
             h4.mt-5 Agregar pista

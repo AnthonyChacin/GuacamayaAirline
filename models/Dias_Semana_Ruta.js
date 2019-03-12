@@ -29,15 +29,6 @@ const Dias_Semana_Ruta = database.define('Dias_Semana_Ruta', {
         validate: {
             notEmpty: true
         }
-    },
-    Activo: {
-        type: sequelize.TINYINT,
-        allowNull: false,
-        defaultValue: 1,
-
-        validate: {
-            notEmpty: true
-        }
     }
 }, {
     timestamps: false,

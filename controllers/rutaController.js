@@ -42,8 +42,6 @@ controller.getRutaUpdate = async function (IdRuta, callback){
                 IdRuta
             }
         });
-        
-        console.log(rutaUpdate);
 
         callback(rutaUpdate, null);
     }catch (error) {

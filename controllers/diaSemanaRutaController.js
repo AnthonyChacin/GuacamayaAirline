@@ -6,9 +6,6 @@ const controller = {};
 controller.getDSRutas = async function (callback){
     try {
         let DSRutas = await Dias_Semana_Ruta.findAll({
-            where: {
-                Activo: 1
-            }
         });
         DSRutas = DSRutas.map(result => result.dataValues);
         console.log(DSRutas);
@@ -18,16 +15,17 @@ controller.getDSRutas = async function (callback){
     }
 }
 
-controller.getDSRutasUpdate = async function (params, callback){
+controller.getDSRutasUpdate = async function (IdRuta, callback){
     try {
-        let DSRutasUpdate = await Dias_Semana_Ruta.findOne({
+        let DSRutasUpdate = await Dias_Semana_Ruta.findAll({
             where: {
-                IdRuta: params.IdRuta,
-                DiasSemana: params.DiasSemana
+                IdRuta
             }
         });
         
-        console.log(DSRutasUpdate);
+        DSRutasUpdate = DSRutasUpdate.map(result => result.dataValues);
+
+        console.log(DSRutasUpdate)
 
         callback(DSRutasUpdate, null);
     }catch (error) {
@@ -37,9 +35,7 @@ controller.getDSRutasUpdate = async function (params, callback){
 
 controller.deleteDSRuta = async function (params, callback) {
     try {
-        let response = await Dias_Semana_Ruta.update({
-            Activo: 0
-        }, {
+        let response = await Dias_Semana_Ruta.destroy({
             where: {
                 IdRuta: params.IdRuta,
                 DiasSemana: params.DiasSemana
@@ -57,24 +53,6 @@ controller.createDSRuta = async function (data, callback) {
         let response = await Dias_Semana_Ruta.create({
             IdRuta: data.IdRuta,
             DiasSemana: data.DiasSemana
-        });
-        
-        callback(null);
-    } catch (error) {
-        callback(error);
-    }
-}
-
-controller.updateDSRuta = async function (data, params, callback) {
-    try {
-        let response = await Dias_Semana_Ruta.update({
-            IdRuta: data.IdRuta,
-            DiasSemana: data.DiasSemana
-        },{
-            where:{
-                IdRuta: params.IdRuta,
-                DiasSemana: params.DiasSemana
-            } 
         });
         
         callback(null);

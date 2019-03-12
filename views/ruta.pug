@@ -1,11 +1,7 @@
 extends base
 block content
   .container.pt-4
-    - if (dsrFailed)
-      script.
-        alert('Debe seleccionar al menos un día de la semana');
-        window.location.href='/ruta/';
-    - if (!dsrFailed)
+    - if (!rutaUpdate)
       h2.text-center Rutas
       .row.mt-5
         .col-12
@@ -37,12 +33,12 @@ block content
                     td #{aviones[l].IdAvion}
                 td
                   form(action=`/ruta/${rutas[i].IdRuta}`,method="GET")
-                    button.btn.btn-outline-dark(type='submit') Modificar
+                    button.btn.btn-outline-dark(type='submit') Detalles
                 td
                   form(action=`/ruta/delete/${rutas[i].IdRuta}`,method="POST")
                     button.btn.btn-outline-danger(type='submit') Eliminar
     
-      - if (!dsrFailed)
+      - if (!rutaUpdate)
         div.row
           div.col-6
             h4.mt-5 Agregar Ruta
@@ -104,9 +100,10 @@ block content
                             label(for='DiasSemana').text-dark|  ...
                             label(for='DiasSemana')|  Domingo 
                     button.btn.btn-danger(type='submit') Agregar
-          - if (rutaUpdate)  
-            div.col-6
-              h4.mt-5 Modificar Ruta #{rutaUpdate.IdRuta}
+    - if (rutaUpdate) 
+        div.row 
+          div.col-6
+              h4.mt-5.text-center Ruta #{rutaUpdate.IdRuta}, #{rutaUpdate.Origen} - #{rutaUpdate.Destino} 
               div.card.bg-dark
                 div.card-body.text-white 
                   form(action= `/ruta/update/${rutaUpdate.IdRuta}` method="POST")
@@ -132,3 +129,42 @@ block content
                             - for (let i = 0; i < aviones.length; i++)
                               option(value=`${aviones[i].IdAvion}` selected=(rutaUpdate.IdAvion == aviones[i].IdAvion)) #{aviones[i].IdAvion}
                     button.btn.btn-danger(type='submit') Modificar
+          div.col-6
+              h4.mt-5.text-center Días de la semana programados para esta ruta 
+              div.card.bg-dark
+                div.card-body.text-white 
+                  form(action= `/ruta/updateDias/${rutaUpdate.IdRuta}` method="POST")
+                    .form-group
+                        label(for='DiasSemana') Días
+                        .checkbox-inline
+                            input#DiasSemana.checkbox-input(type='checkbox' name='DiasSemana' value='Lunes' checked=(diasSemana.Lunes == 'Lunes'))
+                            label(for='DiasSemana').text-dark|  ...
+                            label(for='DiasSemana')|  Lunes
+                        .checkbox-inline
+                            input#DiasSemana.checkbox-input(type='checkbox' name='DiasSemana' value='Martes' checked=(diasSemana.Martes == 'Martes'))
+                            label(for='DiasSemana').text-dark|  ...
+                            label(for='DiasSemana')|  Martes
+                        .checkbox-inline
+                            input#DiasSemana.checkbox-input(type='checkbox' name='DiasSemana' value='Miercoles' checked=(diasSemana.Miercoles == 'Miercoles'))
+                            label(for='DiasSemana').text-dark|  ...
+                            label(for='DiasSemana')|  Miercoles
+                        .checkbox-inline
+                            input#DiasSemana.checkbox-input(type='checkbox' name='DiasSemana' value='Jueves' checked=(diasSemana.Jueves == 'Jueves'))
+                            label(for='DiasSemana').text-dark|  ...
+                            label(for='DiasSemana')|  Jueves
+                        .checkbox-inline
+                            input#DiasSemana.checkbox-input(type='checkbox' name='DiasSemana' value='Viernes' checked=(diasSemana.Viernes == 'Viernes'))
+                            label(for='DiasSemana').text-dark|  ...
+                            label(for='DiasSemana')|  Viernes
+                        .checkbox-inline
+                            input#DiasSemana.checkbox-input(type='checkbox' name='DiasSemana' value='Sabado' checked=(diasSemana.Sabado == 'Sabado'))
+                            label(for='DiasSemana').text-dark|  ...
+                            label(for='DiasSemana')|  Sabado
+                        .checkbox-inline
+                            input#DiasSemana.checkbox-input(type='checkbox' name='DiasSemana' value='Domingo' checked=(diasSemana.Domingo == 'Domingo'))
+                            label(for='DiasSemana').text-dark|  ...
+                            label(for='DiasSemana')|  Domingo 
+                    button.btn.btn-warning(type='submit') Actualizar días   
+              h4.mt-5          
+              a.btn.btn-dark(type="button" href="/ruta/") Volver 
+                    
