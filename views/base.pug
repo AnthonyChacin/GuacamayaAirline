@@ -66,8 +66,11 @@ html(lang="en")
                 ul(class="menu").dropdown-menu
                   a(href="/vuelo/").nav-link.pr-5.text-light Vuelos
                   a(href="/ruta/").nav-link.pr-5.text-light Rutas
-            li.nav-item.dropdown
-              a(href="/tarifa/").nav-link.pr-5.text-light Tarifas 
+            li.dropdown.nav-item
+              a.dropdown-toggle(href='#', data-toggle='dropdown', aria-expanded='false').nav-link.pr-5.text-light Pasajes +
+                ul(class="menu").dropdown-menu
+                  a(href="/pasaje/").nav-link.pr-5.text-light Pasajes
+                  a(href="/tarifa/").nav-link.pr-5.text-light Tarifas
     block content
       // Content
   div.card-body.bg-light
@@ -78,3 +81,4 @@ html(lang="en")
       script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js", defer)
       script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js", defer)
       script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js", defer)
+      script(src="https://unpkg.com/sweetalert2@7.17.0/dist/sweetalert2.all.js", defer)

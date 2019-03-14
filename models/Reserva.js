@@ -19,6 +19,7 @@ const Reserva = database.define('Reserva', {
     IdComprador: {
         type: sequelize.INTEGER,
         allowNull: false,
+        unique: 'compositeIndex',
 
         validate: {
             notEmpty: false,
@@ -34,6 +35,7 @@ const Reserva = database.define('Reserva', {
     FechaReserva: {
         type: sequelize.DATEONLY,
         allowNull: false,
+        unique: 'compositeIndex',
 
         validate: {
             notEmpty: true,

@@ -114,7 +114,7 @@ const Pasaje = database.define('Pasaje', {
         }
     },
     EsIda: {
-        type: sequelize.BOOLEAN,
+        type: sequelize.TINYINT,
         allowNull: false,
 
         validate: {

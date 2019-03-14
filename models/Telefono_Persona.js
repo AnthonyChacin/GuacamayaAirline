@@ -22,7 +22,7 @@ const Telefono_Persona = database.define('Telefono_Persona', {
         }
     },
     Telefono: {
-        type: sequelize.INTEGER,
+        type: sequelize.BIGINT,
         allowNull: false,
         primaryKey: true,
 
