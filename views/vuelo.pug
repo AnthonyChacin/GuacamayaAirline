@@ -10,7 +10,8 @@ block content
               tr.tr.bg-dark.text-white
                 th(scope='col') ID
                 th(scope='col') Estatus
-                th(scope='col') Fecha
+                th(scope='col') Fecha de salida
+                th(scope='col') Fecha de llegada
                 th(scope='col') Hora de salida
                 th(scope='col') Hora de llegada
                 th(scope='col') Destino
@@ -18,12 +19,14 @@ block content
                 th(scope='col') Ruta
                 th(scope='col')
                 th(scope='col')
+                th(scope='col')
             tbody
             - for (var i = 0; i < vuelos.length; i++)
               tr
                 th #{vuelos[i].IdVuelo}
                 td #{vuelos[i].EstatusVuelo}
-                td #{vuelos[i].Fecha}
+                td #{vuelos[i].FechaSalida}
+                td #{vuelos[i].FechaLlegada}
                 td #{vuelos[i].HoraSalida}
                 td #{vuelos[i].HoraLlegada}
                 - for(let j = 0; j < aeropuertos.length; j++)
@@ -39,8 +42,49 @@ block content
                 td
                   form(action=`/vuelo/delete/${vuelos[i].IdVuelo}`,method="POST")
                     button.btn.btn-outline-danger(type='submit') Eliminar
-    
-      - if (!vueloUpdate)
+                td
+                  form(action=`/vuelo/tripulacion/${vuelos[i].IdVuelo}`,method="GET")
+                    button.btn.btn-outline-warning(type='submit') Tripulación
+    - if (tripulacion)
+      h2.text-center Tripulación del vuelo #{VueloTrabajado}
+      .row.mt-5
+        .col-12
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                th(scope='col') Pasaporte
+                th(scope='col') Nombre
+                th(scope='col') Apellido
+                th(scope='col') Cargo
+                th(scope='col')
+            tbody
+            - for (var i = 0; i < tripulacion.length; i++)
+              tr
+                th #{tripulacion[i].Pasaporte}
+                td #{tripulacion[i].Nombre}
+                td #{tripulacion[i].Apellido}
+                td #{tripulacion[i].Cargo}
+                td
+                  form(action=`/vuelo/deleteTripulacion/${tripulacion[i].IdEmpleado}-${VueloTrabajado}`,method="POST")
+                    button.btn.btn-outline-danger(type='submit') Eliminar 
+      - if (tripulacion)
+        div.row
+          div.col-12
+            h4.mt-5 Agregar tripulación al Vuelo
+            div.card.bg-dark
+                div.card-body.text-white 
+                  form(action=`/vuelo/createTripulacion/` method="POST")
+                    .form-group
+                        label(for='IdVueloTrabajado') Vuelo trabajado
+                        input#IdVueloTrabajado.form-control(type='text' value=`${VueloTrabajado}` name='IdVueloTrabajado' required readonly="readonly")   
+                    .form-group
+                        label(for='IdEmpleado') Empleado
+                        select#IdEmpleado.form-control(type='select' name='IdEmpleado' required).custom-select
+                            option(value='' selected) ...
+                            - for (let i = 0; i < empleados.length; i++)
+                              option(value=`${empleados[i].IdPersona}`) (#{empleados[i].Pasaporte}) #{empleados[i].Apellido},#{empleados[i].Nombre} - #{empleados[i].Cargo}
+                    button.btn.btn-danger(type='submit') Agregar
+    - if (!vueloUpdate && !tripulacion)
         div.row
           div.col-12
             h4.mt-5 Registrar Vuelo
@@ -50,13 +94,18 @@ block content
                     .form-group
                         label(for='EstatusVuelo') Estatus
                         select#EstatusVuelo.form-control(type='select' name='EstatusVuelo' required).custom-select
-                            option(value="En espera" selected) En espera
+                            option(value="A tiempo" selected) A tiempo
+                            option(value="Demorado") Demorado
+                            option(value="En vuelo") En vuelo
                             option(value="Cancelado") Cancelado
-                            option(value="En ruta") En ruta
-                            option(value="Culminado") Culminado
+                            option(value="Aterrizo") Aterrizó
+                            option(value="Desviado") Desviado
                     .form-group
-                        label(for='Fecha') Fecha
-                        input#Fecha.form-control(type='date' name='Fecha' required)   
+                        label(for='FechaSalida') Fecha de salida
+                        input#FechaSalida.form-control(type='date' name='FechaSalida' required)   
+                    .form-group
+                        label(for='FechaLlegada') Fecha de llegada
+                        input#FechaLlegada.form-control(type='date' name='FechaLlegada' required) 
                     .form-group
                         label(for='HoraSalida') Hora de Salida (Hora local Origen)
                         input#HoraSalida.form-control(type='time' name='HoraSalida' required)    
@@ -82,7 +131,7 @@ block content
                             - for (let i = 0; i < rutas.length; i++)
                               option(value=`${rutas[i].IdRuta}`) #{rutas[i].IdRuta}, #{rutas[i].Origen} - #{rutas[i].Destino} 
                     button.btn.btn-danger(type='submit') Registrar
-    - if (vueloUpdate) 
+    - if (vueloUpdate && !tripulacion) 
         div.row 
           div.col-12
               h4.mt-5 Modificar Vuelo
@@ -92,13 +141,18 @@ block content
                     .form-group
                         label(for='EstatusVuelo') Estatus
                         select#EstatusVuelo.form-control(type='select' name='EstatusVuelo' required).custom-select
-                            option(value="En espera" selected=(vueloUpdate == "En espera")) En espera
-                            option(value="Cancelado" selected=(vueloUpdate == "Cancelado")) En espera
-                            option(value="En ruta" selected=(vueloUpdate == "En ruta")) En ruta
-                            option(value="Culminado" selected=(vueloUpdate == "Culminado")) Culminado
+                            option(value="A tiempo" selected=(vueloUpdate == "A tiempo")) A tiempo
+                            option(value="Cancelado" selected=(vueloUpdate == "Cancelado")) Cancelado
+                            option(value="En vuelo" selected=(vueloUpdate == "En vuelo")) En vuelo
+                            option(value="Demorado" selected=(vueloUpdate == "Demorado")) Demorado
+                            option(value="Aterrizo" selected=(vueloUpdate == "Aterrizo")) Aterrizó
+                            option(value="Desviado" selected=(vueloUpdate == "Desviado")) Desviado
                     .form-group
-                        label(for='Fecha') Fecha
-                        input#Fecha.form-control(type='date' value=`${vueloUpdate.Fecha}` name='Fecha' required)   
+                        label(for='FechaSalida') Fecha
+                        input#FechaSalida.form-control(type='date' value=`${vueloUpdate.FechaSalida}` name='FechaSalida' required)   
+                    .form-group
+                        label(for='FechaLlegada') Fecha
+                        input#FechaLlegada.form-control(type='date' value=`${vueloUpdate.FechaLlegada}` name='FechaLlegada' required)   
                     .form-group
                         label(for='HoraSalida') Hora de Salida (Hora local Origen)
                         input#HoraSalida.form-control(type='time' value=`${vueloUpdate.HoraSalida}` name='HoraSalida' required)    

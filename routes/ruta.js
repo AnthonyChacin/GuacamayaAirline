@@ -210,7 +210,7 @@ router.post('/updateDias/:id', (req, res) => {
             })
         }else{
             res.write('<script>');
-            res.write('alert("Debe estar seleccionado al menos un dia de la semana para poder actualizar los dias programados de la ruta '+req.params.id+', la ruta siempre debe tener días programados");');
+            res.write('alert("Debe estar seleccionado al menos un dia de la semana para poder actualizar los dias programados de la ruta '+req.params.id+', la ruta siempre debe tener dias programados");');
             res.write("window.location.href='javascript:history.back(1)';");
             res.write('</script>');
             res.end();

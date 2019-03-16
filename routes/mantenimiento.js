@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
                 msg: 'Fallo al buscar mantenimientos'
             });
         }else{
-            avionController.getAviones((aviones, err) => {
+            avionController.getAvionesPropios((aviones, err) => {
                 if(err){
                     res.json({
                         success: false,
@@ -42,7 +42,7 @@ router.get('/:id1-:id2', (req, res) => {
                             msg: 'Fallo al obtener mantenimientos'
                         })
                     }else{
-                        avionController.getAviones((aviones, err2) => {
+                        avionController.getAvionesPropios((aviones, err2) => {
                             if(err2){
                                 res.json({
                                     success: false,

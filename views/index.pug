@@ -1,18 +1,77 @@
 extends base
 block content
   .container.pt-4
-    div(style="background-image: url(http://assets.stickpng.com/thumbs/580b57fbd9996e24bc43bb68.png); background-repeat: no-repeat").card
-      div.card-body
-        h4.card-title.text-center Bienvenido a Guacamaya Airlines
-        p.card-text.text-center ........
-        p.card-text.text-center ........
-        p.card-text.text-center ........
-        p.card-text.text-center ........
-        p.card-text.text-center ........
-        p.card-text.text-center ........
-        p.card-text.text-center ........
-        p.card-text.text-center ........
-        p.card-text.text-center ........
-        p.card-text.text-center ........
+    - if (!ofertasVuelos && !escalasOfertadas)
+      h1 Bienvenido a Guacamaya Airlines
+    - if(!ofertasVuelos && !escalasOfertadas)
+      div.row
+        div.col-3
+          h4.mt-5.text-center Buscar ofertas de vuelos
+          div.card.bg-dark
+            div.card-body.text-white 
+              form(action=`buscarOfertas/` method="POST")
+                .form-group
+                  label(for='Origen') Origen
+                  select#Origen.form-control(type='select' name='Origen' required).custom-select
+                    option(value='' selected) ...
+                      - for (let i = 0; i < aeropuertos.length; i++)
+                        option(value=`${aeropuertos[i].CodigoIATA}`) #{aeropuertos[i].CodigoIATA}, #{aeropuertos[i].Ciudad} - #{aeropuertos[i].Pais}
+                .form-group
+                  label(for='Destino') Destino
+                  select#Destino.form-control(type='select' name='Destino' required).custom-select
+                    option(value='' selected) ...
+                    - for (let i = 0; i < aeropuertos.length; i++)
+                      option(value=`${aeropuertos[i].CodigoIATA}`) #{aeropuertos[i].CodigoIATA}, #{aeropuertos[i].Ciudad} - #{aeropuertos[i].Pais}
+                .form-group
+                  label(for='FechaSalida') Fecha de viaje
+                  input#FechaSalida.form-control(type='date' name='FechaSalida' required)
+                button.btn.btn-warning(type='submit') Buscar 
+    - if (ofertasVuelos)
+      .row.mt-5
+        .col-12
+          h3.text-center Vuelos ofertados
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                th(scope='col') ID
+                th(scope='col') Hora de salida
+                th(scope='col') Hora de LLegada
+                th(scope='col') Origen
+                th(scope='col') Destino
+                th(scope='col') Fecha de salida
+                th(scope='col') Fecha de llegada
+            tbody
+            - for (var i = 0; i < ofertasVuelos.length; i++)
+              tr
+                td(scope='row') #{ofertasVuelos[i].IdVuelo}
+                td #{ofertasVuelos[i].HoraSalida}
+                td #{ofertasVuelos[i].HoraLlegada}
+                td #{ofertasVuelos[i].Origen}
+                td #{ofertasVuelos[i].Destino}
+                td #{ofertasVuelos[i].FechaSalida}
+                td #{ofertasVuelos[i].FechaLlegada}
+    - if (escalasOfertadas)
+      h3.text-center Vuelos ofertados
+      .row.mt-5
+        - for(let i = 0; i < escalasOfertadas.length; i++)
+          div.col-6
+            table.table.btn-outline-dark
+              thead.card-header
+                tr.bg-none
+                  - if( (escalasOfertadas[i].length - 1) > 1)
+                    th(scope='col') #{escalasOfertadas[i].length - 1} Escalas
+                  - else
+                    th(scope='col') #{escalasOfertadas[i].length - 1} Escala
+                  th(scope='col') Vuelo
+                  th(scope='col') 
+              tbody.card-body
+                tr
+                  td
+                    - for (let j = 1; j < escalasOfertadas[i].length; j++)
+                      p #{escalasOfertadas[i][j].Origen}
+                  td #{escalasOfertadas[i][0].Origen} - #{escalasOfertadas[i][(escalasOfertadas[i].length - 1)].Destino}
+                  td
+                    form(action=`#`,method="POST")
+                      button.btn.btn-outline-warning(type='submit') Ver oferta
 
     

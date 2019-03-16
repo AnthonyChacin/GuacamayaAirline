@@ -4,6 +4,8 @@ const vueloController = require('../controllers/vueloController');
 const aeropuertoController = require('../controllers/aeropuertoController');
 const avionController = require('../controllers/avionController');
 const rutaController = require('../controllers/rutaController');
+const tripulacionController = require('../controllers/tripulacionController');
+const empleadoController = require('../controllers/empleadoController');
 
 router.get('/', (req, res) => {
     vueloController.getVuelos((vuelos, err) => {
@@ -44,6 +46,7 @@ router.get('/', (req, res) => {
         }
     })
 })
+
 router.get('/:id', (req, res) => {
     if(!!req.params.id){
         vueloController.getVueloUpdate( req.params.id, (vueloUpdate, err) => {
@@ -86,6 +89,58 @@ router.get('/:id', (req, res) => {
     }
 })
 
+router.get('/tripulacion/:id', (req, res) => {
+    if(!!req.params.id){
+        tripulacionController.getTripulacionVuelo( req.params.id, (tripulacion, err) => {
+            if(err){
+                res.json({
+                    success: false,
+                    msg: 'Fallos al obtener la tripulacion del vuelo '+ req.params.id +'.'
+                })
+            }else{
+                rutaController.getRutas((rutas, err) => {
+                    if(err){
+                        res.json({
+                            success: false,
+                            msg: 'Fallo al obtener las rutas'
+                        })
+                    }else{
+                        empleadoController.getEmpleados((empleados, err) => {
+                            if(err){
+                                res.json({
+                                    success: false,
+                                    msg: 'Fallo al obtener los empleados'
+                                })
+                            }else{
+                                aeropuertoController.getAeropuertos((aeropuertos, err) => {
+                                    if(err){
+                                        res.json({
+                                            success: false,
+                                            msg: 'Fallo al obtener los aeropuertos'
+                                        })
+                                    }else{
+                                        vueloController.getVuelos((vuelos, err) => {
+                                            if(err){
+                                                res.json({
+                                                    success: false, 
+                                                    msg: 'Fallo al obtener los vuelos'
+                                                })
+                                            }else{
+                                                var VueloTrabajado = req.params.id
+                                                res.render('vuelo', {tripulacion, rutas, empleados, aeropuertos, VueloTrabajado, vuelos})
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+})
+
 router.post('/update/:id', (req, res) => {
     if(!!req.params.id && !!req.body){
         vueloController.updateVuelo(req.body, req.params.id, (err) => {
@@ -117,6 +172,40 @@ router.post('/create', (req, res) => {
         })
     }
 })
+
+router.post('/createTripulacion', (req, res) => {
+    if(!!req.body){
+        console.log(req.body)
+        tripulacionController.createTripulacion(req.body, (err) => {
+            console.log(err)
+            if(err){
+                res.json({
+                    success: false,
+                    msg: 'Fallo al crear tripulacion'
+                })
+            }else{
+                res.redirect(`/vuelo/tripulacion/${req.body.IdVueloTrabajado}`);
+            }
+        })
+    }
+})
+
+router.post('/deleteTripulacion/:IdEmpleado-:VueloTrabajado', (req, res) => {
+    if(!!req.params){
+        console.log('1')
+        tripulacionController.deleteTripulacion(req.params, (err) => {
+            if(err){
+                res.json({
+                    success: false,
+                    msg: 'Fallo al eliminar al empleado de la tripulacion'
+                })
+            }else{
+                res.redirect(`/vuelo/tripulacion/${req.params.VueloTrabajado}`);
+            }
+        })
+    }
+})
+
 
 router.get('/vuelo/:id');
 
