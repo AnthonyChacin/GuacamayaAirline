@@ -2,34 +2,14 @@ extends base
 block content
   .container.pt-4
     - if (!ofertasVuelos && !escalasOfertadas)
-      h1 Bienvenido a Guacamaya Airlines
-      div.row
-        - if (numPasajes)
-          // Reporte de cantidad de pasajes
-          h4.mt-5 Pasajes vendidos: #{numPasajes[0].num_pasajes}
-        // Reporte de ganancias
-        div.col-3
-          h4.mt-5.text-center Mostrar ganancias para el periodo:
-          div.card.bg-dark
-            div.card-body.text-white
-              form(action=`ganancias/` method="POST")
-                .form-group
-                  label(for='FechaInicio') Desde
-                  input#FechaInicio.form-control(type='date' name='FechaInicio' required)
-                .form-group
-                  label(for='FechaFin') Hasta
-                  input#FechaFin.form-control(type='date' name='FechaFin' required)
-                button.btn.btn-warning(type='submit') Mostrar
-              - if(ganancias)
-                h4.mt-5.text-center Ganancias: $ #{ganancias[0].ganancias}
-
+      h1.text-center.card-title Bienvenido a Guacamaya Airlines
     - if(!ofertasVuelos && !escalasOfertadas)
       div.row
-        div.col-3
-          h4.mt-5.text-center Buscar ofertas de vuelos
+        div.col-4
+          h5.mt-5.text-center Buscar ofertas de vuelos
           div.card.bg-dark
             div.card-body.text-white 
-              form(action=`buscarOfertas/` method="POST")
+              form(action=`/buscarOfertas/` method="POST")
                 .form-group
                   label(for='Origen') Origen
                   select#Origen.form-control(type='select' name='Origen' required).custom-select
@@ -46,10 +26,39 @@ block content
                   label(for='FechaSalida') Fecha de viaje
                   input#FechaSalida.form-control(type='date' name='FechaSalida' required)
                 button.btn.btn-warning(type='submit') Buscar 
-        .col-9.mt-5.card.btn-outline-dark
-          div
-            img(src="http://ortambo-airport.com/images/departures2.svg", alt="vuelos ofertados", style="height: 21rem; width: 100%; z-index:1")
-            h2(style="z-index:0").text-white <----- Busque vuelos aquí
+        // Reporte de ganancias
+        div.col-4
+          h5.mt-5.text-center Mostrar ganancias para el periodo:
+          div.card.bg-dark
+            div.card-body.text-white
+              - if(!ganancias)
+                form(action=`/ganancias/` method="POST")
+                  .form-group
+                    label(for='FechaInicio') Desde
+                    input#FechaInicio.form-control(type='date' value=`${FechaInicio}` name='FechaInicio' required)
+                  .form-group
+                    label(for='FechaFin') Hasta
+                    input#FechaFin.form-control(type='date' value=`${FechaFin}` name='FechaFin' required)
+                  button.btn.btn-warning(type='submit') Mostrar
+              - if(ganancias)
+                form(action=`/ganancias/` method="POST")
+                  .form-group
+                    label(for='FechaInicio') Desde
+                    input#FechaInicio.form-control(type='date' value=`${FechaInicio}` name='FechaInicio' required)
+                  .form-group
+                    label(for='FechaFin') Hasta
+                    input#FechaFin.form-control(type='date' value=`${FechaFin}` name='FechaFin' required)
+                  button.btn.btn-warning(type='submit') Mostrar
+                h4.mt-5.text-center Ganancias: $ #{ganancias[0].ganancias}
+        div.col-4
+          - if (numPasajes)
+            // Reporte de cantidad de pasajes
+            h5.mt-5.text-center Pasajes vendidos
+            div(style="height: 21rem").card.btn-outline-dark
+              img(src="https://image.freepik.com/vector-gratis/icono-vuelo-boleto-avion_24877-5863.jpg", alt="Pasaje" style="height: 16rem; width:100%")
+              div(style="height: 8rem").car-body
+                h3(style="margin-top:1.5rem").text-center #{numPasajes[0].num_pasajes}
+
     - if (ofertasVuelos)
       .row.mt-5
         .col-12

@@ -93,10 +93,16 @@ controller.updateTarifa = async function (data, IdTarifa, callback) {
 controller.reportarGanancias = async function (fechaI, fechaF, callback) {
     try {
         let response = await database.query(
-            "SELECT SUM(`PrecioBase`) AS ganancias FROM `Tarifa` T" +
-            " INNER JOIN `Pasaje` P ON T.`IdTarifa` = P.`IdTarifa`" +
-            " INNER JOIN `Reserva` R ON P.`IdReserva` = R.`IdReserva`" +
-            " WHERE DATEDIFF(R.`FechaReserva`, "+fechaI+") >=0 AND DATEDIFF(R.`FechaReserva`, "+fechaF+") <=0 AND R.`Activo` = 1;",
+            "SELECT SUM(`PrecioBase`) AS ganancias FROM `Tarifa` AS T" +
+            " INNER JOIN `Pasaje` AS P ON T.`IdTarifa` = P.`IdTarifa`" +
+            " INNER JOIN `Reserva`AS R ON P.`IdReserva` = R.`IdReserva`" +
+            " WHERE YEAR(R.`FechaReserva`) >= YEAR('"+fechaI+"')" +
+            " AND MONTH(R.`FechaReserva`) >= MONTH('"+fechaI+"')" +
+            " AND DAY(R.`FechaReserva`) >= DAY('"+fechaI+"')" +
+            " AND YEAR(R.`FechaReserva`) <= YEAR('"+fechaF+"')" +
+            " AND MONTH(R.`FechaReserva`) <= MONTH('"+fechaF+"')" +
+            " AND DAY(R.`FechaReserva`) <= DAY('"+fechaF+"')" +
+            " AND R.`Activo` = 1;",
             { type: sequelize.QueryTypes.SELECT }
         );
 

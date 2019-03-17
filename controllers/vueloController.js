@@ -13,7 +13,7 @@ controller.getVuelos = async function (callback){
         });
 
         vuelos = vuelos.map(result => result.dataValues);
-        
+        console.log(vuelos)
         callback(vuelos, null);
     }catch (error) {
         callback(null, error);

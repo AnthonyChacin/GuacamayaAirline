@@ -10,6 +10,7 @@ const empleadoController = require('../controllers/empleadoController');
 router.get('/', (req, res) => {
     vueloController.getVuelos((vuelos, err) => {
         if(err){
+            //console.log(err)
             res.json({
                 success: false,
                 msg: 'Fallo al obtener los vuelos'

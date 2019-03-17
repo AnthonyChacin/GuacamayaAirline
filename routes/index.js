@@ -86,13 +86,34 @@ router.get('/:id');
 router.post('/ganancias', (req,res) => {
   tarifaController.reportarGanancias(req.body.FechaInicio, req.body.FechaFin, (ganancias, err) => {
     if(err) {
+      console.log(err)
       res.json({
         success: false,
         msg: 'Fallo al obtener ganancias de tarifas'
       })
     } else {
       console.log(ganancias);
-      res.render('index', { ganancias, aeropuertos, numPasajes })
+      pasajeController.contarPasajes((numPasajes, err) => {
+        if(err){
+          res.json({
+            success: false,
+            msg: 'Fallo al obtener el número de pasajes'
+          })
+        }else{
+          aeropuertoController.getAeropuertos((aeropuertos, err) => {
+            if(err){
+              res.json({
+                success: false,
+                msg: 'Fallo al obtener los aeropuertos'
+              })
+            }else{
+              var FechaInicio = req.body.FechaInicio;
+              var FechaFin = req.body.FechaFin;
+              res.render('index', { ganancias, aeropuertos, numPasajes, FechaInicio, FechaFin })
+            }
+          })
+        }
+      })
     }
   })
 })
