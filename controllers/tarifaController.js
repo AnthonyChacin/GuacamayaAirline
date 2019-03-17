@@ -1,4 +1,6 @@
 
+const database = require('../config/database');
+const sequelize = require('sequelize');
 const Tarifa = require('../models/Tarifa');
 
 const controller = {};
@@ -85,6 +87,22 @@ controller.updateTarifa = async function (data, IdTarifa, callback) {
         callback(null);
     } catch (error) {
         callback(error);
+    }
+}
+
+controller.reportarGanancias = async function (fechaI, fechaF, callback) {
+    try {
+        let response = await database.query(
+            "SELECT SUM(`PrecioBase`) AS ganancias FROM `Tarifa` T" +
+            " INNER JOIN `Pasaje` P ON T.`IdTarifa` = P.`IdTarifa`" +
+            " INNER JOIN `Reserva` R ON P.`IdReserva` = R.`IdReserva`" +
+            " WHERE DATEDIFF(R.`FechaReserva`, "+fechaI+") >=0 AND DATEDIFF(R.`FechaReserva`, "+fechaF+") <=0 AND R.`Activo` = 1;",
+            { type: sequelize.QueryTypes.SELECT }
+        );
+
+        callback(response, null)
+    } catch (error) {
+        callback(null, error)
     }
 }
 

@@ -97,7 +97,7 @@ controller.updatePasaje = async function (data, IdPasaje, callback) {
 controller.contarPasajes = async function (callback) {
     try {
         let cuenta = await database.query(
-            "SELECT COUNT(`IdPasaje`) AS num_pasajes FROM `Pasaje`",
+            "SELECT COUNT(`IdPasaje`) AS num_pasajes FROM `Pasaje` P WHERE P.`Activo` = 1",
             { type: sequelize.QueryTypes.SELECT }
         );
         console.log(cuenta);
