@@ -26,6 +26,10 @@ block content
                   label(for='FechaSalida') Fecha de viaje
                   input#FechaSalida.form-control(type='date' name='FechaSalida' required)
                 button.btn.btn-warning(type='submit') Buscar 
+        .col-9.mt-5.card.btn-outline-dark
+          div
+            img(src="http://ortambo-airport.com/images/departures2.svg", alt="vuelos ofertados", style="height: 21rem; width: 100%; z-index:1")
+            h2(style="z-index:0").text-white <----- Busque vuelos aquí
     - if (ofertasVuelos)
       .row.mt-5
         .col-12
@@ -50,12 +54,13 @@ block content
                 td #{ofertasVuelos[i].Destino}
                 td #{ofertasVuelos[i].FechaSalida}
                 td #{ofertasVuelos[i].FechaLlegada}
+
     - if (escalasOfertadas)
       h3.text-center Vuelos ofertados
       .row.mt-5
         - for(let i = 0; i < escalasOfertadas.length; i++)
-          div.col-6
-            table.table.btn-outline-dark
+          div.col-3
+            table.table.bg-dark.text-warning
               thead.card-header
                 tr.bg-none
                   - if( (escalasOfertadas[i].length - 1) > 1)
@@ -63,15 +68,35 @@ block content
                   - else
                     th(scope='col') #{escalasOfertadas[i].length - 1} Escala
                   th(scope='col') Vuelo
-                  th(scope='col') 
-              tbody.card-body
+              tbody.card-body.text-light
                 tr
                   td
                     - for (let j = 1; j < escalasOfertadas[i].length; j++)
                       p #{escalasOfertadas[i][j].Origen}
+                    p(style="visibility:hidden") ...
                   td #{escalasOfertadas[i][0].Origen} - #{escalasOfertadas[i][(escalasOfertadas[i].length - 1)].Destino}
-                  td
-                    form(action=`#`,method="POST")
-                      button.btn.btn-outline-warning(type='submit') Ver oferta
+          div.col-9
+            table.table
+              thead.card-header.bg-dark.text-warning
+                th(scope='col') ID
+                th(scope='col') Hora de salida
+                th(scope='col') Hora de LLegada
+                th(scope='col') Origen
+                th(scope='col') Destino
+                th(scope='col') Fecha de salida
+                th(scope='col') Fecha de llegada
+              tbody.card-body
+              - for (let j = 0; j < escalasOfertadas[i].length; j++)
+                tr
+                  td(scope='row') #{escalasOfertadas[i][j].IdVuelo}
+                  td #{escalasOfertadas[i][j].HoraSalida}
+                  td #{escalasOfertadas[i][j].HoraLlegada}
+                  td #{escalasOfertadas[i][j].Origen}
+                  td #{escalasOfertadas[i][j].Destino}
+                  td #{escalasOfertadas[i][j].FechaSalida}
+                  td #{escalasOfertadas[i][j].FechaLlegada}
+                  
+                  
+                      
 
     

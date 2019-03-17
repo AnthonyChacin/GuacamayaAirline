@@ -66,18 +66,38 @@ controller.getEscalas2 = async function (escalas1, data, callback){
     var cont;
     var aux;
 
-    for (let i = 0; i < escalas1.length; i++) {
+    // Defino el vector en donde se guardarán los origenes evaluados
+    var origenesEvaluados = [];
+    // Contador utilizado para saber si el origen que estoy evaluando en un instante dado ya fue utilizado
+    var cont2;
+    //Aquí guardaré la posición del vector escalas2 donde se encuentra el vuelo que estoy evaluando en ese momento
+    var posicion;
 
+    for (let i = 0; i < escalas1.length; i++) {
+        
+        //Aquí estoy guardando el Destino del vuelo de escalas1 como Origen de data.Origen
+        //Igual con la fecha de llegada
+        //Esto se hace porque en el query necesito evaluar que la Ruta.Origen del vuelo que estoy buscando
+        //sea igual al Destino del vuelo que tengo en escalas1 
         data.Origen = escalas1[i].Destino
         data.FechaLlegada = escalas1[i].FechaLlegada
+
+        //Guardo el primer origen en el arreglo de origenes evaluados
+        //Este origen fue el que ingresó el usuario la primera vez
+        //Esto se hace para que las escalas no se conviertan en un ciclo y volvamos al mismo sitio donde partimos
+        //Teniendo este origen guardado, lo podré tomar en cuenta cuando haga la seleción de los vuelos
+        //que serán guardados en las escalas
+        origenesEvaluados.push(escalas1[i].Origen);
     
         aux = [];
+        
         aux.push(escalas1[i])
         cont = 0;
         do{
             try{
                 escalas2 = await database.query(
-                    "SELECT `Vuelo`.`IdVuelo`, `Vuelo`.`HoraSalida`, `Vuelo`.`HoraLlegada`, `Ruta`.`Origen`, `Ruta`.`Destino` AS Destino, `Vuelo`.`FechaSalida`, `Vuelo`.`FechaLlegada` FROM `Vuelo`" +
+                    "SELECT `Vuelo`.`IdVuelo`, `Vuelo`.`HoraSalida`, `Vuelo`.`HoraLlegada`, `Ruta`.`Origen`," +
+                    " `Ruta`.`Destino` AS Destino, `Vuelo`.`FechaSalida`, `Vuelo`.`FechaLlegada` FROM `Vuelo`" +
                     " INNER JOIN `Ruta` ON `Ruta`.`IdRuta` = `Vuelo`.`IdRuta`" +
                     " WHERE `Ruta`.`Origen` = '"+data.Origen+"'" +
                     " AND YEAR(`Vuelo`.`FechaSalida`) >= YEAR('"+data.FechaLlegada+"')" +
@@ -85,19 +105,70 @@ controller.getEscalas2 = async function (escalas1, data, callback){
                     " AND DAY(`Vuelo`.`FechaSalida`) >= DAY('"+data.FechaLlegada+"')" +
                     " AND `Vuelo`.`EstatusVuelo` = 'A tiempo'" +
                     " AND `Vuelo`.`Activo` = 1" +
-                    " ORDER BY `Vuelo`.`FechaSalida` ASC LIMIT 1;",
+                    " ORDER BY `Vuelo`.`FechaSalida` ASC",
                     { type: sequelize.QueryTypes.SELECT }
                 );
                 
-                data.Origen = escalas2.Destino
-                data.FechaLlegada = escalas2.FechaLlegada
                 cont++;
-                if(escalas2.length >0 ) aux.push(escalas2[0])
+                cont2 = 0;
+
+                //Sólo se guardarán vuelos en el arreglo auxiliar si el query trae algo
+                if(escalas2.length >0 ){
+                    //Aquí digo que le estoy asignando a data.Origen y data.FechaLlegada lo que se encuentra en 
+                    //escalas2 en la posición 0
+                    //Esto debido a que en la posición 0 me trae el vuelo con la fecha más proxima
+                    data.Origen = escalas2[0].Destino
+                    data.FechaLlegada = escalas2[0].FechaLlegada
+                    posicion = 0;
+                   
+                    for (let k = 0; k < escalas2.length; k++) {
+                        if(escalas2[k].Destino == data.Destino){
+                            //Aquí voy a reescribir lo que guardé en las líneas de arriba si se cumple
+                            //la condición de que haya un vuelo con el destino igual al ingresado
+                            //Con esto le estoy dando prioridad a dicho vuelo 
+                            data.Origen = escalas2[k].Destino
+                            data.FechaLlegada = escalas2[k].FechaLlegada
+                            posicion = k;
+                            break; //Si encontré dicho vuelo, hago un break para salirme del for
+                                   //Así no seguirá buscando porque ya encontró un vuelo con dicho destino
+                        }
+                    }
+
+                    //Hago push sobre el vector que tendrá los origenes evaluados
+                    //A medida que el query me trae los vuelos, yo voy guardando los origenes de esos vuelos
+                    origenesEvaluados.push(escalas2[posicion].Origen);
+                    
+                    //Aquí itero sobre el arreglo de origenes evaluados
+                    for (let j = 0; j < origenesEvaluados.length; j++) {
+                        //Verifico si el destino del vuelo que ya seleccioné ya es algún origen que he evaluado
+                        if(origenesEvaluados[j] == escalas2[posicion].Destino){
+                            //Si es así, le sumo uno al contador
+                            cont2++;
+                        }
+                    }
+                    //Si el contador es igual a cero, significa que el destino del vuelo seleccionado no es
+                    //ningún origen que ya he evaluado, por lo tanto lo puedo guardar en el arreglo auxiliar 
+                    //que contiene las escalas
+                    if(cont2 == 0){
+                        aux.push(escalas2[posicion])
+                    }
+                }else{
+                    //Si el query no trae nada, voy a reestructurar el areeglo escalas2 para que contenga
+                    //una posición valida y un arreglo con un destino valido.
+                    //De esta manera no me dará error cuando evalúe en el while
+                    posicion = 0;
+                    escalas2 = [[{Destino: ''}]]
+                }   
             }catch(error){
                 callback(null, error);
             }
-        }while(data.Destino != escalas2.Destino && cont <= 3);   
+        }while(data.Destino != escalas2[posicion].Destino && cont <= 3);   
+        //Una vez me salgo del while, guardo en la posición i del arreglo escalas el arreglo aux
         escalas[i] = aux;
+
+        //Seteo el vector de origenes evaluados ya que necesito evaluar otros origenes dependiendo de cada
+        //iteración del for
+        origenesEvaluados = [];
     }
     
     callback(escalas, null)

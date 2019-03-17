@@ -3,6 +3,8 @@ const router = express.Router();
 const aeropuertoController = require('../controllers/aeropuertoController');
 const vueloController = require('../controllers/vueloController');
 
+var escalasOfertadas = [];
+
 router.get('/', (req, res) => {
   aeropuertoController.getAeropuertos((aeropuertos, err) => {
     if (err) {
@@ -46,7 +48,7 @@ router.post('/buscarOfertas', (req, res) => {
                     msg: 'Fallo al obtener escalas totales'
                   })
                 } else {
-                  var escalasOfertadas = [];
+                  escalasOfertadas = []
                   for (let i = 0; i < escalas.length; i++) {
                     if(escalas[i][(escalas[i].length - 1)].Destino == req.body.Destino) escalasOfertadas.push(escalas[i])
                     console.log(escalas[i].length)
@@ -63,6 +65,7 @@ router.post('/buscarOfertas', (req, res) => {
     })
   }
 })
+
 
 router.get('/:id');
 
