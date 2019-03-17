@@ -1,4 +1,5 @@
-
+const database = require('../config/database');
+const sequelize = require('sequelize');
 const Pasaje = require('../models/Pasaje');
 
 const controller = {};
@@ -90,6 +91,19 @@ controller.updatePasaje = async function (data, IdPasaje, callback) {
         callback(null);
     } catch (error) {
         callback(error);
+    }
+}
+
+controller.contarPasajes = async function (callback) {
+    try {
+        let cuenta = await database.query(
+            "SELECT COUNT(`IdPasaje`) AS num_pasajes FROM `Pasaje`",
+            { type: sequelize.QueryTypes.SELECT }
+        );
+        console.log(cuenta);
+        callback(cuenta, null)
+    } catch (error) {
+        callback(null, error);
     }
 }
 

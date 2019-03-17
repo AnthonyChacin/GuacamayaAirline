@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const aeropuertoController = require('../controllers/aeropuertoController');
 const vueloController = require('../controllers/vueloController');
+const pasajeController = require('../controllers/pasajeController');
 
 router.get('/', (req, res) => {
   aeropuertoController.getAeropuertos((aeropuertos, err) => {
@@ -11,9 +12,20 @@ router.get('/', (req, res) => {
         msg: 'Fallo al obtener los aeropuertos'
       })
     } else {
-      res.render('index', { aeropuertos });
+      pasajeController.contarPasajes((numPasajes, err) => {
+        console.log(numPasajes);
+        if (err) {
+          res.json({
+            success: false,
+            msg: 'Fallo al obtener los pasajes'
+          })
+        } else {
+          res.render('index', { aeropuertos, numPasajes });
+        }
+      });
     }
   })
+
 });
 
 router.post('/buscarOfertas', (req, res) => {

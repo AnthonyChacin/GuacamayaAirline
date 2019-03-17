@@ -31,7 +31,6 @@ controller.getOfertasVuelos = async function (data, callback){
             " AND `Vuelo`.`Activo` = 1;",
             { type: sequelize.QueryTypes.SELECT }
         );
-
         callback(ofertasVuelos, null);
 
     }catch(error){

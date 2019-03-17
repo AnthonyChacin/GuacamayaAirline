@@ -3,6 +3,10 @@ block content
   .container.pt-4
     - if (!ofertasVuelos && !escalasOfertadas)
       h1 Bienvenido a Guacamaya Airlines
+      // Reporte de cantidad de pasajes
+      div.row
+        h4.mt-5 Pasajes vendidos: #{numPasajes[0].num_pasajes}
+
     - if(!ofertasVuelos && !escalasOfertadas)
       div.row
         div.col-3

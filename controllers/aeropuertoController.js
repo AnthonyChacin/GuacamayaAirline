@@ -1,4 +1,5 @@
-
+const database = require('../config/database');
+const sequelize = require('sequelize');
 const Aeropuerto = require('../models/Aeropuerto');
 
 const controller = {};
