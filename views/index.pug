@@ -3,6 +3,26 @@ block content
   .container.pt-4
     - if (!ofertasVuelos && !escalasOfertadas)
       h1 Bienvenido a Guacamaya Airlines
+      div.row
+        - if (numPasajes)
+          // Reporte de cantidad de pasajes
+          h4.mt-5 Pasajes vendidos: #{numPasajes[0].num_pasajes}
+        // Reporte de ganancias
+        div.col-3
+          h4.mt-5.text-center Mostrar ganancias para el periodo:
+          div.card.bg-dark
+            div.card-body.text-white
+              form(action=`ganancias/` method="POST")
+                .form-group
+                  label(for='FechaInicio') Desde
+                  input#FechaInicio.form-control(type='date' name='FechaInicio' required)
+                .form-group
+                  label(for='FechaFin') Hasta
+                  input#FechaFin.form-control(type='date' name='FechaFin' required)
+                button.btn.btn-warning(type='submit') Mostrar
+              - if(ganancias)
+                h4.mt-5.text-center Ganancias: $ #{ganancias[0].ganancias}
+
     - if(!ofertasVuelos && !escalasOfertadas)
       div.row
         div.col-3
