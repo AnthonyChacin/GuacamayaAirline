@@ -1,9 +1,9 @@
 extends base
 block content
   .container.pt-4
-    - if (!ofertasVuelos && !escalasOfertadas)
+    - if (!ofertasVuelos && !escalasOfertadas && !destinosPop)
       h1.text-center.card-title Bienvenido a Guacamaya Airlines
-    - if(!ofertasVuelos && !escalasOfertadas)
+    - if(!ofertasVuelos && !escalasOfertadas && !destinosPop)
       div.row
         div.col-4
           h4.mt-5.text-center Ofertas de vuelos
@@ -76,6 +76,13 @@ block content
                     input#ID_Vuelo.form-control(type='number' min="0" aria-describedby='ID_Vuelo' placeholder="ID_Vuelo" name='ID_Vuelo' required)
                   button.btn.btn-warning(type='submit') Ingresar
                 h4.mt-5.text-center Porcentaje a bordo: #{porcAbordo[0].abordaje}%
+        // Reporte de destinos populares
+        div.col-4
+          h4.mt-5.text-center Destinos más visitados
+          div.card.bg-dark
+            div.card-body.text-white
+              form(action=`/destinos_populares/` method="POST")
+                button.btn.btn-warning(type='submit') Ver
 
     - if (ofertasVuelos)
       .row.mt-5
@@ -143,7 +150,7 @@ block content
                   td #{escalasOfertadas[i][j].FechaSalida}
                   td #{escalasOfertadas[i][j].FechaLlegada}
                   
-                  
-                      
+    - if (destinosPop)              
+      // Continuara                
 
     

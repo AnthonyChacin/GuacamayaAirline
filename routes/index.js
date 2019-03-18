@@ -152,4 +152,17 @@ router.post('/abordaje', (req,res) => {
   })
 })
 
+router.post('/destinos_populares', (req,res) => {
+  pasajeController.destinosPopulares((destinosPop, err) =>{
+    if(err){
+      res.json({
+        success: false,
+        msg: 'Fallo al obtener los destinos'
+      })
+    }else{
+      res.render('index', { destinosPop })
+    }
+  })
+})
+
 module.exports = router;
