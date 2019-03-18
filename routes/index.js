@@ -118,4 +118,38 @@ router.post('/ganancias', (req,res) => {
   })
 })
 
+router.post('/abordaje', (req,res) => {
+  pasajeController.reportarAbordaje(req.body.ID_Vuelo, (porcAbordo, err) => {
+    if(err) {
+      console.log(err)
+      res.json({
+        success: false,
+        msg: 'Fallo al obtener abordaje de pasajes'
+      })
+    } else {
+      console.log(porcAbordo);
+      pasajeController.contarPasajes((numPasajes, err) => {
+        if(err){
+          res.json({
+            success: false,
+            msg: 'Fallo al obtener el número de pasajes'
+          })
+        }else{
+          aeropuertoController.getAeropuertos((aeropuertos, err) => {
+            if(err){
+              res.json({
+                success: false,
+                msg: 'Fallo al obtener los aeropuertos'
+              })
+            }else{
+              var ID_Vuelo = req.body.ID_Vuelo;
+              res.render('index', { porcAbordo, aeropuertos, numPasajes, ID_Vuelo});
+            }
+          })
+        }
+      })
+    }
+  })
+})
+
 module.exports = router;

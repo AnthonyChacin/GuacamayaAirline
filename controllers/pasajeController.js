@@ -124,4 +124,20 @@ controller.contarPasajes = async function (callback) {
     }
 }
 
+// Devuelve numero entre 0-100 (porcentaje)
+controller.reportarAbordaje = async function (IdVuelo, callback) {
+    try {
+        let response = await database.query(
+            //COUNT() no cuenta NULLs
+            "SELECT ROUND(COUNT(P.`IdVueloAbordado`)/COUNT(P.`IdPasaje`)*100,2) AS abordaje FROM Pasaje P" + 
+            " WHERE P.`Activo` = 1 AND P.`IdVueloReservado` = " + IdVuelo,
+            { type: sequelize.QueryTypes.SELECT }
+        );
+        console.log(response);
+        callback(response,null);
+    } catch (error) {
+        callback(null,error);
+    }
+}
+
 module.exports = controller;
