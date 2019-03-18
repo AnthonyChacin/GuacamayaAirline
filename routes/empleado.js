@@ -49,6 +49,20 @@ router.post("/update/:id", (req, res) => {
     }
 });
 
+router.post("/cargos/update/:id", (req, res) => {
+    if (!!req.body) {
+      cargoController.updateCargo(req.body, req.params.id, (err) => {
+        if (err)
+            res.json({
+              success: false,
+              msg: 'Fallo al modificar cargo'
+            });
+          else
+            res.redirect('/empleado/');
+      });
+    }
+});
+
 router.get('/:id', (req, res) => {
     if(!!req.params.id){ 
       empleadoController.getEmpleadoUpdate( req.params.id, (empleadoUpdate, err) => {
@@ -74,6 +88,41 @@ router.get('/:id', (req, res) => {
                             })
                         }else{
                             res.render('empleado', {empleados, empleadoUpdate, cargos});
+                        }
+                    })
+                }    
+          });
+        }    
+      });
+    }
+});
+
+
+router.get('/cargos/:id', (req, res) => {
+    if(!!req.params.id){ 
+      cargoController.getCargosUpdate( req.params.id, (cargoUpdate, err) => {
+        console.log(cargoUpdate);
+        if (err){
+            res.json({
+                success: false,
+                msg: 'Fallo al buscar el cargo a modificar'
+            });
+        }else{
+            empleadoController.getEmpleados((empleados, err) => {
+                if (err){
+                    res.json({
+                        success: false,
+                        msg: 'Fallo al mostrar empleados'
+                    });
+                }else{
+                    cargoController.getCargos( (cargos, err) => {
+                        if(err){
+                            res.json({
+                                success: false,
+                                msg: 'Fallo al mostrar cargos de empleados'
+                            })
+                        }else{
+                            res.render('empleado', {empleados, cargoUpdate, cargos});
                         }
                     })
                 }    

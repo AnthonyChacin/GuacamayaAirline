@@ -6,7 +6,7 @@ block content
     - if(!ofertasVuelos && !escalasOfertadas)
       div.row
         div.col-4
-          h5.mt-5.text-center Buscar ofertas de vuelos
+          h4.mt-5.text-center Ofertas de vuelos
           div.card.bg-dark
             div.card-body.text-white 
               form(action=`/buscarOfertas/` method="POST")
@@ -25,10 +25,10 @@ block content
                 .form-group
                   label(for='FechaSalida') Fecha de viaje
                   input#FechaSalida.form-control(type='date' name='FechaSalida' required)
-                button.btn.btn-warning(type='submit') Buscar 
+                button.btn.btn-warning(type='submit') Buscar ofertas
         // Reporte de ganancias
         div.col-4
-          h5.mt-5.text-center Mostrar ganancias para el periodo:
+          h4.mt-5.text-center Ganancias en un período
           div.card.bg-dark
             div.card-body.text-white
               - if(!ganancias)
@@ -39,7 +39,7 @@ block content
                   .form-group
                     label(for='FechaFin') Hasta
                     input#FechaFin.form-control(type='date' value=`${FechaFin}` name='FechaFin' required)
-                  button.btn.btn-warning(type='submit') Mostrar
+                  button.btn.btn-warning(type='submit') Mostrar ganancias
               - if(ganancias)
                 form(action=`/ganancias/` method="POST")
                   .form-group
@@ -48,12 +48,12 @@ block content
                   .form-group
                     label(for='FechaFin') Hasta
                     input#FechaFin.form-control(type='date' value=`${FechaFin}` name='FechaFin' required)
-                  button.btn.btn-warning(type='submit') Mostrar
+                  button.btn.btn-warning(type='submit') Mostrar ganancias
                 h4.mt-5.text-center Ganancias: $ #{ganancias[0].ganancias}
         div.col-4
           - if (numPasajes)
             // Reporte de cantidad de pasajes
-            h5.mt-5.text-center Pasajes vendidos
+            h4.mt-5.text-center Pasajes vendidos
             div(style="height: 21rem").card.btn-outline-dark
               img(src="https://image.freepik.com/vector-gratis/icono-vuelo-boleto-avion_24877-5863.jpg", alt="Pasaje" style="height: 16rem; width:100%")
               div(style="height: 8rem").car-body

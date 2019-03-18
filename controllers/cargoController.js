@@ -29,7 +29,7 @@ controller.getCargosUpdate = async function (id, callback){
         });
         cargosUpdate = cargosUpdate.map(result => result.dataValues);
         console.log(cargosUpdate);
-        callback(cargosUpdate, null);
+        callback(cargosUpdate[0], null);
     }catch (error) {
         callback(null, error);
     }

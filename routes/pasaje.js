@@ -146,6 +146,27 @@ router.post('/createReserva', (req, res) => {
     }
 })
 
+router.post(`/update/:id`, (req, res) => {
+    if(!!req.body && !!req.params.id){
+        pasajeController.updatePasaje( req.body, req.params.id, (err) => {
+           if(err){
+                console.log(err)
+                res.write('<script>')
+                res.write('alert("Fallo al modificar el pasaje!");');
+                res.write("window.location.href='javascript:history.back(1)';");
+                res.write('</script>')
+                res.end();
+           }else{
+                res.write('<script>');
+                res.write('alert("Pasaje modificado exitosamente!");');
+                res.write("window.location.href='/pasaje/';");
+                res.write('</script>');
+                res.end();
+           } 
+        })
+    }
+})
+
 router.post('/createPasaje', (req, res) => {
     if(!!req.body){
         pasajeController.createPasaje( req.body, (err) => {
