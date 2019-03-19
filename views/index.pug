@@ -151,6 +151,20 @@ block content
                   td #{escalasOfertadas[i][j].FechaLlegada}
                   
     - if (destinosPop)              
-      // Continuara                
+      .row.mt-5
+        .col-12
+          h3.text-center Destinos más visitados
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                th(scope='col') Destino
+                th(scope='col') Visitas
+                th(scope='col') Porcentaje de visitas
+            tbody
+            - for (var i = 0; i < destinosPop.length; i++)
+              tr
+                td #{destinosPop[i].destino}
+                td #{destinosPop[i].visitas}
+                td #{destinosPop[i].porcVisitas}%
 
     

@@ -128,7 +128,7 @@ controller.reportarAbordaje = async function (IdVuelo, callback) {
 controller.destinosPopulares = async function (callback) {
     try {
         let response = await database.query(
-            "SELECT CONCAT(A.`Ciudad`, ', ', A.`Pais`) AS destino, COUNT(P.`IdPasaje`) AS visitas FROM Pasaje P" + 
+            "SELECT CONCAT(A.`Ciudad`, ', ', A.`Pais`) AS destino, COUNT(P.`IdPasaje`) AS visitas, ROUND(COUNT(P.`IdPasaje`)/(SELECT COUNT(`IdPasaje`) FROM `Pasaje`)*100 ,2) as porcVisitas FROM `Pasaje` P" + 
             " INNER JOIN `Vuelo` V ON V.`IdVuelo` = P.`IdVueloAbordado`" +
             " INNER JOIN `Aeropuerto` A ON A.`CodigoIATA` = V.`Destino`" +
             " WHERE P.`Activo` = 1" +
