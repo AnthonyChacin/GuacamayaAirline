@@ -21,6 +21,20 @@ controller.getReservas = async function (callback){
     }
 }
 
+controller.getReservaUpdate = async function (IdReserva, callback){
+    try {
+        let reservaUpdate = await Reserva.findOne({
+            where: {
+                IdReserva
+            }
+        });
+
+        callback(reservaUpdate, null);
+    }catch (error) {
+        callback(null, error);
+    }
+}
+
 controller.deleteReserva = async function (IdReserva, callback) {
     try {
         let response = await Reserva.update({

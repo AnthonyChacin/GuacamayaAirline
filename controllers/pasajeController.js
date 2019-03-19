@@ -13,23 +13,6 @@ controller.getPasajes = async function (callback){
         });
 
         pasajes = pasajes.map(result => result.dataValues);
-
-        /* let pasajes = await database.query(
-            "SELECT `Pasaje`.`ID` AS PasajeID, Pasajero.`Pasaporte` AS PasaporteP, Pasajero.`Nombre` AS NombreP, Pasajero.`Apellido` AS ApellidoP, RutaR.`CodigoIATAOrigen` AS CodigoIATAOrigenR," +
-            "VueloR.`CodigoIATADestino` AS CodigoIATADestinoR, VueloR.`FechaSalida` AS FechaSalidaR,`Tarifa`.`Clase`,`Tarifa`.`ID` AS TarifaID," +
-            "Comprador.`Pasaporte` AS PasaporteC, Comprador.`Nombre` AS NombreC, Comprador.`Apellido` AS ApellidoC, RutaA.`CodigoIATAOrigen` AS CodigoIATAOrigenA, VueloA.`CodigoIATADestino` AS CodigoIATADestinoA," +
-            "VueloA.`FechaSalida` AS FechaSalidaA, `Pasaje`.`Asiento`, `Pasaje`.`Estado`, `Pasaje`.`FechaReserva`, `Pasaje`.`MetodoPago` " +
-            "FROM `Pasaje` " +
-            "INNER JOIN `Cliente` AS Pasajero ON `Pasaje`.`IDPasajero`= Pasajero.`ID` " +
-            "INNER JOIN `Cliente` AS Comprador ON `Pasaje`.`IDComprador`= Comprador.`ID` " +
-            "INNER JOIN `Vuelo` AS VueloR ON `Pasaje`.`IDVueloReservado`= VueloR.`ID` " +
-            "INNER JOIN `Vuelo` AS VueloA ON `Pasaje`.`IDVueloAbordado`= VueloA.`ID` " +
-            "INNER JOIN `Ruta` AS RutaR ON VueloR.`IDRuta`= RutaR.`ID` " +
-            "INNER JOIN `Ruta` AS RutaA ON VueloA.`IDRuta`= RutaA.`ID` " +
-            "INNER JOIN `Tarifa` ON `Pasaje`.`IDTarifa`=`Tarifa`.`ID` " +
-            "WHERE `Pasaje`.`Activo`= 1;",
-            { type: sequelize.QueryTypes.SELECT }
-        ); */
         
         console.log(pasajes);
         
@@ -78,6 +61,7 @@ controller.createPasaje = async function (data, callback) {
             IdVueloReservado: data.IdVueloReservado,
             IdVueloAbordado: data.IdVueloAbordado,
             IdTarifa: data.IdTarifa,
+            PiezasEquipaje: data.PiezasEquipaje,
             Asiento: data.Asiento,
             EsIda: data.EsIda
         });
@@ -97,6 +81,7 @@ controller.updatePasaje = async function (data, IdPasaje, callback) {
             IdVueloReservado: data.IdVueloReservado,
             IdVueloAbordado: data.IdVueloAbordado,
             IdTarifa: data.IdTarifa,
+            PiezasEquipaje: data.PiezasEquipaje,
             Asiento: data.Asiento,
             EsIda: data.EsIda
         },{

@@ -66,6 +66,66 @@ router.get('/', (req,res) => {
     })
 })
 
+router.get('/reserva/:id', (req,res) => {
+    if(!!req.params.id){
+        reservaController.getReservaUpdate( req.params.id, (reservaUpdate, err) => {
+            if(err){
+                res.render({
+                    success: false, 
+                    msg: 'Fallo al obtener la reserva a modificar'
+                })
+            }else{
+                clienteController.getClientes((clientes, err) => {
+                    if(err){
+                        res.json({
+                            success: false, 
+                            msg: 'Fallo al obtener los clientes'
+                        })
+                    }else{
+                        vueloController.getVuelos((vuelos, err) => {
+                            if(err){
+                                res.json({
+                                    success: false, 
+                                    msg: 'Fallo al obtener los vuelos'
+                                })
+                            }else{
+                                rutaController.getRutas((rutas, err) => {
+                                    if(err){
+                                        res.json({
+                                            success: false, 
+                                            msg: 'Fallo al obtener las rutas'
+                                        })
+                                    }else{
+                                        tarifaController.getTarifas((tarifas, err) => {
+                                            if(err){
+                                                res.json({
+                                                    success: false, 
+                                                    msg: 'Fallo al obtener las tarifas'
+                                                })
+                                            }else{
+                                                reservaController.getReservas((reservas, err) => {
+                                                    if(err){
+                                                        res.json({
+                                                            success: false, 
+                                                            msg: 'Fallo al obtener las reservas'
+                                                        })
+                                                    }else{
+                                                        res.render('pasaje', {reservaUpdate, clientes, vuelos, rutas, tarifas, reservas});
+                                                    }
+                                                })
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+})
+
 router.get('/:id', (req,res) => {
     if(!!req.params.id){
         pasajeController.getPasajeUpdate( req.params.id, (pasajeUpdate, err) => {
@@ -159,6 +219,27 @@ router.post(`/update/:id`, (req, res) => {
            }else{
                 res.write('<script>');
                 res.write('alert("Pasaje modificado exitosamente!");');
+                res.write("window.location.href='/pasaje/';");
+                res.write('</script>');
+                res.end();
+           } 
+        })
+    }
+})
+
+router.post(`/updateReservar/:id`, (req, res) => {
+    if(!!req.body && !!req.params.id){
+        reservaController.updateReserva( req.body, req.params.id, (err) => {
+           if(err){
+                console.log(err)
+                res.write('<script>')
+                res.write('alert("Fallo al modificar la reserva!");');
+                res.write("window.location.href='javascript:history.back(1)';");
+                res.write('</script>')
+                res.end();
+           }else{
+                res.write('<script>');
+                res.write('alert("Reserva modificada exitosamente!");');
                 res.write("window.location.href='/pasaje/';");
                 res.write('</script>');
                 res.end();

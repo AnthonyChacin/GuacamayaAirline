@@ -76,12 +76,7 @@ const Pasaje = database.define('Pasaje', {
     },
     IdVueloAbordado: {
         type: sequelize.INTEGER,
-        allowNull: false,
-
-        validate: {
-            notEmpty: false,
-            isNumeric: true
-        },
+        allowNull: true,
 
         references: {
             model: Vuelo,
@@ -102,6 +97,15 @@ const Pasaje = database.define('Pasaje', {
             model: Tarifa,
             key: 'IdTarifa',
             deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
+        }
+    },
+    PiezasEquipaje: {
+        type: sequelize.INTEGER,
+        allowNull: false,
+
+        validate: {
+            notEmpty: false,
+            isNumeric: true
         }
     },
     Asiento: {
