@@ -71,7 +71,6 @@ router.post('/buscarOfertas', (req, res) => {
                   res.render('index', {escalasOfertadas})
                 }
               })
-
             }
           })
         }
@@ -155,6 +154,7 @@ router.post('/abordaje', (req,res) => {
 router.post('/destinos_populares', (req,res) => {
   pasajeController.destinosPopulares((destinosPop, err) =>{
     if(err){
+      console.log(err)
       res.json({
         success: false,
         msg: 'Fallo al obtener los destinos'

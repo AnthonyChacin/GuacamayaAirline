@@ -1,10 +1,55 @@
 extends base
 block content
   .container.pt-4
-    - if (true)
+    - if (proveedoresPCA)
+      h2.text-center Promedio de los costos por día de alquiler
+      .row.mt-5
+        .col-12
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                th(scope='col') Nombre
+                th(scope='col') Ciudad
+                th(scope='col') Pais
+                th(scope='col') Costo promedio por día de alquiler
+            tbody
+            - for (var i = 0; i < proveedoresPCA.length; i++)
+              tr
+                th #{proveedoresPCA[i].Nombre}
+                td #{proveedoresPCA[i].Ciudad}
+                td #{proveedoresPCA[i].Pais}
+                td $#{proveedoresPCA[i].CostoAlquiler}
+          a.btn.btn-dark(href='/proveedor/') Volver   
+    - if (proveedoresPTR)
+      h2.text-center Tiempo de respuesta de proveedores
+      .row.mt-5
+        .col-12
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                th(scope='col') Nombre
+                th(scope='col') Ciudad
+                th(scope='col') Pais
+                th(scope='col') Tiempo de respuesta (Días)
+            tbody
+            - for (var i = 0; i < proveedoresPTR.length; i++)
+              tr
+                th #{proveedoresPTR[i].Nombre}
+                td #{proveedoresPTR[i].Ciudad}
+                td #{proveedoresPTR[i].Pais}
+                td #{proveedoresPTR[i].TiempoRespuesta}
+          a.btn.btn-dark(href='/proveedor/') Volver   
+    - if (!proveedoresPTR && !proveedoresPCA)
       h2.text-center Proveedores
       .row.mt-5
         .col-12
+          div.row
+            div.col-4
+              form(action=`/proveedor/tiempoRespuesta`,method="GET")
+                button.btn.btn-outline-info(type='submit') Filtrar por tiempo de respuesta
+            div.col-4  
+              form(action=`/proveedor/preciosAlquileres`,method="GET")
+                button.btn.btn-outline-info(type='submit') Filtrar por costos de alquileres
           table.table.bg-white
             thead
               tr.tr.bg-dark.text-white

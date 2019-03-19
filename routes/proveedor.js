@@ -16,6 +16,32 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/tiempoRespuesta', (req, res) => {
+    proveedorController.getProveedoresPTR((proveedoresPTR, err) => {
+        if(err){
+            res.json({
+                success: false, 
+                msg: 'Fallo al obtener tiempo de respuesta de proveedores'
+            })
+        }else{
+            res.render('proveedor', {proveedoresPTR})
+        }
+    })
+})
+
+router.get('/preciosAlquileres', (req, res) => {
+    proveedorController.getProveedoresPCA((proveedoresPCA, err) => {
+        if(err){
+            res.json({
+                success: false, 
+                msg: 'Fallo al obtener costo de alquileres de proveedores'
+            })
+        }else{
+            res.render('proveedor', {proveedoresPCA})
+        }
+    })
+})
+
 router.get('/:id', (req, res) => {
     if(!!req.params.id){
         proveedorController.getProveedorUpdate(req.params.id, (proveedorUpdate, err) => {
