@@ -93,7 +93,17 @@ controller.updateTarifa = async function (data, IdTarifa, callback) {
 controller.reportarGanancias = async function (fechaI, fechaF, callback) {
     try {
         let response = await database.query(
+            /*
+            //-------Version completa pero no existe CantidadEq en Pasaje--------
+            "SELECT (CASE" +
+            " WHEN P.`CantidadEq` <= T.`CantidadEq` THEN SUM(T.`PrecioBase`*(100+T.`FeeReservacion`)/100)" +
+            " ELSE SUM(T.`PrecioBase`*(100+T.`FeeReservacion`+T.`FeeEqExtra`)/100)" +
+            " END) AS ganancias FROM `Tarifa` AS T" +   
+            // (inner joins...)
+            */
+            //-----------------Version incompleta-------------------------
             "SELECT SUM(`PrecioBase`) AS ganancias FROM `Tarifa` AS T" +
+            //-------------------------------------------------------------
             " INNER JOIN `Pasaje` AS P ON T.`IdTarifa` = P.`IdTarifa`" +
             " INNER JOIN `Reserva`AS R ON P.`IdReserva` = R.`IdReserva`" +
             " WHERE YEAR(R.`FechaReserva`) >= YEAR('"+fechaI+"')" +

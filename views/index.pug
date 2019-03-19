@@ -1,9 +1,9 @@
 extends base
 block content
   .container.pt-4
-    - if (!ofertasVuelos && !escalasOfertadas)
+    - if (!ofertasVuelos && !escalasOfertadas && !destinosPop)
       h1.text-center.card-title Bienvenido a Guacamaya Airlines
-    - if(!ofertasVuelos && !escalasOfertadas)
+    - if(!ofertasVuelos && !escalasOfertadas && !destinosPop)
       div.row
         div.col-4
           h4.mt-5.text-center Ofertas de vuelos
@@ -58,6 +58,31 @@ block content
               img(src="https://image.freepik.com/vector-gratis/icono-vuelo-boleto-avion_24877-5863.jpg", alt="Pasaje" style="height: 16rem; width:100%")
               div(style="height: 8rem").car-body
                 h3(style="margin-top:1.5rem").text-center #{numPasajes[0].num_pasajes}
+        // Reporte de abordaje
+        div.col-4
+          h4.mt-5.text-center Abordaje de un vuelo
+          div.card.bg-dark
+            div.card-body.text-white
+              - if (!porcAbordo)
+                form(action='/abordaje/' method="POST")
+                  .form-group
+                    label(for='ID_Vuelo') ID del vuelo
+                    input#ID_Vuelo.form-control(type='number' min="0" aria-describedby='ID_Vuelo' placeholder="ID_Vuelo" name='ID_Vuelo' required)
+                  button.btn.btn-warning(type='submit') Ingresar
+              - if (porcAbordo)
+                form(action='/abordaje/' method="POST")
+                  .form-group
+                    label(for='ID_Vuelo') ID del vuelo
+                    input#ID_Vuelo.form-control(type='number' min="0" aria-describedby='ID_Vuelo' placeholder="ID_Vuelo" name='ID_Vuelo' required)
+                  button.btn.btn-warning(type='submit') Ingresar
+                h4.mt-5.text-center Porcentaje a bordo: #{porcAbordo[0].abordaje}%
+        // Reporte de destinos populares
+        div.col-4
+          h4.mt-5.text-center Destinos más visitados
+          div.card.bg-dark
+            div.card-body.text-white
+              form(action=`/destinos_populares/` method="POST")
+                button.btn.btn-warning(type='submit') Ver
 
     - if (ofertasVuelos)
       .row.mt-5
@@ -125,7 +150,7 @@ block content
                   td #{escalasOfertadas[i][j].FechaSalida}
                   td #{escalasOfertadas[i][j].FechaLlegada}
                   
-                  
-                      
+    - if (destinosPop)              
+      // Continuara                
 
     
