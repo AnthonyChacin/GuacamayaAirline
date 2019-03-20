@@ -62,7 +62,6 @@ controller.createPasaje = async function (data, callback) {
             IdVueloAbordado: data.IdVueloAbordado,
             IdTarifa: data.IdTarifa,
             PiezasEquipaje: data.PiezasEquipaje,
-            Asiento: data.Asiento,
             EsIda: data.EsIda
         });
         
@@ -104,6 +103,81 @@ controller.contarPasajes = async function (callback) {
         );
         console.log(cuenta);
         callback(cuenta, null)
+    } catch (error) {
+        callback(null, error);
+    }
+}
+
+controller.asignarAsiento = async function (Asiento,IdPasaje, callback) {
+    try{
+
+        let response = await Pasaje.update({
+            Asiento
+        },{
+            where: {
+                IdPasaje
+            }
+        });
+        
+        callback(null)
+
+    }catch(error){
+        callback(error)
+    }
+}
+
+controller.buscarAsientosOcupados = async function (params, callback) {
+    try {
+
+        let asientosDisponibles = [];
+
+        // Busco la cantidad de asientos ocupados del tipo determinado en la tarifa del pasaje.
+        // Estos asientos corresponden al avión asignado al vuelo para el que se reservó el pasaje
+        let asientosOcupados = await database.query(
+            "SELECT P.`Asiento` FROM `Pasaje` AS P" +
+            " INNER JOIN `Vuelo` AS V ON V.`IdVuelo` = P.`IdVueloReservado`" +
+            " INNER JOIN `Avion` AS A ON A.`IdAvion` = V.`IdAvion`" +
+            " INNER JOIN `Modelo` AS M ON M.`IdModelo` = A.`IdModelo`" +
+            " INNER JOIN `Tarifa` AS T ON T.`IdTarifa` = P.`IdTarifa`" +
+            " WHERE P.`Asiento` IS NOT NULL AND P.`IdVueloReservado` = "+params.IdVueloReservado+"" +
+            " AND T.`Clase` = (SELECT `Tarifa`.`Clase` FROM `Tarifa` WHERE `Tarifa`.`IdTarifa` = "+params.IdTarifa+")" +
+            " ORDER BY P.`Asiento` ASC;",
+            { type: sequelize.QueryTypes.SELECT }
+        );
+        
+        // Busco la cantidad de asientos que hay disponibles del tipo de asiento que está determinado en la
+        // tarifa del pasaje seleccionado
+        let tipoAsiento = await database.query(
+            "SELECT IF(T.`Clase` = 'ClaseEconomica', M.`NumAsienEco`, M.`NumAsienPrim`) AS CantAsientos, T.`Clase` FROM `Pasaje` AS P" +
+            " INNER JOIN `Vuelo` AS V ON V.`IdVuelo` = P.`IdVueloReservado`" +
+            " INNER JOIN `Avion` AS A ON A.`IdAvion` = V.`IdAvion`" +
+            " INNER JOIN `Modelo` AS M ON M.`IdModelo` = A.`IdModelo`" +
+            " INNER JOIN `Tarifa` AS T ON T.`IdTarifa` = P.`IdTarifa`" +
+            " AND T.`Clase` = (SELECT `Tarifa`.`Clase` FROM `Tarifa` WHERE `Tarifa`.`IdTarifa` = "+params.IdTarifa+") LIMIT 1",
+            { type: sequelize.QueryTypes.SELECT }
+        );
+        
+        var cont = 0;
+
+        for (let i = 1; i <= tipoAsiento[0].CantAsientos; i++) {
+            for (let j = 0; j < asientosOcupados.length; j++) {
+                if(asientosOcupados[j].Asiento == i){
+                    cont++;
+                }
+            }
+            if(cont > 0){
+                asientosDisponibles.push({Numero: i, Asiento: 1});
+            }else{
+                asientosDisponibles.push({Numero: i, Asiento: 0}); 
+            }
+            cont = 0;
+        }
+
+        //console.log(asientosDisponibles);
+
+        //console.log(tipoAsiento[0]);
+        //console.log(asientosOcupados);
+        callback(asientosDisponibles, tipoAsiento[0], null)
     } catch (error) {
         callback(null, error);
     }

@@ -248,6 +248,37 @@ router.post(`/updateReservar/:id`, (req, res) => {
     }
 })
 
+router.post('/asignarAsiento/:Asiento-:IdPasaje', (req, res) => {
+    if(req.params){
+        pasajeController.asignarAsiento(req.params.Asiento, req.params.IdPasaje, (err) => {
+            if(err){
+                res.json({
+                    success: false,
+                    msg: 'Fallo al asignar asiento'
+                })
+            }else{
+                res.redirect('/pasaje/');
+            }
+        })
+    }
+})
+
+router.get('/buscarAsientos/:IdPasaje-:IdVueloReservado-:IdTarifa', (req, res) => {
+    if(!!req.params){
+        pasajeController.buscarAsientosOcupados(req.params, (asientosDisponibles, tipoAsiento, err) => {
+            if(err){
+                res.json({
+                    success: false,
+                    msg: 'Fallo al obtener asientos disponibles'
+                })
+            }else{
+                var IdPasaje = req.params.IdPasaje
+                res.render('pasaje', {asientosDisponibles, tipoAsiento, IdPasaje})
+            }
+        })
+    }
+})
+
 router.post('/createPasaje', (req, res) => {
     if(!!req.body){
         pasajeController.createPasaje( req.body, (err) => {

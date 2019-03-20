@@ -42,7 +42,8 @@ controller.getEscalas1 = async function (data, callback){
     try{
         
         let escalas1 = await database.query(
-            "SELECT `Vuelo`.`IdVuelo`, `Vuelo`.`HoraSalida`, `Vuelo`.`HoraLlegada`, `Ruta`.`Origen`, `Ruta`.`Destino`, `Vuelo`.`FechaSalida`, `Vuelo`.`FechaLlegada` FROM `Vuelo`" +
+            "SELECT `Vuelo`.`IdVuelo`, `Vuelo`.`HoraSalida`, `Vuelo`.`HoraLlegada`, `Ruta`.`Origen`, `Ruta`.`Destino`," + 
+            " `Vuelo`.`FechaSalida`, `Vuelo`.`FechaLlegada` FROM `Vuelo`" +
             " INNER JOIN `Ruta` ON `Ruta`.`IdRuta` = `Vuelo`.`IdRuta`" +
             " WHERE `Ruta`.`Origen` = '"+data.Origen+"'" +
             " AND `Vuelo`.`FechaSalida` = '"+data.FechaSalida+"'" +

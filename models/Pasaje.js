@@ -110,10 +110,9 @@ const Pasaje = database.define('Pasaje', {
     },
     Asiento: {
         type: sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
 
         validate: {
-            notEmpty: false,
             isNumeric: true
         }
     },

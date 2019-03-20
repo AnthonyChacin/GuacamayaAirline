@@ -144,8 +144,10 @@ router.get('/tripulacion/:id', (req, res) => {
 
 router.post('/update/:id', (req, res) => {
     if(!!req.params.id && !!req.body){
+        console.log(req.body)
         vueloController.updateVuelo(req.body, req.params.id, (err) => {
             if(err){
+                console.log(err)
                 res.json({
                     success: false,
                     msg: 'Fallos al modificar el vuelo '+ req.params.id+'.'

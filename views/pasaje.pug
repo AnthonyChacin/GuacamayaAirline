@@ -1,7 +1,59 @@
 extends base
 block content
   .container.pt-4
-    - if (!pasajeUpdate && !reservaUpdate)
+
+    - if(asientosDisponibles)
+      - if(tipoAsiento.Clase == 'ClaseEconomica')
+        h2.text-center Asientos de clase económica, #{tipoAsiento.CantAsientos}
+      - else
+        h2.text-center Asientos de primera clase, #{tipoAsiento.CantAsientos}  
+      div.row
+        div(style="float:left").col-2
+          div(style="width:3rem; height: 3rem").btn.bg-danger
+          b(style="visibility: hidden") ...
+          b Ocupado
+        div(style="float:left").col-2
+          div(style="width:3rem; height: 3rem").btn.btn-outline-success
+          b(style="visibility: hidden") ...
+          b Disponible
+      h2.mt-5    
+      div.row
+        - for(let i = 0; i < asientosDisponibles.length; i++)
+          div.col-1.mt-1
+            - if (asientosDisponibles[i].Asiento == 0)
+              form(action=`/pasaje/asignarAsiento/${asientosDisponibles[i].Numero}-${IdPasaje}`,method="POST")
+                button(style="width:4.5rem;" type='submit').btn.btn-outline-success #{asientosDisponibles[i].Numero}
+                  img(src="https://d30y9cdsu7xlg0.cloudfront.net/png/91605-200.png", alt="asiento", style="width:3rem; height: 3rem")
+            - else
+              form
+                button(style="width:4.5rem;").btn.bg-danger.text-light #{asientosDisponibles[i].Numero}
+                  img(src="https://d30y9cdsu7xlg0.cloudfront.net/png/91605-200.png", alt="asiento", style="width:3rem; height: 3rem")
+   
+    - if (reservaUpdate && !asientosDisponibles)
+      div.row
+        div.col-6
+          h4.mt-5 Modificar reserva
+          div.card.bg-dark
+            div.card-body.text-white 
+              form(action='/pasaje/updateReserva/' method="POST")
+                .form-group
+                  label(for='IdComprador') Comprador
+                  select#IdComprador.form-control(type='select' name='IdComprador' required).custom-select
+                    - for (let i = 0; i < clientes.length; i++)
+                      option(value=`${clientes[i].IdPersona}` selected=(reservaUpdate.IdComprador == clientes[i].IdPersona)) (#{clientes[i].Pasaporte}) #{clientes[i].Apellido}, #{clientes[i].Nombre} 
+                .form-group
+                  label(for='FechaReserva') Fecha de la reserva
+                  input#FechaReserva.form-control(type='date' value=`${reservaUpdate.FechaReserva}` name='FechaReserva' required)
+                .form-group
+                  label(for='MetodoPago') Método de pago
+                  select#MetodoPago.form-control(type='select' name='MetodoPago' required).custom-select
+                    option(value="Credito" selected=(reservaUpdate.MetodoPago == 'Credito')) Tarjeta de crédito
+                    option(value="Debito" selected=(reservaUpdate.MetodoPago == 'Debito')) Tarjeta de débito
+                    option(value="Transferencia" selected=(reservaUpdate.MetodoPago == 'Transferencia')) Transferencia electrónica
+                    option(value="Efectivo" selected=(reservaUpdate.MetodoPago == 'Efectivo')) Efectivo
+                button.btn.btn-danger(type='submit') Modificar
+
+    - if (!pasajeUpdate && !reservaUpdate && !asientosDisponibles)
       h2.text-center Reservas
       .row.mt-5
         .col-12
@@ -25,7 +77,7 @@ block content
                 td
                   form(action=`/pasaje/reserva/${reservas[i].IdReserva}`,method="GET")
                     button.btn.btn-outline-dark(type='submit') Detalles
-    - if (!pasajeUpdate && !reservaUpdate)
+    - if (!pasajeUpdate && !reservaUpdate && !asientosDisponibles)
       h2.text-center Pasajes
       .row.mt-5
         .col-12
@@ -71,7 +123,12 @@ block content
                   - if (tarifas[j].IdTarifa == pasajes[i].IdTarifa)
                     td #{tarifas[j].IdTarifa} - #{tarifas[j].Clase}
                 td #{pasajes[i].PiezasEquipaje}
-                td #{pasajes[i].Asiento}
+                - if (pasajes[i].Asiento == null)
+                  td
+                    form(action=`/pasaje/buscarAsientos/${pasajes[i].IdPasaje}-${pasajes[i].IdVueloReservado}-${pasajes[i].IdTarifa}`,method="GET")
+                      button.btn.btn-outline-info(type='submit') Asignar
+                - else
+                  td #{pasajes[i].Asiento}
                 - if(pasajes[i].EsIda == 1)
                   td Ida
                 - else
@@ -82,7 +139,7 @@ block content
                 td
                   form(action=`/pasaje/delete/${pasajes[i].IdPasaje}`,method="POST")
                     button.btn.btn-outline-danger(type='submit') Eliminar
-      - if (!pasajeUpdate)
+      - if (!pasajeUpdate && !asientosDisponibles)
         div.row
           div.col-6
             h4.mt-5 Registrar reserva
@@ -148,16 +205,16 @@ block content
                     .form-group
                         label(for='PiezasEquipaje') Cantidad de piezas de equipaje
                         input#PiezasEquipaje.form-control(type='number' name='PiezasEquipaje' required)
-                    .form-group
+                    //.form-group
                         label(for='Asiento') Asiento
                         input#Asiento.form-control(type='number' name='Asiento' required)
                     .form-group
                         label(for='EsIda') Tipo de pasaje
                         select#EsIda.form-control(type='select' name='EsIda' required).custom-select
                             option(value=1 selected) Ida
-                            option(value=0) Ida y Vuelta
+                            option(value=0) Ida y Vuelta 
                     button.btn.btn-danger(type='submit') Agregar
-    - if (pasajeUpdate)
+    - if (pasajeUpdate && !asientosDisponibles)
         div.row
             div.col-6
               h4.mt-5 Modificar pasaje
@@ -207,26 +264,3 @@ block content
                     button.btn.btn-danger(type='submit') Modificar    
               h4.mt-5          
               a.btn.btn-dark(type="button" href="/pasaje/") Volver 
-  - if (reservaUpdate)
-        div.row
-          div.col-6
-            h4.mt-5 Modificar reserva
-            div.card.bg-dark
-                div.card-body.text-white 
-                  form(action='/pasaje/updateReserva/' method="POST")
-                    .form-group
-                        label(for='IdComprador') Comprador
-                        select#IdComprador.form-control(type='select' name='IdComprador' required).custom-select
-                            - for (let i = 0; i < clientes.length; i++)
-                              option(value=`${clientes[i].IdPersona}` selected=(reservaUpdate.IdComprador == clientes[i].IdPersona)) (#{clientes[i].Pasaporte}) #{clientes[i].Apellido}, #{clientes[i].Nombre} 
-                    .form-group
-                        label(for='FechaReserva') Fecha de la reserva
-                        input#FechaReserva.form-control(type='date' value=`${reservaUpdate.FechaReserva}` name='FechaReserva' required)
-                    .form-group
-                        label(for='MetodoPago') Método de pago
-                        select#MetodoPago.form-control(type='select' name='MetodoPago' required).custom-select
-                            option(value="Credito" selected=(reservaUpdate.MetodoPago == 'Credito')) Tarjeta de crédito
-                            option(value="Debito" selected=(reservaUpdate.MetodoPago == 'Debito')) Tarjeta de débito
-                            option(value="Transferencia" selected=(reservaUpdate.MetodoPago == 'Transferencia')) Transferencia electrónica
-                            option(value="Efectivo" selected=(reservaUpdate.MetodoPago == 'Efectivo')) Efectivo
-                    button.btn.btn-danger(type='submit') Modificar

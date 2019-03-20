@@ -173,12 +173,7 @@ block content
                         label(for='IdAvion') Avion
                         select#IdAvion.form-control(type='select' name='IdAvion' required).custom-select
                             - for (let i = 0; i < aviones.length; i++)
-                              option(value=`${aviones[i].IdAvion}` selected=(vueloUpdate.IdAvion == aviones[i].IdAvion)) #{aviones[i].IdAvion}
-                    .form-group
-                        label(for='IdRuta') Ruta
-                        select#IdRuta.form-control(type='select' name='IdRuta' required).custom-select
-                            - for (let i = 0; i < rutas.length; i++)
-                              option(value=`${rutas[i].IdRuta}` selected=(vueloUpdate.IdRuta == rutas[i].IdRuta)) #{rutas[i].IdRuta}, #{rutas[i].Origen} - #{rutas[i].Destino} 
+                              option(value=`${aviones[i].IdAvion}` selected=(vueloUpdate.IdAvion == aviones[i].IdAvion)) #{aviones[i].IdAvion} 
                     button.btn.btn-danger(type='submit') Modificar 
               h4.mt-5              
               a.btn.btn-dark(type="button" href="/ruta/") Volver 
