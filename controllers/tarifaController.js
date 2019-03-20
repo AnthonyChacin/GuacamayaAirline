@@ -93,17 +93,12 @@ controller.updateTarifa = async function (data, IdTarifa, callback) {
 controller.reportarGanancias = async function (fechaI, fechaF, callback) {
     try {
         let response = await database.query(
-            /*
-            //-------Version completa pero no existe CantidadEq en Pasaje--------
-            "SELECT (CASE" +
-            " WHEN P.`CantidadEq` <= T.`CantidadEq` THEN SUM(T.`PrecioBase`*(100+T.`FeeReservacion`)/100)" +
-            " ELSE SUM(T.`PrecioBase`*(100+T.`FeeReservacion`+T.`FeeEqExtra`)/100)" +
-            " END) AS ganancias FROM `Tarifa` AS T" +   
-            // (inner joins...)
-            */
-            //-----------------Version incompleta-------------------------
-            "SELECT SUM(`PrecioBase`) AS ganancias FROM `Tarifa` AS T" +
-            //-------------------------------------------------------------
+            "SELECT ROUND(SUM( (CASE" +
+            " WHEN P.`PiezasEquipaje` <= T.`CantidadEq` AND P.`Estado` = 'Comprado' THEN (T.`PrecioBase`*(100+T.`FeeReservacion`)/100)" +
+            " WHEN P.`PiezasEquipaje` <= T.`CantidadEq` AND P.`Estado` = 'Reservado' THEN (T.`PrecioBase`*(T.`FeeReservacion`)/100)" +
+            " WHEN P.`PiezasEquipaje` > T.`CantidadEq` AND P.`Estado` = 'Comprado' THEN (T.`PrecioBase`*(100+T.`FeeReservacion`+T.`FeeEqExtra`)/100)" +
+            " ELSE (T.`PrecioBase`*(T.`FeeReservacion`+T.`FeeEqExtra`)/100)" +
+            " END) ),2) AS ganancias FROM `Tarifa` AS T" +   
             " INNER JOIN `Pasaje` AS P ON T.`IdTarifa` = P.`IdTarifa`" +
             " INNER JOIN `Reserva`AS R ON P.`IdReserva` = R.`IdReserva`" +
             " WHERE YEAR(R.`FechaReserva`) >= YEAR('"+fechaI+"')" +
@@ -112,7 +107,7 @@ controller.reportarGanancias = async function (fechaI, fechaF, callback) {
             " AND YEAR(R.`FechaReserva`) <= YEAR('"+fechaF+"')" +
             " AND MONTH(R.`FechaReserva`) <= MONTH('"+fechaF+"')" +
             " AND DAY(R.`FechaReserva`) <= DAY('"+fechaF+"')" +
-            " AND R.`Activo` = 1;",
+            " AND R.`Activo` = 1",
             { type: sequelize.QueryTypes.SELECT }
         );
 

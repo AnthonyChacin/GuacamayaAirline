@@ -76,6 +76,14 @@ block content
                     input#ID_Vuelo.form-control(type='number' min="0" aria-describedby='ID_Vuelo' placeholder="ID_Vuelo" name='ID_Vuelo' required)
                   button.btn.btn-warning(type='submit') Ingresar
                 h4.mt-5.text-center Porcentaje a bordo: #{porcAbordo[0].abordaje}%
+        - if (sobreventas)
+          // Reporte de sobreventas
+          div.col-4
+            h4.mt-5.text-center Vuelos sobrevendidos
+            div(style="height: 21rem").card.btn-outline-dark
+              img(src="https://image.freepik.com/vector-gratis/icono-vuelo-boleto-avion_24877-5863.jpg", alt="Pasaje" style="height: 16rem; width:100%")
+              div(style="height: 8rem").car-body
+                h3(style="margin-top:1.5rem").text-center #{sobreventas[0].numSobreventas} (#{sobreventas[0].porcSobreventas}%)
         // Reporte de destinos populares
         div.col-4
           h4.mt-5.text-center Destinos más visitados
@@ -151,6 +159,20 @@ block content
                   td #{escalasOfertadas[i][j].FechaLlegada}
                   
     - if (destinosPop)              
-      // Continuara                
+      .row.mt-5
+        .col-12
+          h3.text-center Destinos más visitados
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                th(scope='col') Destino
+                th(scope='col') Visitas
+                th(scope='col') Porcentaje de visitas
+            tbody
+            - for (var i = 0; i < destinosPop.length; i++)
+              tr
+                td #{destinosPop[i].destino}
+                td #{destinosPop[i].visitas}
+                td #{destinosPop[i].porcVisitas}%
 
     
