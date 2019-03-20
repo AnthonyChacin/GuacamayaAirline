@@ -24,7 +24,17 @@ router.get('/', (req, res) => {
             msg: 'Fallo al obtener los pasajes'
           })
         } else {
-          res.render('index', { aeropuertos, numPasajes });
+          vueloController.reportarSobreventas((sobreventas, err) => {
+            if (err) {
+              res.json({
+                success: false,
+                msg: 'Fallo al obtener las sobreventas'
+              })
+            } else {
+              res.render('index', { aeropuertos, numPasajes, sobreventas });
+            }
+          })
+          
         }
       });
     }

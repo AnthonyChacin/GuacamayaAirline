@@ -245,4 +245,33 @@ controller.updateVuelo = async function (data, IdVuelo, callback) {
     }
 }
 
+// Considera a un vuelo en sobreventa si hay sobreventa en cualquiera de las clases
+controller.reportarSobreventas = async function (callback) {
+    try {
+        let sobreventas = await database.query(
+            
+            "SELECT COUNT(V.`IdVuelo`) AS numSobreventas, ROUND(COUNT(V.`IdVuelo`)/(SELECT COUNT(`IdVuelo`) FROM `Vuelo`)*100,2) AS porcSobreventas FROM `Vuelo` V" +
+            " WHERE V.`IdVuelo` IN (SELECT V.`IdVuelo` FROM `Vuelo` V INNER JOIN `Pasaje` P ON P.`IdVueloReservado` = V.`IdVuelo`" +
+                " INNER JOIN `Avion` A ON V.`IdAvion` = A.`IdAvion`" +
+                " INNER JOIN `Modelo` M ON A.`IdModelo` = M.`IdModelo`" +
+                " INNER JOIN `Tarifa` T ON P.`IdTarifa` = T.`IdTarifa`" +
+                " WHERE T.`Clase` = 'ClaseEconomica'" +
+                " GROUP BY V.`IdVuelo`, M.`NumAsienEco`" +
+                " HAVING COUNT(P.`IdPasaje`) > M.`NumAsienEco`)"+
+            " OR V.`IdVuelo` IN (SELECT V.`IdVuelo` FROM `Vuelo` V INNER JOIN `Pasaje` P ON P.`IdVueloReservado` = V.`IdVuelo`" +
+                " INNER JOIN `Avion` A ON V.`IdAvion` = A.`IdAvion`" +
+                " INNER JOIN `Modelo` M ON A.`IdModelo` = M.`IdModelo`" +
+                " INNER JOIN `Tarifa` T ON P.`IdTarifa` = T.`IdTarifa`" +
+                " WHERE T.`Clase` = 'PrimeraClase'" +
+                " GROUP BY V.`IdVuelo`, M.`NumAsienPrim`" +
+                " HAVING COUNT(P.`IdPasaje`) > M.`NumAsienPrim`)",
+            { type: sequelize.QueryTypes.SELECT }
+        );
+        console.log(sobreventas);
+        callback(sobreventas, null);
+    } catch (error) {
+        callback(null,error);
+    }
+}
+
 module.exports = controller;
