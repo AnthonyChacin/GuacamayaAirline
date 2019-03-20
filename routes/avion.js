@@ -26,6 +26,53 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/estados/', (req,res) => {
+    avionController.avionesPorEstados((avionesPorEstados, err) => {
+        if(err){
+            res.render({
+                success: false,
+                msg: 'Fallo al mostrar la cantidad de aviones por estados'
+            })
+        }else{
+            res.render('avion', {avionesPorEstados})
+        }
+    })
+})
+
+router.get('/uso/:id', (req,res) => {
+    if(!!req.params.id){
+        avionController.usoAvion(req.params.id, (usoAvion, err) => {
+            if(err){
+                res.json({
+                    success: false,
+                    msg: 'Fallo al obtener cantidad de uso de los aviones'
+                })
+            }else{
+                avionController.getAviones((aviones, err) => {
+                    if (err){
+                        res.json({
+                            success: false,
+                            msg: 'Fallo al buscar aviones'
+                        });
+                    }else{
+                        modeloController.getModelos((modelos, err) => {
+                            if(err){
+                                res.json({
+                                    success: false,
+                                    msg: 'Fallo buscar modelos'
+                                })
+                            }else{
+                                var IdAvion = req.params.id;
+                                res.render('avion', {usoAvion, aviones, modelos, IdAvion})
+                            }
+                        })
+                    }    
+                });
+            }
+        })
+    }
+})
+
 router.get('/:id', (req, res) => {
     if(!!req.params.id){
         avionController.getAvionUpdate(req.params.id, (avionUpdate, err) => {

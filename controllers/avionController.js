@@ -19,6 +19,40 @@ controller.getAviones = async function (callback){
     }
 }
 
+controller.avionesPorEstados = async function (callback) {
+    try {
+        let avionesPorEstados = await database.query(
+            "SELECT A.`EstatusAvion`, COUNT(A.`IdAvion`) AS CantidadAviones FROM `Avion` AS A" +
+            " WHERE A.`Activo` = 1" +
+            " GROUP BY A.`EstatusAvion`" +
+            " ORDER BY CantidadAviones DESC",
+            {type: sequelize.QueryTypes.SELECT}
+        );
+
+        callback(avionesPorEstados, null)
+    } catch (error) {
+        callback(null, error)
+    }
+}
+
+controller.usoAvion = async function (IdAvion, callback) {
+    try{
+        let usoAvion = await database.query(
+            "SELECT COUNT(V.`IdVuelo`) AS CantidadVuelos FROM `Vuelo` AS V" +
+            " INNER JOIN `Avion` AS A ON A.`IdAvion` = V.`IdAvion`" +
+            " WHERE A.`Activo` = 1 AND V.`EstatusVuelo` = 'Aterrizo'" +
+            " GROUP BY A.`IdAvion`",
+            {type: sequelize.QueryTypes.SELECT}
+        );
+
+        console.log(usoAvion[0])
+        callback(usoAvion[0], null)
+    
+    }catch(error){
+        callback(null, error)
+    }
+}
+
 controller.getAvionUpdate = async function (IdAvion, callback){
     try {
         let avionUpdate = await Avion.findOne({

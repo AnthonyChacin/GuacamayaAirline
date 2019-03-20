@@ -1,7 +1,45 @@
 extends base
 block content
   .container.pt-4
-    - if (true)
+    - if (usoAvion)
+      h2.text-center Uso
+      .row.mt-5
+        .col-3
+        .col-6
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                th(scope='col') ID
+                th(scope='col') Cantidad de vuelos en los que se ha usado
+                th(scope='col')
+            tbody
+              tr
+                th #{IdAvion}
+                td #{usoAvion.CantidadVuelos}
+                td
+                  a(href="/avion/").btn.bg-dark.text-warning Volver 
+        .col-3
+    - if (avionesPorEstados)
+      h2.text-center Cantidad de aviones por estados
+      .row.mt-5
+        .col-3
+        .col-6
+          table.table.bg-white
+            thead
+              tr.tr.bg-dark.text-white
+                th(scope='col') Estatus Avión
+                th(scope='col') Cantidad
+                th(scope='col')
+            tbody
+            - for (var i = 0; i < avionesPorEstados.length; i++)
+              tr
+                td #{avionesPorEstados[i].EstatusAvion}
+                td #{avionesPorEstados[i].CantidadAviones}
+                td
+          a.btn.bg-dark.text-warning(href="/avion/") Volver
+        .col-3    
+    
+    - if (!usoAvion && !avionesPorEstados)
       h2.text-center Aviones
       .row.mt-5
         .col-12
@@ -14,6 +52,7 @@ block content
                 th(scope='col') Internet
                 th(scope='col') TV
                 th(scope='col') Modelo
+                th(scope='col')
                 th(scope='col')
                 th(scope='col')
             tbody
@@ -39,6 +78,11 @@ block content
                 td
                   form(action=`/avion/delete/${aviones[i].IdAvion}`,method="POST")
                     button.btn.btn-outline-danger(type='submit') Eliminar
+                td
+                  form(action=`/avion/uso/${aviones[i].IdAvion}`,method="GET")
+                    button.btn.bg-dark.text-warning(type='submit') Uso    
+            form(action=`/avion/estados/`,method="GET")
+              button.btn.btn-outline-info(type='submit') Cantidad de aviones en un estado
     
       - if (true)
         div.row
@@ -50,10 +94,10 @@ block content
                     .form-group
                         label(for='EstatusAvion') Estatus del avión 
                         select#EstatusAvion.form-control(type='select' name='EstatusAvion' required).custom-select
-                            option(value="EnReparacion") En reparación
-                            option(value="EnVuelo") En vuelo
+                            option(value="En Reparacion") En reparación
+                            option(value="En Ruta") En Ruta
                             option(value="Daniado") Dañado
-                            option(value="EnEspera" selected) En espera
+                            option(value="En Espera" selected) En espera
                     .form-group
                         label(for='Fabricante') Fabricante
                         input#Fabricante.form-control(type='text' placeholder='Fabricante'  name='Fabricante' required)
@@ -85,10 +129,10 @@ block content
                     .form-group
                         label(for='EstatusAvion') Estatus del avión 
                         select#EstatusAvion.form-control(type='select' name='EstatusAvion' required).custom-select
-                            option(value="EnReparacion" selected=(avionUpdate.EstatusAvion == "EnReparacion")) En reparación
-                            option(value="EnVuelo" selected=(avionUpdate.EstatusAvion == "EnVuelo")) En vuelo
+                            option(value="En Reparacion" selected=(avionUpdate.EstatusAvion == "En Reparacion")) En reparación
+                            option(value="En Ruta" selected=(avionUpdate.EstatusAvion == "En Ruta")) En Ruta
                             option(value="Daniado" selected=(avionUpdate.EstatusAvion == "Daniado")) Dañado
-                            option(value="EnEspera" selected=(avionUpdate.EstatusAvion == "EnEspera")) En espera
+                            option(value="En Espera" selected=(avionUpdate.EstatusAvion == "En Espera")) En espera
                     .form-group
                         label(for='Fabricante') Fabricante
                         input#Fabricante.form-control(type='text' value=`${avionUpdate.Fabricante}` placeholder='Fabricante'  name='Fabricante' required)
