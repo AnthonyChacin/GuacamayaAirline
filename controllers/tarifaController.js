@@ -101,13 +101,14 @@ controller.reportarGanancias = async function (fechaI, fechaF, callback) {
             " END) ),2) AS ganancias FROM `Tarifa` AS T" +   
             " INNER JOIN `Pasaje` AS P ON T.`IdTarifa` = P.`IdTarifa`" +
             " INNER JOIN `Reserva`AS R ON P.`IdReserva` = R.`IdReserva`" +
+            " INNER JOIN `Vuelo`AS V ON V.`IdVuelo` = P.`IdVueloReservado`" +
             " WHERE YEAR(R.`FechaReserva`) >= YEAR('"+fechaI+"')" +
             " AND MONTH(R.`FechaReserva`) >= MONTH('"+fechaI+"')" +
             " AND DAY(R.`FechaReserva`) >= DAY('"+fechaI+"')" +
             " AND YEAR(R.`FechaReserva`) <= YEAR('"+fechaF+"')" +
             " AND MONTH(R.`FechaReserva`) <= MONTH('"+fechaF+"')" +
             " AND DAY(R.`FechaReserva`) <= DAY('"+fechaF+"')" +
-            " AND R.`Activo` = 1",
+            " AND R.`Activo` = 1 AND V.`Activo` = 1 AND V.`EstatusVuelo` != 'Cancelado'",
             { type: sequelize.QueryTypes.SELECT }
         );
 

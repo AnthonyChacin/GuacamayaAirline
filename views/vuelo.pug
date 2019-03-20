@@ -146,12 +146,12 @@ block content
                     .form-group
                         label(for='EstatusVuelo') Estatus
                         select#EstatusVuelo.form-control(type='select' name='EstatusVuelo' required).custom-select
-                            option(value="A tiempo" selected=(vueloUpdate == "A tiempo")) A tiempo
-                            option(value="Cancelado" selected=(vueloUpdate == "Cancelado")) Cancelado
-                            option(value="En vuelo" selected=(vueloUpdate == "En vuelo")) En vuelo
-                            option(value="Demorado" selected=(vueloUpdate == "Demorado")) Demorado
-                            option(value="Aterrizo" selected=(vueloUpdate == "Aterrizo")) Aterrizó
-                            option(value="Desviado" selected=(vueloUpdate == "Desviado")) Desviado
+                            option(value="A tiempo" selected=(vueloUpdate.EstatusVuelo == "A tiempo")) A tiempo
+                            option(value="Cancelado" selected=(vueloUpdate.EstatusVuelo == "Cancelado")) Cancelado
+                            option(value="En vuelo" selected=(vueloUpdate.EstatusVuelo == "En vuelo")) En vuelo
+                            option(value="Demorado" selected=(vueloUpdate.EstatusVuelo == "Demorado")) Demorado
+                            option(value="Aterrizo" selected=(vueloUpdate.EstatusVuelo == "Aterrizo")) Aterrizó
+                            option(value="Desviado" selected=(vueloUpdate.EstatusVuelo == "Desviado")) Desviado
                     .form-group
                         label(for='FechaSalida') Fecha
                         input#FechaSalida.form-control(type='date' value=`${vueloUpdate.FechaSalida}` name='FechaSalida' required)   

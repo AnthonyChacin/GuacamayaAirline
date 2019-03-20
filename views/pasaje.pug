@@ -16,6 +16,11 @@ block content
           div(style="width:3rem; height: 3rem").btn.btn-outline-success
           b(style="visibility: hidden") ...
           b Disponible
+        - if (Asiento)
+          div(style="float:left").col-3
+            div(style="width:3rem; height: 3rem").btn.bg-warning
+            b(style="visibility: hidden") ...
+            b Seleccionado
       h2.mt-5    
       div.row
         - for(let i = 0; i < asientosDisponibles.length; i++)
@@ -25,9 +30,14 @@ block content
                 button(style="width:4.5rem;" type='submit').btn.btn-outline-success #{asientosDisponibles[i].Numero}
                   img(src="https://d30y9cdsu7xlg0.cloudfront.net/png/91605-200.png", alt="asiento", style="width:3rem; height: 3rem")
             - else
-              form
-                button(style="width:4.5rem;").btn.bg-danger.text-light #{asientosDisponibles[i].Numero}
-                  img(src="https://d30y9cdsu7xlg0.cloudfront.net/png/91605-200.png", alt="asiento", style="width:3rem; height: 3rem")
+              - if (asientosDisponibles[i].Numero == Asiento)
+                form(action=`/pasaje/asignarAsiento/${asientosDisponibles[i].Numero}-${IdPasaje}`,method="POST")
+                  button(style="width:4.5rem;" type='submit').btn.bg-warning.text-dark #{asientosDisponibles[i].Numero}
+                    img(src="https://d30y9cdsu7xlg0.cloudfront.net/png/91605-200.png", alt="asiento", style="width:3rem; height: 3rem")
+              - else  
+                form
+                  button(style="width:4.5rem;").btn.bg-danger.text-light #{asientosDisponibles[i].Numero}
+                    img(src="https://d30y9cdsu7xlg0.cloudfront.net/png/91605-200.png", alt="asiento", style="width:3rem; height: 3rem")
    
     - if (reservaUpdate && !asientosDisponibles)
       div.row
@@ -130,7 +140,10 @@ block content
                     form(action=`/pasaje/buscarAsientos/${pasajes[i].IdPasaje}-${pasajes[i].IdVueloReservado}-${pasajes[i].IdTarifa}`,method="GET")
                       button.btn.btn-outline-info(type='submit') Asignar
                 - else
-                  td #{pasajes[i].Asiento}
+                  td
+                    p.text-center Asiento: #{pasajes[i].Asiento} 
+                    form(action=`/pasaje/asiento/${pasajes[i].IdPasaje}-${pasajes[i].IdVueloReservado}-${pasajes[i].IdTarifa}-${pasajes[i].Asiento}`,method="GET")
+                      button.btn.bg-dark.text-warning(type='submit') Modificar
                 - if(pasajes[i].EsIda == 1)
                   td Ida
                 - else
@@ -223,8 +236,8 @@ block content
                     .form-group
                         label(for='Estado') Estado
                         select#Estado.form-control(type='select' name='Estado' required).custom-select
-                            option(value="Reservado" selected=(pasajeUpdate == 'Reservado')) Reservado
-                            option(value="Comprado" selected=(pasajeUpdate == 'Comprado')) Comprado
+                            option(value="Reservado" selected=(pasajeUpdate.Estado == 'Reservado')) Reservado
+                            option(value="Comprado" selected=(pasajeUpdate.Estado == 'Comprado')) Comprado
                     .form-group
                         label(for='IdReserva') Reserva
                         select#IdReserva.form-control(type='select' name='IdReserva' required).custom-select

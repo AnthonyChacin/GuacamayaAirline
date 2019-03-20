@@ -259,7 +259,7 @@ controller.reportarSobreventas = async function (callback) {
                 " WHERE T.`Clase` = 'ClaseEconomica'" +
                 " GROUP BY V.`IdVuelo`, M.`NumAsienEco`" +
                 " HAVING COUNT(P.`IdPasaje`) > M.`NumAsienEco`)"+
-            " OR V.`IdVuelo` IN (SELECT V.`IdVuelo` FROM `Vuelo` V INNER JOIN `Pasaje` P ON P.`IdVueloReservado` = V.`IdVuelo`" +
+                " OR V.`IdVuelo` IN (SELECT V.`IdVuelo` FROM `Vuelo` V INNER JOIN `Pasaje` P ON P.`IdVueloReservado` = V.`IdVuelo`" +
                 " INNER JOIN `Avion` A ON V.`IdAvion` = A.`IdAvion`" +
                 " INNER JOIN `Modelo` M ON A.`IdModelo` = M.`IdModelo`" +
                 " INNER JOIN `Tarifa` T ON P.`IdTarifa` = T.`IdTarifa`" +

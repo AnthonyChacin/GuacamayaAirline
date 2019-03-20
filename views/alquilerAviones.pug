@@ -35,7 +35,7 @@ block content
                   form(action=`/alquilerAviones/delete/${avionesAlquilados[i].IdAvion}-${avionesAlquilados[i].IdProveedor}-${avionesAlquilados[i].FechaSolicitud}`,method="POST")
                     button.btn.btn-outline-danger(type='submit') Eliminar
     
-      - if (true)
+      - if (!avionAlquiladoUpdate)
         div.row
           div.col-6
             h4.mt-5 Reistrar alquiler de avión
@@ -47,7 +47,8 @@ block content
                         select#IdAvion.form-control(type='select' name='IdAvion' required).custom-select
                             option(value="" selected) ...
                             - for(let i = 0; i < aviones.length; i++)
-                              option(value=`${aviones[i].IdAvion}`) #{aviones[i].IdAvion}
+                              - if(aviones[i].EstatusAvion == 'En Espera')
+                                option(value=`${aviones[i].IdAvion}`) #{aviones[i].IdAvion}
                     .form-group
                         label(for='IdProveedor') Proveedor
                         select#IdProveedor.form-control(type='select' name='IdProveedor' required).custom-select
@@ -67,37 +68,34 @@ block content
                         label(for='MontoPagado') Monto Pagado $
                         input#MontoPagado.form-control(type='number' value="0" min="0" name='MontoPagado')
                     button.btn.btn-danger(type='submit') Agregar
-          - if (avionAlquiladoUpdate)  
-            div.col-6
-              h4.mt-5 Modificar Avion #{avionUpdate.IdAvion}
-              div.card.bg-dark
-                div.card-body.text-white 
-                  form(action=`/avion/update/${avionUpdate.IdAvion}` method="POST")
+      - if (avionAlquiladoUpdate)  
+        div.row
+          div.col-6
+            h4.mt-5 Modificar alquiler de avión
+            div.card.bg-dark
+              div.card-body.text-white 
+                  form(action=`/alquilerAviones/update/${avionAlquiladoUpdate.IdAvion}-${avionAlquiladoUpdate.IdProveedor}-${avionAlquiladoUpdate.FechaSolicitud}` method="POST")
                     .form-group
-                        label(for='EstatusAvion') Estatus del avión 
-                        select#EstatusAvion.form-control(type='select' name='EstatusAvion' required).custom-select
-                            option(value="EnReparacion" selected=(avionUpdate.EstatusAvion == "EnReparacion")) En reparación
-                            option(value="EnVuelo" selected=(avionUpdate.EstatusAvion == "EnVuelo")) En vuelo
-                            option(value="Daniado" selected=(avionUpdate.EstatusAvion == "Daniado")) Dañado
-                            option(value="EnEspera" selected=(avionUpdate.EstatusAvion == "EnEspera")) En espera
+                        label(for='IdAvion') Avión
+                        select#IdAvion.form-control(type='select' name='IdAvion' required).custom-select
+                          - for(let i = 0; i < aviones.length; i++)
+                            - if(aviones[i].EstatusAvion == 'En Espera')
+                              option(value=`${aviones[i].IdAvion}` selected=(avionAlquiladoUpdate.IdAvion == aviones[i].IdAvion)) #{aviones[i].IdAvion}
                     .form-group
-                        label(for='Fabricante') Fabricante
-                        input#Fabricante.form-control(type='text' value=`${avionUpdate.Fabricante}` placeholder='Fabricante'  name='Fabricante' required)
+                        label(for='IdProveedor') Proveedor
+                        select#IdProveedor.form-control(type='select' name='IdProveedor' required).custom-select
+                            - for(let i = 0; i < proveedores.length; i++)
+                              option(value=`${proveedores[i].IdProveedor}` selected=(avionAlquiladoUpdate.IdProveedor == proveedores[i].IdProveedor)) #{proveedores[i].Nombre}
                     .form-group
-                        label(for='DispInternet') Internet
-                        select#DispInternet.form-control(type='select' name='DispInternet' required).custom-select
-                            option(value=1 selected=(avionUpdate.DispInternet == 1)) Sí
-                            option(value=0 selected=(avionUpdate.DispInternet == 0)) No
+                        label(for='FechaSolicitud') Fecha de Solicitud
+                        input#FechaSolicitud.form-control(type='date' value=`${avionAlquiladoUpdate.FechaSolicitud}` name='FechaSolicitud' required)
                     .form-group
-                        label(for='DispTelevision') TV
-                        select#DispTelevision.form-control(type='select' name='DispTelevision' required).custom-select
-                            option(value=1 selected=(avionUpdate.DispTelevision == 1)) Sí
-                            option(value=0 selected=(avionUpdate.DispTelevision == 0)) No
+                        label(for='FechaEntrega') Fecha de Entrega
+                        input#FechaEntrega.form-control(type='date' value=`${avionAlquiladoUpdate.FechaEntrega}` name='FechaEntrega')
                     .form-group
-                        label(for='IdModelo') Modelo
-                        select#IdModelo.form-control(type='select' name='IdModelo' required).custom-select
-                            - for (let i = 0; i < modelos.length; i++)
-                              option(value=`${modelos[i].IdModelo}` selected=(avionUpdate.IdModelo == modelos[i].IdModelo)) #{modelos[i].Nombre}
+                        label(for='FechaDevolucion') Fecha de Devolución
+                        input#FechaDevolucion.form-control(type='date' value=`${avionAlquiladoUpdate.FechaDevolucion}` name='FechaDevolucion')
+                    .form-group
+                        label(for='MontoPagado') Monto Pagado $
+                        input#MontoPagado.form-control(type='number' value=`${avionAlquiladoUpdate.MontoPagado}` min="0" name='MontoPagado')
                     button.btn.btn-danger(type='submit') Modificar
-
-        
