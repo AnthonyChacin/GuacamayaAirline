@@ -96,8 +96,8 @@ controller.reportarGanancias = async function (fechaI, fechaF, callback) {
             "SELECT ROUND(SUM( (CASE" +
             " WHEN P.`PiezasEquipaje` <= T.`CantidadEq` AND P.`Estado` = 'Comprado' THEN (T.`PrecioBase`*(100+T.`FeeReservacion`)/100)" +
             " WHEN P.`PiezasEquipaje` <= T.`CantidadEq` AND P.`Estado` = 'Reservado' THEN (T.`PrecioBase`*(T.`FeeReservacion`)/100)" +
-            " WHEN P.`PiezasEquipaje` > T.`CantidadEq` AND P.`Estado` = 'Comprado' THEN (T.`PrecioBase`*(100+T.`FeeReservacion`+T.`FeeEqExtra`)/100)" +
-            " ELSE (T.`PrecioBase`*(T.`FeeReservacion`+T.`FeeEqExtra`)/100)" +
+            " WHEN P.`PiezasEquipaje` > T.`CantidadEq` AND P.`Estado` = 'Comprado' THEN (T.`PrecioBase`*(100+T.`FeeReservacion`+T.`FeeEqExtra`*(P.`PiezasEquipaje`-T.`CantidadEq`))/100)" +
+            " ELSE (T.`PrecioBase`*(T.`FeeReservacion`+T.`FeeEqExtra`*(P.`PiezasEquipaje`-T.`CantidadEq`))/100)" +
             " END) ),2) AS ganancias FROM `Tarifa` AS T" +   
             " INNER JOIN `Pasaje` AS P ON T.`IdTarifa` = P.`IdTarifa`" +
             " INNER JOIN `Reserva`AS R ON P.`IdReserva` = R.`IdReserva`" +
