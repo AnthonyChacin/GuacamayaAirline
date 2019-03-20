@@ -116,9 +116,18 @@ router.post('/ganancias', (req,res) => {
                 msg: 'Fallo al obtener los aeropuertos'
               })
             }else{
-              var FechaInicio = req.body.FechaInicio;
-              var FechaFin = req.body.FechaFin;
-              res.render('index', { ganancias, aeropuertos, numPasajes, FechaInicio, FechaFin })
+              vueloController.reportarSobreventas((sobreventas, err) => {
+                if (err) {
+                  res.json({
+                    success: false,
+                    msg: 'Fallo al obtener las sobreventas'
+                  })
+                } else {
+                  var FechaInicio = req.body.FechaInicio;
+                  var FechaFin = req.body.FechaFin;
+                  res.render('index', { ganancias, aeropuertos, numPasajes, sobreventas, FechaInicio, FechaFin })
+                }
+              })
             }
           })
         }
@@ -144,17 +153,28 @@ router.post('/abordaje', (req,res) => {
             msg: 'Fallo al obtener el número de pasajes'
           })
         }else{
-          aeropuertoController.getAeropuertos((aeropuertos, err) => {
-            if(err){
+          vueloController.reportarSobreventas((sobreventas, err) => {
+            if (err) {
               res.json({
                 success: false,
-                msg: 'Fallo al obtener los aeropuertos'
+                msg: 'Fallo al obtener las sobreventas'
               })
-            }else{
-              var ID_Vuelo = req.body.ID_Vuelo;
-              res.render('index', { porcAbordo, aeropuertos, numPasajes, ID_Vuelo});
+            } else {
+              aeropuertoController.getAeropuertos((aeropuertos, err) => {
+                if(err){
+                  res.json({
+                    success: false,
+                    msg: 'Fallo al obtener los aeropuertos'
+                  })
+                }else{
+                  
+                  var ID_Vuelo = req.body.ID_Vuelo;
+                  res.render('index', { porcAbordo, aeropuertos, sobreventas, numPasajes, ID_Vuelo});
+                }
+              })
             }
           })
+          
         }
       })
     }
