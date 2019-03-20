@@ -1,17 +1,24 @@
-
+const database = require('../config/database');
+const sequelize = require('sequelize');
 const Reserva = require('../models/Reserva');
 
 const controller = {};
 
 controller.getReservas = async function (callback){
     try {
-        let reservas = await Reserva.findAll({
-            where: {
-                Activo: 1
-            }
-        });
-
-        reservas = reservas.map(result => result.dataValues);
+        
+        let reservas = await database.query(
+            "SELECT R.`IdReserva`, R.`IdComprador`, R.`FechaReserva`, R.`MetodoPago`," +
+            " ROUND(SUM(T.`PrecioBase` + (T.`PrecioBase`*T.`FeeReservacion`/100) + " +
+            "IF(P.`PiezasEquipaje` > T.`CantidadEq`,((P.`PiezasEquipaje` - T.`CantidadEq`)*(T.`PrecioBase`*T.`FeeEqExtra`/100)),0)" +
+            "),2) AS TotalPagar" +
+            " FROM `Reserva` AS R" +
+            " INNER JOIN `Pasaje` AS P ON P.`IdReserva` = R.`IdReserva`" +
+            " INNER JOIN `Tarifa` AS T ON T.`IdTarifa` = P.`IdTarifa`" +
+            " WHERE R.`Activo` = 1" +
+            " GROUP BY R.`IdReserva`;",
+            {type: sequelize.QueryTypes.SELECT}
+        ); 
         
         console.log(reservas);
         

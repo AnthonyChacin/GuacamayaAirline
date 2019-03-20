@@ -46,6 +46,7 @@ router.get('/', (req,res) => {
                                         }else{
                                             reservaController.getReservas((reservas, err) => {
                                                 if(err){
+                                                    console.log(err)
                                                     res.json({
                                                         success: false, 
                                                         msg: 'Fallo al obtener las reservas'

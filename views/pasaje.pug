@@ -64,6 +64,7 @@ block content
                 th(scope='col') Comprador
                 th(scope='col') Fecha de la reserva
                 th(scope='col') Método de pago
+                th(scope='col') Total a pagar
                 th(scope='col')
             tbody
             - for (var i = 0; i < reservas.length; i++)
@@ -74,6 +75,7 @@ block content
                     td #{clientes[j].Pasaporte}
                 td #{reservas[i].FechaReserva}
                 td #{reservas[i].MetodoPago}
+                td $#{reservas[i].TotalPagar}
                 td
                   form(action=`/pasaje/reserva/${reservas[i].IdReserva}`,method="GET")
                     button.btn.btn-outline-dark(type='submit') Detalles
@@ -205,9 +207,6 @@ block content
                     .form-group
                         label(for='PiezasEquipaje') Cantidad de piezas de equipaje
                         input#PiezasEquipaje.form-control(type='number' name='PiezasEquipaje' required)
-                    //.form-group
-                        label(for='Asiento') Asiento
-                        input#Asiento.form-control(type='number' name='Asiento' required)
                     .form-group
                         label(for='EsIda') Tipo de pasaje
                         select#EsIda.form-control(type='select' name='EsIda' required).custom-select
@@ -253,9 +252,6 @@ block content
                     .form-group
                         label(for='PiezasEquipaje') Cantidad de piezas de equipaje
                         input#PiezasEquipaje.form-control(type='number' value=`${pasajeUpdate.PiezasEquipaje}` name='PiezasEquipaje' required)
-                    .form-group
-                        label(for='Asiento') Asiento
-                        input#Asiento.form-control(type='number' value=`${pasajeUpdate.Asiento}` name='Asiento' required)
                     .form-group
                         label(for='EsIda') Tipo de pasaje
                         select#EsIda.form-control(type='select' name='EsIda' required).custom-select

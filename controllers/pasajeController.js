@@ -81,7 +81,6 @@ controller.updatePasaje = async function (data, IdPasaje, callback) {
             IdVueloAbordado: data.IdVueloAbordado,
             IdTarifa: data.IdTarifa,
             PiezasEquipaje: data.PiezasEquipaje,
-            Asiento: data.Asiento,
             EsIda: data.EsIda
         },{
             where:{
