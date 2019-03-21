@@ -4,15 +4,12 @@ const aeropuertoController = require('../controllers/aeropuertoController');
 const vueloController = require('../controllers/vueloController');
 const pasajeController = require('../controllers/pasajeController');
 const tarifaController = require('../controllers/tarifaController');
-<<<<<<< HEAD
 const reservaController = require('../controllers/reservaController');
 const clienteController = require('../controllers/clienteController');
 const rutaController = require('../controllers/rutaController');
-=======
 const avionController = require('../controllers/avionController');
 const personaController = require('../controllers/personaController');
 
->>>>>>> 8e952a633b7b90c3dd97ccd410a505ab075fa32d
 
 var escalasOfertadas = [];
 
