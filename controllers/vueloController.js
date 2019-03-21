@@ -246,6 +246,27 @@ controller.updateVuelo = async function (data, IdVuelo, callback) {
     }
 }
 
+//Busca los vuelos charter, considerando que en los vuelos charter, los aviones asignados, son alquilados 
+controller.getVuelosCharter = async function (callback) {
+    try {
+
+        let vuelosCharter = await database.query(
+            "SELECT V.`IdVuelo`, R.`Origen`, V.`Destino`, V.`FechaSalida`, V.`FechaLlegada`, V.`EstatusVuelo`, V.`HoraSalida`, V.`HoraLlegada`, V.`IdAvion`" +
+            " FROM `Vuelo` AS V" +
+            " INNER JOIN `Alquiler_Avion` AS AA ON AA.`IdAvion` = V.`IdAvion`" +
+            " INNER JOIN `Ruta` AS R ON R.`IdRuta` = V.`IdRuta`" +
+            " WHERE V.`IdVuelo` = 1;",
+            {type: sequelize.QueryTypes.SELECT}
+        );
+        console.log(vuelosCharter)
+        callback(vuelosCharter, null)
+
+    } catch (error) {
+        callback(null, error)
+    }
+}
+
+
 // Considera a un vuelo en sobreventa si hay sobreventa en cualquiera de las clases
 controller.reportarSobreventas = async function (callback) {
     try {
