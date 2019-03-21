@@ -4,6 +4,7 @@ const aeropuertoController = require('../controllers/aeropuertoController');
 const vueloController = require('../controllers/vueloController');
 const pasajeController = require('../controllers/pasajeController');
 const tarifaController = require('../controllers/tarifaController');
+const avionController = require('../controllers/avionController');
 
 
 var escalasOfertadas = [];
@@ -204,6 +205,51 @@ router.post('/destinos_populares', (req,res) => {
       })
     }else{
       res.render('index', { destinosPop })
+    }
+  })
+})
+
+router.post('/pesoAvion', (req,res) => {
+  avionController.pesoPromedioDeAvion(req.body.ID_Avion, (pesoAvion, err) => {
+    if(err) {
+      console.log(err)
+      res.json({
+        success: false,
+        msg: 'Fallo al obtener peso promedio de avion'
+      })
+    } else {
+      console.log(pesoAvion);
+      pasajeController.contarPasajes((numPasajes, err) => {
+        if(err){
+          res.json({
+            success: false,
+            msg: 'Fallo al obtener el número de pasajes'
+          })
+        }else{
+          vueloController.reportarSobreventas((sobreventas, err) => {
+            if (err) {
+              res.json({
+                success: false,
+                msg: 'Fallo al obtener las sobreventas'
+              })
+            } else {
+              aeropuertoController.getAeropuertos((aeropuertos, err) => {
+                if(err){
+                  res.json({
+                    success: false,
+                    msg: 'Fallo al obtener los aeropuertos'
+                  })
+                }else{
+                  
+                  var ID_Avion = req.body.ID_Avion;
+                  res.render('index', { pesoAvion, aeropuertos, sobreventas, numPasajes, ID_Avion});
+                }
+              })
+            }
+          })
+          
+        }
+      })
     }
   })
 })

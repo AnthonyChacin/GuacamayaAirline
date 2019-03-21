@@ -98,6 +98,24 @@ block content
                 form(action=`/vuelosCharter/` method="POST")
                   button.btn.btn-warning(type='submit') Ver
                   img(src="http://www.airways-magazine.com/img/picto-avion.png", alt="Destinos" style="height: 4rem; width: 100%")
+        // Reporte de peso promedio por avion
+        div.col-4
+          h4.mt-5.text-center Peso promedio de un avión
+          div.card.bg-dark
+            div.card-body.text-white
+              - if (!pesoAvion)
+                form(action='/pesoAvion/' method="POST")
+                  .form-group
+                    label(for='ID_Avion') ID del avión
+                    input#ID_Vuelo.form-control(type='number' min="0" aria-describedby='ID_Avion' placeholder="ID_Avion" name='ID_Avion' required)
+                  button.btn.btn-warning(type='submit') Ingresar
+              - if (pesoAvion)
+                form(action='/pesoAvion/' method="POST")
+                  .form-group
+                    label(for='ID_Avion') ID del avión
+                    input#ID_Vuelo.form-control(type='number' min="0" aria-describedby='ID_Avion' placeholder="ID_Avion" name='ID_Avion' required)
+                  button.btn.btn-warning(type='submit') Ingresar
+                h4.mt-5.text-center Peso promedio por vuelo: #{pesoAvion} kg
 
     - if (ofertasVuelos)
       .row.mt-5

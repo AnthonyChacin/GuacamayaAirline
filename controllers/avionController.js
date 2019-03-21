@@ -150,9 +150,12 @@ controller.pesoPromedioDeAvion = async function (IdAvion, callback) {
         );
         let pesoPromedio = 0;
         for( var i = 0; i < pesoVuelos.length; i++ ){
-            pesoPromedio += pesoVuelos[i].pesoVuelo;
+            pesoPromedio += parseInt(pesoVuelos[i].pesoVuelo);
         }
         pesoPromedio = pesoPromedio / pesoVuelos.length;
+        console.log("Pesos:");
+        console.log(pesoVuelos);
+        console.log(pesoPromedio);
         callback(pesoPromedio, null)
     } catch (error) {
         callback(null, error)
