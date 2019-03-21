@@ -2,7 +2,7 @@ extends base
 block content
   .container.pt-4
     - if (usoAvion)
-      h2.text-center Vuelos en los que se ha usado este avión #{IdAvion}
+      h2.text-center #{usoAvion.length} vuelos en los que se ha usado el avión con id #{IdAvion}
       .row.mt-5
         .col-12
           table.table.bg-white
@@ -88,8 +88,9 @@ block content
                   form(action=`/avion/delete/${aviones[i].IdAvion}`,method="POST")
                     button.btn.btn-outline-danger(type='submit') Eliminar
                 td
-                  form(action=`/avion/uso/${aviones[i].IdAvion}`,method="GET")
-                    button.btn.bg-dark.text-warning(type='submit') Uso    
+                  - if (aviones[i].EstatusAvion != 'Alquilado')
+                    form(action=`/avion/uso/${aviones[i].IdAvion}`,method="GET")
+                      button.btn.bg-dark.text-warning(type='submit') Uso    
             form(action=`/avion/estados/`,method="GET")
               button.btn.btn-outline-info(type='submit') Cantidad de aviones en un estado
     

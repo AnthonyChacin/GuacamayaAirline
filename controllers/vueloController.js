@@ -255,7 +255,7 @@ controller.getVuelosCharter = async function (callback) {
             " FROM `Vuelo` AS V" +
             " INNER JOIN `Alquiler_Avion` AS AA ON AA.`IdAvion` = V.`IdAvion`" +
             " INNER JOIN `Ruta` AS R ON R.`IdRuta` = V.`IdRuta`" +
-            " WHERE V.`IdVuelo` = 1;",
+            " WHERE V.`Activo` = 1;",
             {type: sequelize.QueryTypes.SELECT}
         );
         console.log(vuelosCharter)

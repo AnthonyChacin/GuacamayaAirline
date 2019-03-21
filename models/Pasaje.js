@@ -111,6 +111,7 @@ const Pasaje = database.define('Pasaje', {
     Asiento: {
         type: sequelize.INTEGER,
         allowNull: true,
+        defaultValue: null,
 
         validate: {
             isNumeric: true

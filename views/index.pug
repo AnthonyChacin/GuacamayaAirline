@@ -1,9 +1,9 @@
 extends base
 block content
   .container.pt-4
-    - if (!ofertasVuelos && !escalasOfertadas && !destinosPop && !vuelosCharter)
+    - if (!ofertasVuelos && !escalasOfertadas && !destinosPop && !vuelosCharter && !reserva && !IdPasaje)
       h1.text-center.card-title Bienvenido a Guacamaya Airlines
-    - if(!ofertasVuelos && !escalasOfertadas && !destinosPop && !vuelosCharter)
+    - if(!ofertasVuelos && !escalasOfertadas && !destinosPop && !vuelosCharter && !reserva && !IdPasaje)
       div.row
         div.col-4
           h4.mt-5.text-center Ofertas de vuelos
@@ -99,7 +99,7 @@ block content
                   button.btn.btn-warning(type='submit') Ver
                   img(src="http://www.airways-magazine.com/img/picto-avion.png", alt="Destinos" style="height: 4rem; width: 100%")
 
-    - if (ofertasVuelos)
+    - if (ofertasVuelos && !reserva && !IdPasaje)
       .row.mt-5
         .col-12
           h3.text-center Vuelos ofertados
@@ -124,7 +124,7 @@ block content
                 td #{ofertasVuelos[i].FechaSalida}
                 td #{ofertasVuelos[i].FechaLlegada}
 
-    - if (escalasOfertadas)
+    - if (escalasOfertadas && !reserva && !IdPasaje)
       h3.text-center Vuelos ofertados
       .row.mt-5
         - for(let i = 0; i < escalasOfertadas.length; i++)
@@ -165,7 +165,7 @@ block content
                   td #{escalasOfertadas[i][j].FechaSalida}
                   td #{escalasOfertadas[i][j].FechaLlegada}
                   
-    - if (destinosPop)              
+    - if (destinosPop && !reserva && !IdPasaje)              
       .row.mt-5
         .col-12
           h3.text-center Destinos más visitados
@@ -182,7 +182,7 @@ block content
                 td #{destinosPop[i].visitas}
                 td #{destinosPop[i].porcVisitas}%
 
-    - if(vuelosCharter)
+    - if(vuelosCharter && !reserva && !IdPasaje)
       .row.mt-5
         .col-12
           h3.text-center Vuelos Chárter
@@ -209,6 +209,97 @@ block content
                 td #{vuelosCharter[i].HoraSalida}
                 td #{vuelosCharter[i].HoraLlegada}
                 td #{vuelosCharter[i].IdAvion}
+    - if (!reserva && !IdPasaje)
+      div.col-12
+        h4.mt-5.text-center Check In
+        div.card.bg-dark
+          div.card-body.text-white
+              form(action=`/checkin/` method="POST")
+                    .form-group
+                      label(for='IdReserva') Reservacion
+                      select#IdReserva.form-control(type='select' name='IdReserva' required).custom-select
+                        option(value="" selected) ...
+                        - for (let j = 0; j < reservas.length; j++)
+                          - for (let k = 0; k < clientes.length; k++)
+                            - if (clientes[k].IdPersona == reservas[j].IdComprador)
+                              option(value=`${reservas[j].IdReserva}`) #{reservas[j].IdReserva} Fecha: #{reservas[j].FechaReserva}, Comprador: #{clientes[k].Pasaporte} - #{clientes[k].Apellido}, #{clientes[k].Nombre}
+                    button.btn.btn-warning(type='submit') Buscar reservación
+    
+    - if(reserva && !IdPasaje)
+      .row.mt-5
+        .col-12
+          h3.text-center Reserva
+          table.table
+            thead.card-header.bg-dark.text-light
+              th(scope='col') ID
+              th(scope='col') Comprador
+              th(scope='col') Fecha de reserva
+              th(scope='col') Metodo de pago
+              th(scope='col') Total a pagar
+            tbody.card-body.bg-white.text-dark
+              tr
+                td #{reserva.IdReserva}
+                td #{reserva.Pasaporte} - #{reserva.Apellido}, #{reserva.Nombre} 
+                td #{reserva.FechaReserva}
+                td #{reserva.MetodoPago}
+                td $#{reserva.TotalPagar}
+          h3.text-center Pasajes asociados a la reserva
+          table.table
+            thead.card-header.bg-dark.text-light
+              th(scope='col') ID
+              th(scope='col') Estado
+              th(scope='col') Pasajero
+              th(scope='col') Vuelo reservado
+              th(scope='col') Vuelo abordado
+              th(scope='col') Tarifa
+              th(scope='col') Piezas de equipaje
+              th(scope='col') Asiento
+              th(scope='col') Tipo de pasaje
+              th(scope='col')
+              th(scope='col')
+            tbody.card-body.bg-white.text-dark
+            - for(let i = 0; i < pasajes.length; i++)
+              tr
+                td #{pasajes[i].IdPasaje}
+                td #{pasajes[i].Estado} 
+                td #{pasajes[i].Pasaporte} - #{pasajes[i].Apellido}, #{pasajes[i].Nombre}
+                td #{pasajes[i].VueloReservado} - #{pasajes[i].OrigenVR} - #{pasajes[i].DestinoVR}
+                - if(pasajes[i].VueloAbordado == null)
+                  td.text-danger Pasaje no ha sido usado
+                - else  
+                  td #{pasajes[i].VueloAbordado} - #{pasajes[i].OrigenVA} - #{pasajes[i].DestinoVA}
+                td #{pasajes[i].IdTarifa} - #{pasajes[i].Clase}
+                td #{pasajes[i].PiezasEquipaje}
+                - if (pasajes[i].Asiento == null)
+                  td
+                    form(action=`/pasaje/buscarAsientos/${pasajes[i].IdPasaje}-${pasajes[i].VueloReservado}-${pasajes[i].IdTarifa}`,method="GET")
+                      button.btn.btn-outline-info(type='submit') Asignar
+                - else
+                  td #{pasajes[i].Asiento}
+                td #{pasajes[i].EsIda}
+                td
+                  - if(pasajes[i].Estado != 'Comprado')
+                    form(action=`/comprar/${pasajes[i].IdPasaje}` method="POST")
+                      button.btn.btn-outline-success(type='submit') Comprar
+                td
+                  - if(pasajes[i].VueloAbordado == null)
+                    form(action=`/buscarVuelo/${pasajes[i].IdPasaje}-${pasajes[i].VueloReservado}` method="GET")
+                      button.btn.btn-outline-dark(type='submit') Asignar Vuelo
 
+    - if(IdPasaje)
+      .row.mt-5
+        .col-3
+        .col-6
+          h3.text-center Asignar vuelo
+          form(action=`/asignarVuelo/${IdPasaje}` method="POST")
+            .form-group
+              label(for='IdVueloAbordado') Vuelo Abordado
+              select#IdVueloAbordado.form-control(type='select' name='IdVueloAbordado' required).custom-select
+                - for (let j = 0; j < vuelos.length; j++)
+                  - for (let k = 0; k < rutas.length; k++)
+                    - if (vuelos[j].IdRuta == rutas[k].IdRuta && vuelos[j].EstatusVuelo != 'A tiempo')
+                      option(value=`${vuelos[j].IdVuelo}` selected=(vuelos[j].IdVuelo == IdVueloReservado)) #{vuelos[j].IdVuelo}, Ruta: #{rutas[j].Origen} - #{rutas[j].Destino} 
+            button.btn.btn-danger(type='submit') Asignar vuelo
+        .col-3
 
     

@@ -4,7 +4,9 @@ const aeropuertoController = require('../controllers/aeropuertoController');
 const vueloController = require('../controllers/vueloController');
 const pasajeController = require('../controllers/pasajeController');
 const tarifaController = require('../controllers/tarifaController');
-
+const reservaController = require('../controllers/reservaController');
+const clienteController = require('../controllers/clienteController');
+const rutaController = require('../controllers/rutaController');
 
 var escalasOfertadas = [];
 
@@ -31,7 +33,25 @@ router.get('/', (req, res) => {
                 msg: 'Fallo al obtener las sobreventas'
               })
             } else {
-              res.render('index', { aeropuertos, numPasajes, sobreventas });
+              reservaController.getReservas((reservas, err) => {
+                if (err) {
+                  res.json({
+                    success: false, 
+                    msg: 'Fallo al traer las reservas'
+                  })
+                }else{
+                  clienteController.getClientes((clientes, err) => {
+                    if(err){
+                      res.json({
+                        success: false,
+                        msg: 'Fallo al obtener clientes'
+                      })
+                    }else{
+                      res.render('index', { aeropuertos, numPasajes, sobreventas, reservas, clientes});
+                    }
+                  })
+                }
+              })
             }
           })
           
@@ -39,8 +59,83 @@ router.get('/', (req, res) => {
       });
     }
   })
-
 });
+
+router.post('/checkin/', (req, res) => {
+  if(!!req.body){
+    reservaController.getReservaParticular(req.body.IdReserva, (reserva, pasajes, err) => {
+      if(err){
+        console.log(err)
+        res.json({
+          success: false, 
+          msg: 'Fallo al obtener reserva'
+        })
+      }else{
+        res.render('index', {reserva, pasajes})
+      }
+    })
+  }
+})
+
+router.post('/comprar/:id', (req, res) => {
+  if(!!req.params.id){
+    pasajeController.updateEstadoPasaje(req.params.id, (err) => {
+      if(err){
+        console.log(err)
+        res.json({
+          success: false, 
+          msg: 'Fallo al comprar pasaje'
+        })
+      }else{
+        res.redirect('/')
+        //res.render('index', {reserva, pasajes})
+      }
+    })
+  }
+})
+
+router.get('/buscarVuelo/:id-:id2', (req, res) => {
+  if(!!req.params.id){
+    vueloController.getVuelos((vuelos, err) => {
+      if(err){
+        res.json({
+          success: false,
+          msg: 'Fallo al obtener vuelos'
+        })
+      }else{
+        rutaController.getRutas((rutas, err) => {
+          if(err){
+            res.json({
+              success: false,
+              msg: 'Fallo al obtener las rutas'
+            })
+          }else{
+            var IdPasaje = req.params.id;
+            var IdVueloReservado = req.params.id2
+            res.render('index', {vuelos, rutas, IdPasaje, IdVueloReservado})
+          }
+        })
+      }
+    })
+  }
+})
+
+router.post('/asignarVuelo/:id', (req, res) => {
+  if(!!req.params.id){
+    pasajeController.updateVueloAbordado(req.body.IdVueloAbordado,req.params.id, (err) => {
+      if(err){
+        console.log(err)
+        res.json({
+          success: false, 
+          msg: 'Fallo al updatear pasaje'
+        })
+      }else{
+        res.redirect('/')
+        //res.render('index', {reserva, pasajes})
+      }
+    })
+  }
+})
 
 router.post('/buscarOfertas', (req, res) => {
   if (!!req.body) {
@@ -184,6 +279,7 @@ router.post('/abordaje', (req,res) => {
 router.post('/vuelosCharter', (req,res) => {
   vueloController.getVuelosCharter((vuelosCharter, err) => {
     if(err){
+      console.log(err)
       res.json({
         success: false,
         msg: 'Fallo al mostrar los vuelos charter'

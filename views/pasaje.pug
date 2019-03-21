@@ -122,14 +122,14 @@ block content
                     td (#{clientes[j].Pasaporte}) #{clientes[j].Apellido}, #{clientes[j].Nombre} 
                 - for (let j = 0; j < vuelos.length; j++)
                     -for(let k = 0; k < rutas.length; k++) 
-                      - if (vuelos[j].EstatusVuelo == 'A tiempo' && rutas[k].IdRuta == vuelos[j].IdRuta && vuelos[j].IdVuelo == pasajes[i].IdVueloReservado)
+                      - if (rutas[k].IdRuta == vuelos[j].IdRuta && vuelos[j].IdVuelo == pasajes[i].IdVueloReservado)
                         td #{vuelos[j].IdVuelo} - (#{rutas[k].Origen} , #{rutas[k].Destino}) - #{vuelos[j].FechaSalida}
                 - if(pasajes[i].IdVueloAbordado == null)
                   td Pasaje no ha sido usado
                 - else
                   - for (let j = 0; j < vuelos.length; j++)
                     -for(let k = 0; k < rutas.length; k++) 
-                      - if (vuelos[j].EstatusVuelo == 'A tiempo' && rutas[k].IdRuta == vuelos[j].IdRuta && vuelos[j].IdVuelo == pasajes[i].IdVueloAbordado)
+                      - if (rutas[k].IdRuta == vuelos[j].IdRuta && vuelos[j].IdVuelo == pasajes[i].IdVueloAbordado)
                         td #{vuelos[j].IdVuelo} - (#{rutas[k].Origen} , #{rutas[k].Destino}) - #{vuelos[j].FechaSalida} 
                 - for (let j = 0; j < tarifas.length; j++)
                   - if (tarifas[j].IdTarifa == pasajes[i].IdTarifa)

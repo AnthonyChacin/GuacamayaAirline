@@ -102,7 +102,17 @@ router.post('/create', (req, res) => {
                     msg: `Fallo al crear alquiler de avion`
                 })
             }else{
-                res.redirect('/alquilerAviones/');
+                var EstatusAvion = 'Alquilado'
+                avionController.updateEstatusAvion(req.body.IdAvion, EstatusAvion, (err) => {
+                    if(err){
+                        res.json({
+                            success: false,
+                            msg: `Fallo al setear el estatus del avion`
+                        })
+                    }else{
+                        res.redirect('/alquilerAviones/');
+                    }
+                })
             }
         })
     }

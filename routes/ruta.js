@@ -264,6 +264,17 @@ router.post('/create', (req, res) => {
                                         }
                                     })
                                 }
+
+                                var EstatusAvion = 'En Ruta'
+                                avionController.updateEstatusAvion(req.body.IdAvion, EstatusAvion, (err) => {
+                                    if(err){
+                                        res.json({
+                                            success: false,
+                                            msg: `Fallo al setear el estatus del avion`
+                                        }) 
+                                    }
+                                })
+
                                 res.write('<script>');
                                 res.write('alert("¡Ruta creada exitosamente!");');
                                 res.write("window.location.href='/ruta/';");

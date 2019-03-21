@@ -51,6 +51,37 @@ controller.deletePasaje = async function (IdPasaje, callback) {
     }
 }
 
+
+controller.updateEstadoPasaje = async function (IdPasaje, callback) {
+    try {
+        let response = await Pasaje.update({
+            Estado: 'Comprado'
+        }, {
+            where: {
+                IdPasaje
+            }
+        });
+        callback(null);
+    } catch (error) {
+        callback(error);
+    }
+}
+
+controller.updateVueloAbordado = async function ( IdVueloAbordado,IdPasaje, callback) {
+    try {
+        let response = await Pasaje.update({
+            IdVueloAbordado
+        }, {
+            where: {
+                IdPasaje
+            }
+        });
+        callback(null);
+    } catch (error) {
+        callback(error);
+    }
+}
+
 controller.createPasaje = async function (data, callback) {
     
     try {
