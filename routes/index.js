@@ -11,6 +11,7 @@ const avionController = require('../controllers/avionController');
 const personaController = require('../controllers/personaController');
 
 
+
 var escalasOfertadas = [];
 
 router.get('/', (req, res) => {
