@@ -1,9 +1,9 @@
 extends base
 block content
   .container.pt-4
-    - if (!ofertasVuelos && !escalasOfertadas && !destinosPop && !vuelosCharter)
+    - if (!ofertasVuelos && !escalasOfertadas && !destinosPop && !vuelosCharter && !demograficas)
       h1.text-center.card-title Bienvenido a Guacamaya Airlines
-    - if(!ofertasVuelos && !escalasOfertadas && !destinosPop && !vuelosCharter)
+    - if(!ofertasVuelos && !escalasOfertadas && !destinosPop && !vuelosCharter && !demograficas)
       div.row
         div.col-4
           h4.mt-5.text-center Ofertas de vuelos
@@ -98,6 +98,12 @@ block content
                 form(action=`/vuelosCharter/` method="POST")
                   button.btn.btn-warning(type='submit') Ver
                   img(src="http://www.airways-magazine.com/img/picto-avion.png", alt="Destinos" style="height: 4rem; width: 100%")
+            h4.mt-5.text-center Demográficas de clientes
+            div(style="background-color: #99a3a4").card
+              div.card-body.text-white
+                form(action=`/demograficas/` method="POST")
+                  button.btn.btn-warning(type='submit') Ver
+                  img(src="https://www.viniloscasa.com/16889-thickbox/vinilo-decorativo-ciudad.jpg", alt="Destinos" style="height:4rem; width: 100%")
         // Reporte de peso promedio por avion
         div.col-4
           h4.mt-5.text-center Peso promedio de un avión
@@ -228,5 +234,28 @@ block content
                 td #{vuelosCharter[i].HoraLlegada}
                 td #{vuelosCharter[i].IdAvion}
 
+    - if(demograficas)
+      .row.mt-5
+        .col-12
+          h3.text-center Demográficas
+          table.table
+            thead.card-header.bg-dark.text-light
+              th(scope='col') Hombres
+              th(scope='col') Mujeres
+              th(scope='col') Otros
+              th(scope='col') Menores de 18 años
+              th(scope='col') Entre 18 y 39 años
+              th(scope='col') Entre 40 y 64 años
+              th(scope='col') 65 años o más
+            tbody.card-body.bg-white.text-dark
+              tr
+                td #{demograficas[0].porcMasculino}%
+                td #{demograficas[0].porcFemenino}%
+                td #{demograficas[0].porcOtros}%
+                td #{demograficas[0].porcMen18}%
+                td #{demograficas[0].porcEntre18y39}%
+                td #{demograficas[0].porcEntre40y64}%
+                td #{demograficas[0].porc65oMas}%
+      
 
     

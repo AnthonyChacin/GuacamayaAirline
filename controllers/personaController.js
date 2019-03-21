@@ -114,4 +114,26 @@ controller.createPersona = async function (data, callback) {
     }
 }
 
+controller.demograficas = async function (callback) {
+    try {
+        let response = await database.query(
+            "SELECT COUNT(IF(PE.`Sexo`='Masculino', PE.`IdPersona`, NULL))/COUNT(PE.`IdPersona`)*100 AS porcMasculino," +
+                  " COUNT(IF(PE.`Sexo`='Femenino', PE.`IdPersona`, NULL))/COUNT(PE.`IdPersona`)*100 AS porcFemenino," +
+                  " COUNT(IF(PE.`Sexo`='Otros', PE.`IdPersona`, NULL))/COUNT(PE.`IdPersona`)*100 AS porcOtros," +
+                  " COUNT(IF(FLOOR(DATEDIFF(CURDATE(), PE.`FechaNac`) / 365.25) < 18,PE.`IdPersona`,NULL))/COUNT(PE.`IdPersona`)*100 AS porcMen18," +
+                  " COUNT(IF(FLOOR(DATEDIFF(CURDATE(),  PE.`FechaNac`) / 365.25) BETWEEN 18 AND 39, PE.`IdPersona`,NULL))/COUNT(PE.`IdPersona`)*100 AS porcEntre18y39," +
+                  " COUNT(IF(FLOOR(DATEDIFF(CURDATE(),  PE.`FechaNac`) / 365.25) BETWEEN 40 AND 64, PE.`IdPersona`,NULL))/COUNT(PE.`IdPersona`)*100 AS porcEntre40y64," +
+                  " COUNT(IF(FLOOR(DATEDIFF(CURDATE(),  PE.`FechaNac`) / 365.25) >= 65, PE.`IdPersona`,NULL))/COUNT(PE.`IdPersona`)*100 AS porc65oMas" +
+            " FROM Persona PE" +
+            " INNER JOIN `Cliente` C ON PE.`IdPersona` = C.`IdPersona`" +
+            " WHERE C.`Activo` = 1",
+            { type: sequelize.QueryTypes.SELECT }
+        );
+        console.log(response);
+        callback(response,null);
+    } catch (error) {
+        callback(null,error);
+    }
+}
+
 module.exports = controller;

@@ -5,6 +5,7 @@ const vueloController = require('../controllers/vueloController');
 const pasajeController = require('../controllers/pasajeController');
 const tarifaController = require('../controllers/tarifaController');
 const avionController = require('../controllers/avionController');
+const personaController = require('../controllers/personaController');
 
 
 var escalasOfertadas = [];
@@ -205,6 +206,20 @@ router.post('/destinos_populares', (req,res) => {
       })
     }else{
       res.render('index', { destinosPop })
+    }
+  })
+})
+
+router.post('/demograficas', (req,res) => {
+  personaController.demograficas((demograficas, err) =>{
+    if(err){
+      console.log(err)
+      res.json({
+        success: false,
+        msg: 'Fallo al obtener las demograficas'
+      })
+    }else{
+      res.render('index', { demograficas })
     }
   })
 })
