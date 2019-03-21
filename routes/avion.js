@@ -48,26 +48,8 @@ router.get('/uso/:id', (req,res) => {
                     msg: 'Fallo al obtener cantidad de uso de los aviones'
                 })
             }else{
-                avionController.getAviones((aviones, err) => {
-                    if (err){
-                        res.json({
-                            success: false,
-                            msg: 'Fallo al buscar aviones'
-                        });
-                    }else{
-                        modeloController.getModelos((modelos, err) => {
-                            if(err){
-                                res.json({
-                                    success: false,
-                                    msg: 'Fallo buscar modelos'
-                                })
-                            }else{
-                                var IdAvion = req.params.id;
-                                res.render('avion', {usoAvion, aviones, modelos, IdAvion})
-                            }
-                        })
-                    }    
-                });
+                var IdAvion = req.params.id
+                res.render('avion', {usoAvion, IdAvion})
             }
         })
     }

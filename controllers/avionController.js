@@ -38,15 +38,15 @@ controller.avionesPorEstados = async function (callback) {
 controller.usoAvion = async function (IdAvion, callback) {
     try{
         let usoAvion = await database.query(
-            "SELECT COUNT(V.`IdVuelo`) AS CantidadVuelos FROM `Vuelo` AS V" +
+            "SELECT V.`IdVuelo`, R.`Origen`, V.`Destino`, V.`FechaSalida`, V.`FechaLlegada`, V.`EstatusVuelo`, V.`HoraSalida`, V.`HoraLlegada` FROM `Vuelo` AS V" +
             " INNER JOIN `Avion` AS A ON A.`IdAvion` = V.`IdAvion`" +
-            " WHERE A.`Activo` = 1 AND V.`EstatusVuelo` = 'Aterrizo'" +
-            " GROUP BY A.`IdAvion`",
+            " INNER JOIN `Ruta` AS R ON R.`IdRuta` = V.`IdRuta`" +
+            " WHERE A.`Activo` = 1 AND (V.`EstatusVuelo` = 'Aterrizo' OR V.`EstatusVuelo` = 'En vuelo') AND V.`IdAvion` = "+IdAvion+"",
             {type: sequelize.QueryTypes.SELECT}
         );
 
-        console.log(usoAvion[0])
-        callback(usoAvion[0], null)
+        console.log(usoAvion)
+        callback(usoAvion, null)
     
     }catch(error){
         callback(null, error)

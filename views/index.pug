@@ -1,9 +1,9 @@
 extends base
 block content
   .container.pt-4
-    - if (!ofertasVuelos && !escalasOfertadas && !destinosPop)
+    - if (!ofertasVuelos && !escalasOfertadas && !destinosPop && !vuelosCharter)
       h1.text-center.card-title Bienvenido a Guacamaya Airlines
-    - if(!ofertasVuelos && !escalasOfertadas && !destinosPop)
+    - if(!ofertasVuelos && !escalasOfertadas && !destinosPop && !vuelosCharter)
       div.row
         div.col-4
           h4.mt-5.text-center Ofertas de vuelos
@@ -86,11 +86,18 @@ block content
                 h3(style="margin-top:1.5rem").text-center #{sobreventas[0].numSobreventas} (#{sobreventas[0].porcSobreventas}%)
         // Reporte de destinos populares
         div.col-4
-          h4.mt-5.text-center Destinos más visitados
-          div.card.bg-dark
-            div.card-body.text-white
-              form(action=`/destinos_populares/` method="POST")
-                button.btn.btn-warning(type='submit') Ver
+            h4.mt-5.text-center Destinos más visitados
+            div(style="background-color: #99a3a4").card
+              div.card-body.text-white
+                form(action=`/destinos_populares/` method="POST")
+                  button.btn.btn-warning(type='submit') Ver
+                  img(src="https://www.viniloscasa.com/16889-thickbox/vinilo-decorativo-ciudad.jpg", alt="Destinos" style="height:4rem; width: 100%")       
+            h4.mt-5.text-center Vuelos Chárter
+            div(style="background-color: #99a3a4").card
+              div.card-body.text-white
+                form(action=`/vuelosCharter/` method="POST")
+                  button.btn.btn-warning(type='submit') Ver
+                  img(src="http://www.airways-magazine.com/img/picto-avion.png", alt="Destinos" style="height: 4rem; width: 100%")
 
     - if (ofertasVuelos)
       .row.mt-5
@@ -174,5 +181,34 @@ block content
                 td #{destinosPop[i].destino}
                 td #{destinosPop[i].visitas}
                 td #{destinosPop[i].porcVisitas}%
+
+    - if(vuelosCharter)
+      .row.mt-5
+        .col-12
+          h3.text-center Vuelos Chárter
+          table.table
+            thead.card-header.bg-dark.text-light
+              th(scope='col') ID
+              th(scope='col') Origen
+              th(scope='col') Destino
+              th(scope='col') Fecha de salida
+              th(scope='col') Fecha de llegada
+              th(scope='col') Estatus del vuelo
+              th(scope='col') Hora de salida
+              th(scope='col') Hora de llegada
+              th(scope='col') Avión
+            tbody.card-body.bg-white.text-dark
+            - for (var i = 0; i < vuelosCharter.length; i++)
+              tr
+                td #{vuelosCharter[i].IdVuelo}
+                td #{vuelosCharter[i].Origen}
+                td #{vuelosCharter[i].Destino}
+                td #{vuelosCharter[i].FechaSalida}
+                td #{vuelosCharter[i].FechaLlegada}
+                td #{vuelosCharter[i].EstatusVuelo}
+                td #{vuelosCharter[i].HoraSalida}
+                td #{vuelosCharter[i].HoraLlegada}
+                td #{vuelosCharter[i].IdAvion}
+
 
     

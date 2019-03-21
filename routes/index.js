@@ -181,6 +181,19 @@ router.post('/abordaje', (req,res) => {
   })
 })
 
+router.post('/vuelosCharter', (req,res) => {
+  vueloController.getVuelosCharter((vuelosCharter, err) => {
+    if(err){
+      res.json({
+        success: false,
+        msg: 'Fallo al mostrar los vuelos charter'
+      })
+    }else{
+      res.render('index', {vuelosCharter})
+    }
+  })
+})
+
 router.post('/destinos_populares', (req,res) => {
   pasajeController.destinosPopulares((destinosPop, err) =>{
     if(err){
