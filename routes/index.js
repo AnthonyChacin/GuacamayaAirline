@@ -4,9 +4,15 @@ const aeropuertoController = require('../controllers/aeropuertoController');
 const vueloController = require('../controllers/vueloController');
 const pasajeController = require('../controllers/pasajeController');
 const tarifaController = require('../controllers/tarifaController');
+<<<<<<< HEAD
 const reservaController = require('../controllers/reservaController');
 const clienteController = require('../controllers/clienteController');
 const rutaController = require('../controllers/rutaController');
+=======
+const avionController = require('../controllers/avionController');
+const personaController = require('../controllers/personaController');
+
+>>>>>>> 8e952a633b7b90c3dd97ccd410a505ab075fa32d
 
 var escalasOfertadas = [];
 
@@ -300,6 +306,65 @@ router.post('/destinos_populares', (req,res) => {
       })
     }else{
       res.render('index', { destinosPop })
+    }
+  })
+})
+
+router.post('/demograficas', (req,res) => {
+  personaController.demograficas((demograficas, err) =>{
+    if(err){
+      console.log(err)
+      res.json({
+        success: false,
+        msg: 'Fallo al obtener las demograficas'
+      })
+    }else{
+      res.render('index', { demograficas })
+    }
+  })
+})
+
+router.post('/pesoAvion', (req,res) => {
+  avionController.pesoPromedioDeAvion(req.body.ID_Avion, (pesoAvion, err) => {
+    if(err) {
+      console.log(err)
+      res.json({
+        success: false,
+        msg: 'Fallo al obtener peso promedio de avion'
+      })
+    } else {
+      console.log(pesoAvion);
+      pasajeController.contarPasajes((numPasajes, err) => {
+        if(err){
+          res.json({
+            success: false,
+            msg: 'Fallo al obtener el número de pasajes'
+          })
+        }else{
+          vueloController.reportarSobreventas((sobreventas, err) => {
+            if (err) {
+              res.json({
+                success: false,
+                msg: 'Fallo al obtener las sobreventas'
+              })
+            } else {
+              aeropuertoController.getAeropuertos((aeropuertos, err) => {
+                if(err){
+                  res.json({
+                    success: false,
+                    msg: 'Fallo al obtener los aeropuertos'
+                  })
+                }else{
+                  
+                  var ID_Avion = req.body.ID_Avion;
+                  res.render('index', { pesoAvion, aeropuertos, sobreventas, numPasajes, ID_Avion});
+                }
+              })
+            }
+          })
+          
+        }
+      })
     }
   })
 })

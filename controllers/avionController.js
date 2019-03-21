@@ -153,4 +153,28 @@ controller.updateAvion = async function (data, IdAvion, callback) {
     }
 }
 
+controller.pesoPromedioDeAvion = async function (IdAvion, callback) {
+    try {
+        let pesoVuelos = await database.query(
+            "SELECT SUM(T.`PesoEq`) AS pesoVuelo FROM `Tarifa` AS T" +
+            " INNER JOIN `Pasaje` AS P ON T.`IdTarifa` = P.`IdTarifa`" +
+            " INNER JOIN `Vuelo` AS V ON P.`IdVueloAbordado` = V.`IdVuelo`" +
+            " WHERE V.`IdAvion` = "+IdAvion+
+            " GROUP BY V.`IdVuelo`",
+            {type: sequelize.QueryTypes.SELECT}
+        );
+        let pesoPromedio = 0;
+        for( var i = 0; i < pesoVuelos.length; i++ ){
+            pesoPromedio += parseInt(pesoVuelos[i].pesoVuelo);
+        }
+        pesoPromedio = pesoPromedio / pesoVuelos.length;
+        console.log("Pesos:");
+        console.log(pesoVuelos);
+        console.log(pesoPromedio);
+        callback(pesoPromedio, null)
+    } catch (error) {
+        callback(null, error)
+    }
+}
+
 module.exports = controller;
